@@ -26,7 +26,7 @@ export default function HeaderContent() {
             alt="Admin profile photo"
             width={60}
             height={60}
-            className="size-[60] shrink-0 rounded-full"
+            className="size-[60] shrink-0 rounded-full object-cover"
           />
         </div>
       </div>

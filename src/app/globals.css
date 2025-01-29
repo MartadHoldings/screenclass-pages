@@ -11,12 +11,9 @@
   }
 } */
 
-html {
-  overscroll-behavior: none;
-}
-
 body {
   font-family: Arial, Helvetica, sans-serif;
+  overscroll-behavior: none;
 }
 
 @layer base {
