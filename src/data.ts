@@ -90,3 +90,11 @@ export const data = [
     class: "Computer Science",
   },
 ];
+
+export const StudentActionsData = [
+  { id: 1, label: "View Student Details" },
+  { id: 2, label: "Suspend Student" },
+  { id: 3, label: "Subscribe for Student" },
+  { id: 4, label: "Subscription History" },
+  { id: 5, label: "Delete Student" },
+];

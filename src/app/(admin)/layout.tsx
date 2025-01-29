@@ -1,5 +1,6 @@
 import React from "react";
 import AdminContent from "@/components/AdminContent";
+import { AppInteractionsContextProvider } from "@/context/modal-state-context";
 
 export default function AdminLayout({
   children,
@@ -8,7 +9,9 @@ export default function AdminLayout({
 }>) {
   return (
     <>
-      <AdminContent>{children}</AdminContent>
+      <AppInteractionsContextProvider>
+        <AdminContent>{children}</AdminContent>
+      </AppInteractionsContextProvider>
     </>
   );
 }

@@ -1,11 +1,9 @@
-import StudentActionMenu from "@/components/modals/student-action-menu";
-import StudentInfo from "@/components/modals/student-info";
+import SuspendStudent from "@/components/modals/suspend-student";
 
 export const Guardian = () => {
   return (
     <div>
-      <StudentInfo />
-      <StudentActionMenu />
+      <SuspendStudent />
     </div>
   );
 };

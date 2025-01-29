@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import StatsCard from "@/components/StatsCards";
 import { EllipsisVertical, UserRound } from "lucide-react";
 import {
@@ -12,21 +12,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { data } from "@/data";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { StudentActionDropdown } from "@/components/student-action-dropdown";
+import StudentInfo from "@/components/modals/student-info";
+import { useAppInteractionContext } from "@/context/modal-state-context";
+import SuspendStudent from "@/components/modals/suspend-student";
 
 const stats = [
   {
@@ -60,18 +49,74 @@ const stats = [
 ];
 
 export const Overview = () => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+  const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setActiveDropDown(null);
+    // setIsModalOpen(false);
+  };
+
+  const renderActionsModal = (action: string | null) => {
+    switch (action) {
+      case "View Student Details":
+        return <StudentInfo />;
+      case "Suspend Student":
+        return <SuspendStudent />;
+      // case "Subscribe for Student":
+      //   return <SubscribeStudent />;
+      // case "Subscription History":
+      //   return <SubscriptionHistory />;
+      // case "Delete Student":
+      //   return <DeleteStudent />;
+      default:
+        return null;
+    }
+  };
+
+  const renderFooter = (action: string | null) => {
+    switch (action) {
+      case "View Student Details":
+        return (
+          <Button
+            key="back"
+            onClick={handleCancel}
+            size="large"
+            className="w-full"
+            type="primary"
+          >
+            Return
+          </Button>
+        );
+      // case "Suspend Student":
+      //   return <SuspendStudent />;
+      // case "Subscribe for Student":
+      //   return <SubscribeStudent />;
+      // case "Subscription History":
+      //   return <SubscriptionHistory />;
+      // case "Delete Student":
+      //   return <DeleteStudent />;
+      default:
+        return null;
+    }
+
+    // footer={[
+    //   <Button key="back" onClick={handleCancel}>
+    //     Return
+    //   </Button>,
+    //   <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
+    //     Submit
+    //   </Button>,
+    //   <Button
+    //     key="link"
+    //     href="https://google.com"
+    //     target="_blank"
+    //     type="primary"
+    //     loading={loading}
+    //     onClick={handleOk}
+    //   >
+    //     Search on Google
+    //   </Button>,
+    // ]}
   };
 
   return (
@@ -142,7 +187,9 @@ export const Overview = () => {
                   <TableCell className="">{user.email}</TableCell>
                   <TableCell className="">{user.class}</TableCell>
                   <TableCell className="cursor-pointer">
-                    <EllipsisVertical onClick={showModal} />
+                    <StudentActionDropdown>
+                      <EllipsisVertical />
+                    </StudentActionDropdown>
                   </TableCell>
                 </TableRow>
               ))}
@@ -159,14 +206,12 @@ export const Overview = () => {
       </div>
 
       <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
+        open={activeDropDown != null}
+        // onOk={handleOk}
         onCancel={handleCancel}
+        footer={renderFooter(activeDropDown)}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        {renderActionsModal(activeDropDown)}
       </Modal>
     </>
   );
