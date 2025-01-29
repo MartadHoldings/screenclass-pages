@@ -87,8 +87,8 @@ export const Overview = () => {
             Return
           </Button>
         );
-      // case "Suspend Student":
-      //   return <SuspendStudent />;
+      case "Suspend Student":
+        return <SuspendStudent />;
       // case "Subscribe for Student":
       //   return <SubscribeStudent />;
       // case "Subscription History":
