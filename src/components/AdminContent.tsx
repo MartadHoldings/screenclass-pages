@@ -96,7 +96,7 @@ export default function AdminContent({
         >
           <HeaderContent />
         </Header>
-        <Content style={{ margin: "24px 16px 0" }}>{children}</Content>
+        <Content style={{ margin: "24px 32px 0" }}>{children}</Content>
       </Layout>
     </Layout>
   );

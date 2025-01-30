@@ -1,7 +1,12 @@
 import React from "react";
 import Image from "next/image";
 
-export default function DangerousActionModal({ type }: { type: string }) {
+type ModalProps = {
+  actionType: "suspend" | "delete";
+  user: "student" | "guardian";
+};
+
+export default function DangerousActionModal({ actionType, user }: ModalProps) {
   return (
     <div className="flex flex-col items-center justify-center">
       <Image
@@ -12,7 +17,7 @@ export default function DangerousActionModal({ type }: { type: string }) {
         className="scale-150"
       />
       <p className="w-[70%] text-center">
-        Are you sure you want to {type} this user ? This action cannot be
+        Are you sure you want to {actionType} this {user}? This action cannot be
         undone.
       </p>
     </div>

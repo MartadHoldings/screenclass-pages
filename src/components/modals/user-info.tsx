@@ -5,7 +5,7 @@ const studentDetails = [
   { label: "Class", value: "Common Ent Prep" },
   { label: "Phone number", value: "+2349157505114" },
   { label: "Email Address", value: "test@gmail.com" },
-  { label: "Student ID", value: "SCS112" },
+  { label: "User ID", value: "SCS112" },
   { label: "Plan", value: "Premium" },
   { label: "Plan Deal", value: "7 days" },
   { label: "Expiry Date", value: "soon" },
@@ -15,7 +15,23 @@ const studentDetails = [
   { label: "Status", value: "Active", valueClass: "text-green-600" },
 ];
 
-export default function StudentInfo() {
+const guardianDetails = [
+  { label: "Phone number", value: "+2349157505114" },
+  { label: "Email Address", value: "test@gmail.com" },
+  { label: "User ID", value: "SCS112" },
+  { label: "Plan", value: "Premium" },
+  { label: "Date registered", value: "yesterday" },
+  { label: "Last Login", value: "20/06/2023 at 04:00:22pm" },
+  { label: "Student", value: "Debbie Ann and 3 others" },
+  {
+    label: "Status",
+    value: "Active",
+    valueClass: "text-green-600 font-bold text-[15px]",
+  },
+];
+
+export default function UserInfo({ type }: { type: "student" | "guardian" }) {
+  const data = type === "student" ? studentDetails : guardianDetails;
   return (
     <div>
       <div className="mb-4 flex items-center justify-between border-b pb-2">
@@ -30,7 +46,7 @@ export default function StudentInfo() {
 
         <div className="w-[70%]">
           <h3 className="text-xl font-semibold">Temilola Ann</h3>
-          <p className="text-orange-500">Student</p>
+          <p className="text-orange-500">{type}</p>
           <p className="text-balance text-xs text-gray-600">
             Lorem ipsum dolor sit amet consectetur. Curabitur velit euismod
             gravida fringilla lacus malesuada. Sed eget praesent.
@@ -38,8 +54,8 @@ export default function StudentInfo() {
         </div>
       </div>
       <div className="space-y-3">
-        {studentDetails.map(({ label, value, valueClass = "" }, index) => (
-          <div key={index} className="flex gap-2">
+        {data.map(({ label, value, valueClass = "" }, index) => (
+          <div key={index} className="flex items-center gap-2">
             <div className="flex w-[30%] justify-end">
               <span className="text-right text-sm font-semibold">{label}:</span>
             </div>

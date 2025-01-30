@@ -2,22 +2,19 @@
 import React from "react";
 import { Button, Flex, Modal } from "antd";
 import StatsCard from "@/components/StatsCards";
-import { EllipsisVertical, UserRound } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { data } from "@/data";
-import { StudentActionDropdown } from "@/components/student-action-dropdown";
+import { UserRound } from "lucide-react";
+
+import { studentData } from "@/data";
 import { useAppInteractionContext } from "@/context/modal-state-context";
-import StudentInfo from "@/components/modals/student-info";
+import UserInfo from "@/components/modals/user-info";
 import SubscribeStudent from "@/components/modals/subscribe-student";
 import DangerousActionModal from "@/components/modals/dangerous-action";
 import Activities from "@/components/Activities";
+import DataTable from "@/components/shared/DataTable";
+import {
+  renderActionsModalStdent,
+  renderFooter,
+} from "@/helpers/action-on-tables";
 
 const stats = [
   {
@@ -66,79 +63,79 @@ export const Overview = () => {
     }, 2000);
   };
 
-  const renderActionsModal = (action: string | null) => {
-    switch (action) {
-      case "View Student Details":
-        return <StudentInfo />;
-      case "Suspend Student":
-        return <DangerousActionModal type="suspend" />;
-      case "Subscribe for Student":
-        return <SubscribeStudent />;
-      case "Delete Student":
-        return <DangerousActionModal type="delete" />;
-      default:
-        return null;
-    }
-  };
+  // const renderActionsModal = (action: string | null) => {
+  //   switch (action) {
+  //     case "View Student Details":
+  //       return <UserInfo type="student" />;
+  //     case "Suspend Student":
+  //       return <DangerousActionModal actionType="suspend" user="student" />;
+  //     case "Subscribe for Student":
+  //       return <SubscribeStudent />;
+  //     case "Delete Student":
+  //       return <DangerousActionModal actionType="delete" user="student" />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
-  const renderFooter = (action: string | null) => {
-    switch (action) {
-      case "View Student Details":
-        return (
-          <Button
-            key="back"
-            onClick={handleCancel}
-            size="large"
-            className="w-full"
-            type="primary"
-          >
-            Return
-          </Button>
-        );
+  // const renderFooter = (action: string | null) => {
+  //   switch (action) {
+  //     case "View Student Details":
+  //       return (
+  //         <Button
+  //           key="back"
+  //           onClick={handleCancel}
+  //           size="large"
+  //           className="w-full"
+  //           type="primary"
+  //         >
+  //           Return
+  //         </Button>
+  //       );
 
-      case "Suspend Student":
-      case "Delete Student": // ✅ Uses the same footer for both cases
-        return (
-          <Flex gap="small">
-            <Button
-              key="back"
-              onClick={handleCancel}
-              size="large"
-              className="w-full"
-            >
-              Cancel
-            </Button>
-            <Button
-              key="submit"
-              type="primary"
-              loading={loading}
-              onClick={handleOk}
-              size="large"
-              className="w-full"
-            >
-              {action === "Suspend Student" ? "Suspend" : "Delete"}
-            </Button>
-          </Flex>
-        );
+  //     case "Suspend Student":
+  //     case "Delete Student": // ✅ Uses the same footer for both cases
+  //       return (
+  //         <Flex gap="small">
+  //           <Button
+  //             key="back"
+  //             onClick={handleCancel}
+  //             size="large"
+  //             className="w-full"
+  //           >
+  //             Cancel
+  //           </Button>
+  //           <Button
+  //             key="submit"
+  //             type="primary"
+  //             loading={loading}
+  //             onClick={handleOk}
+  //             size="large"
+  //             className="w-full"
+  //           >
+  //             {action === "Suspend Student" ? "Suspend" : "Delete"}
+  //           </Button>
+  //         </Flex>
+  //       );
 
-      case "Subscribe for Student":
-        return (
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-            size="large"
-            className="w-full"
-          >
-            Subscribe
-          </Button>
-        );
+  //     case "Subscribe for Student":
+  //       return (
+  //         <Button
+  //           key="submit"
+  //           type="primary"
+  //           loading={loading}
+  //           onClick={handleOk}
+  //           size="large"
+  //           className="w-full"
+  //         >
+  //           Subscribe
+  //         </Button>
+  //       );
 
-      default:
-        return null;
-    }
-  };
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <>
@@ -161,39 +158,7 @@ export const Overview = () => {
       </div>
 
       <div className="mt-10">
-        <Table className="w-full">
-          <TableHeader className="sticky top-0 rounded-sm bg-[#E7E7F6] text-black">
-            <TableRow>
-              <TableHead className="w-[300px]">Full Name</TableHead>
-              <TableHead className="">USER ID</TableHead>
-              <TableHead className="">Phone Number</TableHead>
-              <TableHead>Reg data</TableHead>
-              <TableHead>Email Address</TableHead>
-              <TableHead>Class</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="">
-            {data &&
-              data.map((user) => (
-                <TableRow key={user.id} className="bg-white">
-                  <TableCell className="w-[300px] font-medium">
-                    {user.name.toUpperCase()}
-                  </TableCell>
-                  <TableCell className="">{user.user_id}</TableCell>
-                  <TableCell className="">{user.phone_number}</TableCell>
-                  <TableCell className="">{user.reg_date}</TableCell>
-                  <TableCell className="">{user.email}</TableCell>
-                  <TableCell className="">{user.class}</TableCell>
-                  <TableCell className="cursor-pointer">
-                    <StudentActionDropdown>
-                      <EllipsisVertical />
-                    </StudentActionDropdown>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+        <DataTable variant="student" data={studentData} />
       </div>
 
       <Modal
@@ -202,9 +167,14 @@ export const Overview = () => {
         onCancel={handleCancel}
         confirmLoading={loading}
         centered
-        footer={renderFooter(activeDropDown)}
+        footer={renderFooter({
+          activeDropDown,
+          handleCancel,
+          handleOk,
+          loading,
+        })}
       >
-        {renderActionsModal(activeDropDown)}
+        {renderActionsModalStdent(activeDropDown)}
       </Modal>
     </>
   );
