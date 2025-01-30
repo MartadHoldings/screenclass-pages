@@ -18,7 +18,8 @@ const StatsCard: React.FC<StatsCardProps> = ({
       className={`flex h-[110px] items-center justify-center gap-4 rounded-lg bg-white p-6 shadow-md`}
     >
       <div
-        className={`flex size-10 items-center justify-center rounded-full bg-[${iconBgColor}]`}
+        className={`flex size-10 items-center justify-center rounded-full`}
+        style={{ backgroundColor: iconBgColor }}
       >
         {icon}
       </div>

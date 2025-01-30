@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Modal } from "antd";
+import { Button, Flex, Modal } from "antd";
 import StatsCard from "@/components/StatsCards";
 import { EllipsisVertical, UserRound } from "lucide-react";
 import {
@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/table";
 import { data } from "@/data";
 import { StudentActionDropdown } from "@/components/student-action-dropdown";
-import StudentInfo from "@/components/modals/student-info";
 import { useAppInteractionContext } from "@/context/modal-state-context";
-import SuspendStudent from "@/components/modals/suspend-student";
+import StudentInfo from "@/components/modals/student-info";
+import SubscribeStudent from "@/components/modals/subscribe-student";
+import DangerousActionModal from "@/components/modals/dangerous-action";
+import Activities from "@/components/Activities";
 
 const stats = [
   {
@@ -50,10 +52,18 @@ const stats = [
 
 export const Overview = () => {
   const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
+  const [loading, setLoading] = React.useState(false);
 
   const handleCancel = () => {
     setActiveDropDown(null);
-    // setIsModalOpen(false);
+  };
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setActiveDropDown(null);
+      setLoading(false);
+    }, 2000);
   };
 
   const renderActionsModal = (action: string | null) => {
@@ -61,13 +71,11 @@ export const Overview = () => {
       case "View Student Details":
         return <StudentInfo />;
       case "Suspend Student":
-        return <SuspendStudent />;
-      // case "Subscribe for Student":
-      //   return <SubscribeStudent />;
-      // case "Subscription History":
-      //   return <SubscriptionHistory />;
-      // case "Delete Student":
-      //   return <DeleteStudent />;
+        return <DangerousActionModal type="suspend" />;
+      case "Subscribe for Student":
+        return <SubscribeStudent />;
+      case "Delete Student":
+        return <DangerousActionModal type="delete" />;
       default:
         return null;
     }
@@ -87,36 +95,49 @@ export const Overview = () => {
             Return
           </Button>
         );
+
       case "Suspend Student":
-        return <SuspendStudent />;
-      // case "Subscribe for Student":
-      //   return <SubscribeStudent />;
-      // case "Subscription History":
-      //   return <SubscriptionHistory />;
-      // case "Delete Student":
-      //   return <DeleteStudent />;
+      case "Delete Student": // ✅ Uses the same footer for both cases
+        return (
+          <Flex gap="small">
+            <Button
+              key="back"
+              onClick={handleCancel}
+              size="large"
+              className="w-full"
+            >
+              Cancel
+            </Button>
+            <Button
+              key="submit"
+              type="primary"
+              loading={loading}
+              onClick={handleOk}
+              size="large"
+              className="w-full"
+            >
+              {action === "Suspend Student" ? "Suspend" : "Delete"}
+            </Button>
+          </Flex>
+        );
+
+      case "Subscribe for Student":
+        return (
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            size="large"
+            className="w-full"
+          >
+            Subscribe
+          </Button>
+        );
+
       default:
         return null;
     }
-
-    // footer={[
-    //   <Button key="back" onClick={handleCancel}>
-    //     Return
-    //   </Button>,
-    //   <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-    //     Submit
-    //   </Button>,
-    //   <Button
-    //     key="link"
-    //     href="https://google.com"
-    //     target="_blank"
-    //     type="primary"
-    //     loading={loading}
-    //     onClick={handleOk}
-    //   >
-    //     Search on Google
-    //   </Button>,
-    // ]}
   };
 
   return (
@@ -136,29 +157,7 @@ export const Overview = () => {
       <div className="mt-10 grid h-[343px] grid-cols-[1.5fr_2fr_1.5fr] gap-4">
         <div className="bg-white p-3"></div>
         <div className="bg-white p-3"></div>
-
-        <div className="rounded-md bg-white px-3 pt-3">
-          <div className="sticky top-0 flex h-8 w-full items-center justify-center border-b">
-            <h4 className="text-center text-base font-medium">Activities</h4>
-          </div>
-
-          <div className="h-[270px] space-y-3 overflow-y-scroll px-4">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div className="flex items-end" key={i}>
-                <div className="flex flex-col gap-1">
-                  <span className="text-balance text-sm font-medium">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quia, eveniet ut. Esse?
-                  </span>
-                  <span className="text-[0.8rem] text-slate-500">
-                    1 hour ago
-                  </span>
-                </div>
-                <div className="size-3 shrink-0 rounded-full bg-blue-400"></div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Activities />
       </div>
 
       <div className="mt-10">
@@ -194,21 +193,15 @@ export const Overview = () => {
                 </TableRow>
               ))}
           </TableBody>
-          {/* <TableFooter className="sticky bottom-0 bg-white">
-            <TableRow>
-              <TableCell colSpan={5}>Total</TableCell>
-              <TableCell className="text-right">
-                {data?.pagination.totalCount}
-              </TableCell>
-            </TableRow>
-          </TableFooter> */}
         </Table>
       </div>
 
       <Modal
         open={activeDropDown != null}
-        // onOk={handleOk}
+        onOk={handleOk}
         onCancel={handleCancel}
+        confirmLoading={loading}
+        centered
         footer={renderFooter(activeDropDown)}
       >
         {renderActionsModal(activeDropDown)}

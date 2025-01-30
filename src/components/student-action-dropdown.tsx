@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const labels = [
   { id: 1, label: "View Student Details" },
@@ -39,15 +40,23 @@ export function StudentActionDropdown({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {labels.map((label) => (
-            <DropdownMenuItem
-              key={label.id}
-              asChild
-              onSelect={(e) => handleSelect(e, label.label)}
-            >
-              <span className="text-[0.9rem]">{label.label}</span>
-            </DropdownMenuItem>
-          ))}
+          {labels.map((label) =>
+            label.label === "Subscription History" ? (
+              <DropdownMenuItem key={label.id} asChild>
+                <Link href="/subscription-history" className="text-[0.9rem]">
+                  {label.label}
+                </Link>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                key={label.id}
+                asChild
+                onSelect={(e) => handleSelect(e, label.label)}
+              >
+                <span className="text-[0.9rem]">{label.label}</span>
+              </DropdownMenuItem>
+            ),
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
