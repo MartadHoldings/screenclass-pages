@@ -1,18 +1,18 @@
 "use client";
 import React from "react";
-import { Button, Flex, Modal } from "antd";
+import { Modal } from "antd";
 import StatsCard from "@/components/StatsCards";
 import { UserRound } from "lucide-react";
 
 import { studentData } from "@/data";
 import { useAppInteractionContext } from "@/context/modal-state-context";
-import UserInfo from "@/components/modals/user-info";
-import SubscribeStudent from "@/components/modals/subscribe-student";
-import DangerousActionModal from "@/components/modals/dangerous-action";
+// import UserInfo from "@/components/modals/user-info";
+// import SubscribeStudent from "@/components/modals/subscribe-student";
+// import DangerousActionModal from "@/components/modals/dangerous-action";
 import Activities from "@/components/Activities";
 import DataTable from "@/components/shared/DataTable";
 import {
-  renderActionsModalStdent,
+  renderActionsModalStudent,
   renderFooter,
 } from "@/helpers/action-on-tables";
 
@@ -174,7 +174,7 @@ export const Overview = () => {
           loading,
         })}
       >
-        {renderActionsModalStdent(activeDropDown)}
+        {renderActionsModalStudent(activeDropDown)}
       </Modal>
     </>
   );

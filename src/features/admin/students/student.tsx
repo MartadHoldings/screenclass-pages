@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 import DataTable from "@/components/shared/DataTable";
-import { guardianData } from "@/data";
+import { studentData } from "@/data";
 import { Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
 // import UserInfo from "@/components/modals/user-info";
 // import DangerousActionModal from "@/components/modals/dangerous-action";
 import {
-  renderActionsModalGuardian,
+  renderActionsModalStudent,
   renderFooter,
 } from "@/helpers/action-on-tables";
 
-export const Guardian = () => {
+export const Student = () => {
   const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
   const [loading, setLoading] = React.useState(false);
 
@@ -100,10 +100,10 @@ export const Guardian = () => {
   // };
   return (
     <>
-      <h2 className="text-[1.3rem] font-semibold">All Guardian</h2>
+      <h2 className="text-[1.3rem] font-semibold">All Students</h2>
 
       <div className="mt-10">
-        <DataTable variant="guardian" data={guardianData} />
+        <DataTable variant="student" data={studentData} />
       </div>
 
       <Modal
@@ -119,7 +119,7 @@ export const Guardian = () => {
           loading,
         })}
       >
-        {renderActionsModalGuardian(activeDropDown)}
+        {renderActionsModalStudent(activeDropDown)}
       </Modal>
     </>
   );

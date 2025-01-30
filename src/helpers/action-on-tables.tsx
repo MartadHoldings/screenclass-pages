@@ -25,7 +25,7 @@ export const renderActionsModalGuardian = (action: string | null) => {
   }
 };
 
-export const renderActionsModalStdent = (action: string | null) => {
+export const renderActionsModalStudent = (action: string | null) => {
   switch (action) {
     case "View Student Details":
       return <UserInfo type="student" />;
