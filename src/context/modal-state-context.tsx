@@ -3,14 +3,20 @@ import React from "react";
 
 interface AppContextProps {
   activeDropDown: string | null; // Active dropdown action, would be null on page load
+  tableActionModal: string | null; // Active modal state of pages without dropdown function, would be null on page load
+  loading: boolean;
   setActiveDropDown: React.Dispatch<React.SetStateAction<string | null>>;
-  // loginUser: (user: UserProps) => void;
+  setTableActionModal: React.Dispatch<React.SetStateAction<string | null>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const defaultContext: AppContextProps = {
   activeDropDown: null,
+  tableActionModal: null,
+  loading: false,
   setActiveDropDown: () => {},
-  // loginUser: async () => {},
+  setTableActionModal: () => {},
+  setLoading: () => {},
 };
 
 export const AppInteractionsContext =
@@ -24,9 +30,21 @@ export const AppInteractionsContextProvider = ({
     null,
   );
 
+  const [tableActionModal, setTableActionModal] = React.useState<string | null>(
+    null,
+  );
+  const [loading, setLoading] = React.useState<boolean>(false);
+
   return (
     <AppInteractionsContext.Provider
-      value={{ activeDropDown, setActiveDropDown }}
+      value={{
+        activeDropDown,
+        setActiveDropDown,
+        tableActionModal,
+        setTableActionModal,
+        loading,
+        setLoading,
+      }}
     >
       {children}
     </AppInteractionsContext.Provider>

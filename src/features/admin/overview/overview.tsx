@@ -10,7 +10,7 @@ import { useAppInteractionContext } from "@/context/modal-state-context";
 // import SubscribeStudent from "@/components/modals/subscribe-student";
 // import DangerousActionModal from "@/components/modals/dangerous-action";
 import Activities from "@/components/Activities";
-import DataTable from "@/components/shared/DataTable";
+import DataTable from "@/components/tables/DataTable";
 import {
   renderActionsModalStudent,
   renderFooter,

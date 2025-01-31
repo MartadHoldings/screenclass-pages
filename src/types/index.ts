@@ -10,3 +10,10 @@ export interface Student {
 
 // Define the Guardian interface, extending Student but omitting "class"
 export type Guardian = Omit<Student, "class">;
+
+export interface DataType {
+  key: React.Key;
+  class?: string;
+  id?: number | string;
+  no_of_subject?: number;
+}

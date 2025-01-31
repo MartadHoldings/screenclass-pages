@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/shared/DataTable";
+import DataTable from "@/components/tables/DataTable";
 import { studentData } from "@/data";
 import { Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
