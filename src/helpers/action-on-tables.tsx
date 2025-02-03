@@ -3,10 +3,10 @@ import {
   DangerousActionModal,
   SubscribeStudent,
 } from "@/components/modals";
-import AddNewClass from "@/components/modals/add-new-class";
+import AddNew from "@/components/modals/add-new";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
-import { DataType } from "@/types";
+import { TableData } from "@/types";
 import { Button, Flex } from "antd";
 
 interface RenderFooterType {
@@ -23,7 +23,12 @@ interface RenderFooterClassType
 
 interface RenderClassActionType {
   tableActionModal: string | null;
-  editingRow: DataType | null;
+  editingRow: TableData | null;
+}
+
+interface RenderSubjectActionType {
+  tableActionModal: string | null;
+  editingRow: TableData | null;
 }
 
 export const renderActionsModalGuardian = (action: string | null) => {
@@ -125,17 +130,17 @@ export const renderClassActionsModal = ({
 }: RenderClassActionType) => {
   switch (tableActionModal) {
     case "add new class":
-      return <AddNewClass />;
+      return <AddNew type="class" />;
     case "edit class cell":
-      return editingRow && <EditClass editingRow={editingRow} />;
-    case "delete class":
+      return editingRow && <EditClass editingRow={editingRow} type="class" />;
+    case "delete classes":
       return <DeleteActionModal variant="class" />;
     default:
       return null;
   }
 };
 
-export const renderFooterClassModals = ({
+export const renderClassModalsFooter = ({
   tableActionModal,
   handleCancel,
   handleOk,
@@ -143,7 +148,7 @@ export const renderFooterClassModals = ({
 }: RenderFooterClassType) => {
   switch (tableActionModal) {
     case "add new class":
-    case "delete class":
+    case "delete classes":
       return (
         <Flex gap="small">
           <Button
@@ -162,13 +167,91 @@ export const renderFooterClassModals = ({
             size="large"
             className="w-full"
           >
-            {tableActionModal === "delete class"
+            {tableActionModal === "delete classes"
               ? "Delete Selections"
               : "Add Class"}
           </Button>
         </Flex>
       );
     case "edit class cell":
+      return (
+        <Flex gap="small">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            size="large"
+            className="w-full"
+          >
+            Cancel
+          </Button>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            size="large"
+            className="w-full"
+          >
+            Save
+          </Button>
+        </Flex>
+      );
+
+    default:
+      return null;
+  }
+};
+
+export const renderSubjectActionsModal = ({
+  tableActionModal,
+  editingRow,
+}: RenderSubjectActionType) => {
+  switch (tableActionModal) {
+    case "add new subject":
+      return <AddNew type="subject" />;
+    case "edit subject cell":
+      return editingRow && <EditClass editingRow={editingRow} type="subject" />;
+    case "delete subjects":
+      return <DeleteActionModal variant="subjects" />;
+    default:
+      return null;
+  }
+};
+
+export const renderSubjectModalsFooter = ({
+  tableActionModal,
+  handleCancel,
+  handleOk,
+  loading,
+}: RenderFooterClassType) => {
+  switch (tableActionModal) {
+    case "add new subject":
+    case "delete subjects":
+      return (
+        <Flex gap="small">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            size="large"
+            className="w-full"
+          >
+            Cancel
+          </Button>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            size="large"
+            className="w-full"
+          >
+            {tableActionModal === "delete subjects"
+              ? "Delete Selections"
+              : "Add Subject"}
+          </Button>
+        </Flex>
+      );
+    case "edit subject cell":
       return (
         <Flex gap="small">
           <Button

@@ -193,3 +193,55 @@ export const StudentActionsData = [
   { id: 4, label: "Subscription History" },
   { id: 5, label: "Delete Student" },
 ];
+
+export const classData = [
+  { key: "1", class: "Common Entrance Prep", id: "Exam", no_of_subject: 20 },
+  { key: "2", class: "Common Entrance Prep", id: "Exam", no_of_subject: 10 },
+  { key: "3", class: "Common Entrance Prep", id: "Exam", no_of_subject: 70 },
+  { key: "4", class: "Disabled User", id: 99, no_of_subject: 2 },
+];
+
+export const subjectData = [
+  {
+    id: 1,
+    class: "Common Entrance",
+    subjects: [
+      {
+        key: 1,
+        subject: "Mathematics",
+        subject_code: "MA",
+        number_of_topics: 10,
+      },
+      {
+        key: 2,
+        subject: "English",
+        subject_code: "MA",
+        number_of_topics: 20,
+      },
+    ],
+  },
+  {
+    id: 2,
+    class: "Waec",
+    subjects: [
+      {
+        key: 3,
+        subject: "Mathematics",
+        subject_code: "MA",
+        number_of_topics: 10,
+      },
+      {
+        key: 4,
+        subject: "English",
+        subject_code: "MA",
+        number_of_topics: 20,
+      },
+      {
+        key: 5,
+        subject: "Basic Science",
+        subject_code: "MA",
+        number_of_topics: 5,
+      },
+    ],
+  },
+];

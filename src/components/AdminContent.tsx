@@ -37,7 +37,7 @@ const items: MenuItem[] = [
   getItem("Guardian", "2", "/guardian", <FileOutlined />),
   getItem("Students", "3", "/students", <FileOutlined />),
   getItem("Classes", "12", "/classes", <FileOutlined />),
-  getItem("Subjects", "4", "/subjects", <FileOutlined />),
+  getItem("Subject & Content", "4", "/subjects-content", <FileOutlined />),
   getItem("Trivia", "5", "/trivia", <FileOutlined />),
   getItem("Videos & Notes", "6", "/videos-notes", <FileOutlined />),
   getItem("Payments", "7", "/payments", <FileOutlined />),

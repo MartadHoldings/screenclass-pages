@@ -17,3 +17,20 @@ export interface DataType {
   id?: number | string;
   no_of_subject?: number;
 }
+
+export interface SubjDataType {
+  key: React.Key;
+  id: number;
+  subject?: string;
+  subject_code?: number | string;
+  number_of_topics?: number;
+}
+
+export interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
+export type TableData = Record<string, any>;
