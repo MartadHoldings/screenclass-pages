@@ -2,14 +2,19 @@
 import React from "react";
 import { Table, Button, Popconfirm, Divider } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
+import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
 import { TableData } from "@/types";
+import { GuardianActionDropdown } from "../guardian-action-dropdown";
+import { StudentActionDropdown } from "../student-action-dropdown";
 
 // Generic type for any table data
 
 interface TableComponentProps<T extends TableData> {
   data: T[];
   onAddContent?: boolean;
+  dropdownAction?: boolean;
+  dropdownType?: "student" | "guardian";
   onEdit?: (record: T) => void;
   onDelete?: (key: React.Key) => void;
 }
@@ -17,20 +22,35 @@ interface TableComponentProps<T extends TableData> {
 const DynamicTable = <T extends TableData>({
   data,
   onAddContent,
+  dropdownAction,
+  dropdownType,
   onEdit,
   onDelete,
 }: TableComponentProps<T>) => {
-  // Generate columns dynamically from data keys
-  const columns: TableColumnsType<T> = data.length
-    ? Object.keys(data[0]).map((key) => ({
-        title: key.replace(/_/g, " ").toUpperCase(),
-        dataIndex: key,
-        key,
-      }))
-    : [];
+  // Define columns explicitly without auto-generating from keys
+  const columns: TableColumnsType<T> = [];
+
+  const ActionDropdown =
+    dropdownType === "guardian"
+      ? GuardianActionDropdown
+      : StudentActionDropdown;
+
+  if (data.length) {
+    const firstRow = data[0];
+    Object.keys(firstRow).forEach((key) => {
+      if (key !== "key") {
+        // Exclude 'key' from being a column header
+        columns.push({
+          title: key.replace(/_/g, " ").toUpperCase(),
+          dataIndex: key,
+          key,
+        });
+      }
+    });
+  }
 
   // Add actions column if onEdit or onDelete exists
-  if (onEdit || onDelete || onAddContent) {
+  if (onEdit || onDelete || onAddContent || dropdownAction) {
     columns.push({
       title: "Actions",
       key: "actions",
@@ -55,6 +75,11 @@ const DynamicTable = <T extends TableData>({
             <Button type="primary">
               <Link href={`/subjects-content/${record.key}`}>Add Content</Link>
             </Button>
+          )}
+          {dropdownAction && (
+            <ActionDropdown>
+              <EllipsisVertical />
+            </ActionDropdown>
           )}
         </div>
       ),

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/tables/DataTable";
+// import DataTable from "@/components/tables/DataTable";
 import { studentData } from "@/data";
 import { Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
@@ -10,6 +10,7 @@ import {
   renderActionsModalStudent,
   renderFooter,
 } from "@/helpers/action-on-tables";
+import DynamicTable from "@/components/tables/dynamic-data-table";
 
 export const Student = () => {
   const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
@@ -103,7 +104,11 @@ export const Student = () => {
       <h2 className="text-[1.3rem] font-semibold">All Students</h2>
 
       <div className="mt-10">
-        <DataTable variant="student" data={studentData} />
+        <DynamicTable
+          data={studentData}
+          dropdownAction
+          dropdownType="student"
+        />{" "}
       </div>
 
       <Modal

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/tables/DataTable";
+// import DataTable from "@/components/tables/DataTable";
 import { guardianData } from "@/data";
 import { Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
@@ -10,6 +10,7 @@ import {
   renderActionsModalGuardian,
   renderFooter,
 } from "@/helpers/action-on-tables";
+import DynamicTable from "@/components/tables/dynamic-data-table";
 
 export const Guardian = () => {
   const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
@@ -103,7 +104,11 @@ export const Guardian = () => {
       <h2 className="text-[1.3rem] font-semibold">All Guardian</h2>
 
       <div className="mt-10">
-        <DataTable variant="guardian" data={guardianData} />
+        <DynamicTable
+          data={guardianData}
+          dropdownAction
+          dropdownType="guardian"
+        />
       </div>
 
       <Modal

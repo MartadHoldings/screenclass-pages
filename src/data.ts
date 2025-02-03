@@ -3,6 +3,7 @@ import { Student, Guardian } from "./types";
 export const studentData: Student[] = [
   {
     id: 1,
+    key: 1,
     name: "John Doe",
     user_id: "USR001",
     phone_number: "+1234567890",
@@ -12,6 +13,7 @@ export const studentData: Student[] = [
   },
   {
     id: 2,
+    key: 2,
     name: "Jane Smith",
     user_id: "USR002",
     phone_number: "+1234567891",
@@ -21,6 +23,7 @@ export const studentData: Student[] = [
   },
   {
     id: 3,
+    key: 3,
     name: "Alice Johnson",
     user_id: "USR003",
     phone_number: "+1234567892",
@@ -30,6 +33,7 @@ export const studentData: Student[] = [
   },
   {
     id: 4,
+    key: 4,
     name: "Robert Brown",
     user_id: "USR004",
     phone_number: "+1234567893",
@@ -39,6 +43,7 @@ export const studentData: Student[] = [
   },
   {
     id: 5,
+    key: 5,
     name: "Emily Davis",
     user_id: "USR005",
     phone_number: "+1234567894",
@@ -48,6 +53,7 @@ export const studentData: Student[] = [
   },
   {
     id: 6,
+    key: 6,
     name: "Michael Wilson",
     user_id: "USR006",
     phone_number: "+1234567895",
@@ -57,6 +63,7 @@ export const studentData: Student[] = [
   },
   {
     id: 7,
+    key: 7,
     name: "Sophia Taylor",
     user_id: "USR007",
     phone_number: "+1234567896",
@@ -66,6 +73,7 @@ export const studentData: Student[] = [
   },
   {
     id: 8,
+    key: 8,
     name: "David Martinez",
     user_id: "USR008",
     phone_number: "+1234567897",
@@ -75,6 +83,7 @@ export const studentData: Student[] = [
   },
   {
     id: 9,
+    key: 9,
     name: "Olivia Anderson",
     user_id: "USR009",
     phone_number: "+1234567898",
@@ -84,6 +93,7 @@ export const studentData: Student[] = [
   },
   {
     id: 10,
+    key: 10,
     name: "James Thomas",
     user_id: "USR010",
     phone_number: "+1234567899",
@@ -95,7 +105,17 @@ export const studentData: Student[] = [
 
 export const guardianData: Guardian[] = [
   {
+    id: 1,
+    key: 1,
+    name: "Jane Doe",
+    user_id: "USR002",
+    phone_number: "+9876543210",
+    reg_date: "2025-01-22",
+    email: "janedoe@example.com",
+  },
+  {
     id: 2,
+    key: 2,
     name: "Jane Doe",
     user_id: "USR002",
     phone_number: "+9876543210",
@@ -104,6 +124,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 3,
+    key: 3,
     name: "Michael Smith",
     user_id: "USR003",
     phone_number: "+1122334455",
@@ -112,6 +133,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 4,
+    key: 4,
     name: "Sarah Johnson",
     user_id: "USR004",
     phone_number: "+9988776655",
@@ -120,6 +142,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 5,
+    key: 5,
     name: "David Williams",
     user_id: "USR005",
     phone_number: "+6677889900",
@@ -128,6 +151,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 6,
+    key: 6,
     name: "Emily Brown",
     user_id: "USR006",
     phone_number: "+5544332211",
@@ -136,6 +160,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 7,
+    key: 7,
     name: "Robert Jones",
     user_id: "USR007",
     phone_number: "+4455667788",
@@ -144,6 +169,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 8,
+    key: 8,
     name: "Olivia Martinez",
     user_id: "USR008",
     phone_number: "+3322114455",
@@ -153,6 +179,7 @@ export const guardianData: Guardian[] = [
 
   {
     id: 9,
+    key: 9,
     name: "William Davis",
     user_id: "USR009",
     phone_number: "+1199887766",
@@ -162,6 +189,7 @@ export const guardianData: Guardian[] = [
 
   {
     id: 10,
+    key: 10,
     name: "Sophia Wilson",
     user_id: "USR010",
     phone_number: "+6677554433",
@@ -170,6 +198,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 11,
+    key: 11,
     name: "James Anderson",
     user_id: "USR011",
     phone_number: "+1122446688",
@@ -178,6 +207,7 @@ export const guardianData: Guardian[] = [
   },
   {
     id: 12,
+    key: 12,
     name: "Charlotte Thomas",
     user_id: "USR012",
     phone_number: "+3344556677",

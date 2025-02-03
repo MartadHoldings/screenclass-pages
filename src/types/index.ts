@@ -1,5 +1,6 @@
 export interface Student {
   id: number;
+  key: number;
   name: string;
   user_id: string;
   phone_number: string;
