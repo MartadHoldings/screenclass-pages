@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Table, Button, Popconfirm, Divider } from "antd";
+import { Table, Button, Popconfirm, Divider, Tag } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +35,19 @@ const DynamicTable = <T extends TableData>({
       ? GuardianActionDropdown
       : StudentActionDropdown;
 
+  const showTagColor = (value: string) => {
+    const newVal = value.toLowerCase();
+
+    switch (newVal) {
+      case "pending":
+        return "yellow";
+      case "success":
+        return "green";
+      default:
+        return "volcano";
+    }
+  };
+
   if (data.length) {
     const firstRow = data[0];
     Object.keys(firstRow).forEach((key) => {
@@ -44,6 +57,14 @@ const DynamicTable = <T extends TableData>({
           title: key.replace(/_/g, " ").toUpperCase(),
           dataIndex: key,
           key,
+          render: (value) =>
+            key === "status" ? (
+              <Tag color={showTagColor(value)} key={value}>
+                {value}
+              </Tag>
+            ) : (
+              value
+            ),
         });
       }
     });

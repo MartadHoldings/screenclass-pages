@@ -38,9 +38,9 @@ const items: MenuItem[] = [
   getItem("Students", "3", "/students", <FileOutlined />),
   getItem("Classes", "12", "/classes", <FileOutlined />),
   getItem("Subject & Content", "4", "/subjects-content", <FileOutlined />),
-  getItem("Trivia", "5", "/trivia", <FileOutlined />),
-  getItem("Videos & Notes", "6", "/videos-notes", <FileOutlined />),
-  getItem("Payments", "7", "/payments", <FileOutlined />),
+  getItem("Trivia", "5", "#", <FileOutlined />),
+  getItem("Videos & Notes", "6", "#", <FileOutlined />),
+  getItem("Payments", "7", "/payment-history", <FileOutlined />),
   getItem("Subscriptions", "8", "/subscriptions", <FileOutlined />),
   getItem("Notifications", "9", "/notifications", <FileOutlined />),
   getItem("Settings", "10", "/settings", <FileOutlined />),
@@ -70,6 +70,7 @@ export default function AdminContent({
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <Layout hasSider>
       <Sider style={siderStyle} width={255}>
@@ -85,7 +86,7 @@ export default function AdminContent({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={[""]}
           items={items}
           className="mt-6 space-y-4"
         />
