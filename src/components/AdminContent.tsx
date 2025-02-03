@@ -41,7 +41,7 @@ const items: MenuItem[] = [
   getItem("Trivia", "5", "#", <FileOutlined />),
   getItem("Videos & Notes", "6", "#", <FileOutlined />),
   getItem("Payments", "7", "/payment-history", <FileOutlined />),
-  getItem("Subscriptions", "8", "/subscriptions", <FileOutlined />),
+  getItem("Subscriptions", "8", "/subscription-plans", <FileOutlined />),
   getItem("Notifications", "9", "/notifications", <FileOutlined />),
   getItem("Settings", "10", "/settings", <FileOutlined />),
   getItem("Logout", "11", "/logout", <FileOutlined />),

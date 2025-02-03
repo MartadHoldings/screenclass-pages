@@ -332,3 +332,48 @@ export const payments = [
     status: "Failed",
   },
 ];
+
+export const subscriptions = [
+  {
+    key: 1,
+    class: "Common Entrance Prep",
+    planName: "Basic Plan",
+    validity: "1 Month",
+    amount: 5000,
+  },
+  {
+    key: 2,
+    class: "Common Entrance Prep",
+    planName: "Standard Plan",
+    validity: "3 Months",
+    amount: 12000,
+  },
+  {
+    key: 3,
+    class: "Common Entrance Prep",
+    planName: "Premium Plan",
+    validity: "6 Months",
+    amount: 22000,
+  },
+  {
+    key: 4,
+    class: "Junior High School",
+    planName: "Basic Plan",
+    validity: "1 Month",
+    amount: 6000,
+  },
+  {
+    key: 5,
+    class: "Junior High School",
+    planName: "Standard Plan",
+    validity: "3 Months",
+    amount: 15000,
+  },
+  {
+    key: 6,
+    class: "Junior High School",
+    planName: "Premium Plan",
+    validity: "6 Months",
+    amount: 28000,
+  },
+];

@@ -1,10 +1,10 @@
-import { Subscription } from "@/features/admin/subscription";
+import { Subscriptions } from "@/features/admin/subscription-plans";
 import React from "react";
 
 export default function page() {
   return (
     <>
-      <Subscription />
+      <Subscriptions />
     </>
   );
 }
