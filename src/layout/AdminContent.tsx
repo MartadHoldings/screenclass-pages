@@ -6,6 +6,7 @@ import { Layout, Menu, theme } from "antd";
 import type { MenuProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const { Header, Content, Sider } = Layout;
 
@@ -14,7 +15,6 @@ type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label: React.ReactNode,
   key: React.Key,
-  path?: string,
   icon?: React.ReactNode,
   children?: MenuItem[],
 ): MenuItem {
@@ -22,29 +22,32 @@ function getItem(
     key,
     icon,
     children,
-    label: path ? (
-      <Link href={path} legacyBehavior>
-        <a>{label}</a>
-      </Link>
-    ) : (
-      label
-    ),
+    label:
+      key === "/logout" ? (
+        <Link href={key.toString()} legacyBehavior>
+          <a>{label}</a>
+        </Link>
+      ) : (
+        <Link href={key.toString()} legacyBehavior>
+          <a>{label}</a>
+        </Link>
+      ),
   } as MenuItem;
 }
 
 const items: MenuItem[] = [
-  getItem("Dashboard", "1", "/overview", <FileOutlined />),
-  getItem("Guardian", "2", "/guardian", <FileOutlined />),
-  getItem("Students", "3", "/students", <FileOutlined />),
-  getItem("Classes", "12", "/classes", <FileOutlined />),
-  getItem("Subject & Content", "4", "/subjects-content", <FileOutlined />),
-  getItem("Trivia", "5", "#", <FileOutlined />),
-  getItem("Videos & Notes", "6", "#", <FileOutlined />),
-  getItem("Payments", "7", "/payment-history", <FileOutlined />),
-  getItem("Subscriptions", "8", "/subscription-plans", <FileOutlined />),
-  getItem("Notifications", "9", "/notifications", <FileOutlined />),
-  getItem("Settings", "10", "/settings", <FileOutlined />),
-  getItem("Logout", "11", "/logout", <FileOutlined />),
+  getItem("Dashboard", "/overview", <FileOutlined />),
+  getItem("Guardian", "/guardian", <FileOutlined />),
+  getItem("Students", "/students", <FileOutlined />),
+  getItem("Classes", "/classes", <FileOutlined />),
+  getItem("Subject & Content", "/subjects-content", <FileOutlined />),
+  getItem("Trivia", "/trivia", <FileOutlined />),
+  getItem("Videos & Notes", "videos-notes", <FileOutlined />),
+  getItem("Payments", "/payment-history", <FileOutlined />),
+  getItem("Subscriptions", "/subscription-plans", <FileOutlined />),
+  getItem("Notifications", "/notifications", <FileOutlined />),
+  getItem("Settings", "/settings", <FileOutlined />),
+  getItem("Logout", "/logout", <FileOutlined />),
 ];
 
 const siderStyle: React.CSSProperties = {
@@ -71,6 +74,8 @@ export default function AdminContent({
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const pathname = usePathname();
+
   return (
     <Layout hasSider>
       <Sider style={siderStyle} width={255}>
@@ -86,7 +91,7 @@ export default function AdminContent({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[""]}
+          selectedKeys={[pathname]}
           items={items}
           className="mt-6 space-y-4"
         />

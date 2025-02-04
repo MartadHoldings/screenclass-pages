@@ -30,11 +30,6 @@ const DynamicTable = <T extends TableData>({
   // Define columns explicitly without auto-generating from keys
   const columns: TableColumnsType<T> = [];
 
-  const ActionDropdown =
-    dropdownType === "guardian"
-      ? GuardianActionDropdown
-      : StudentActionDropdown;
-
   const showTagColor = (value: string) => {
     const newVal = value.toLowerCase();
 
@@ -97,11 +92,17 @@ const DynamicTable = <T extends TableData>({
               <Link href={`/subjects-content/${record.key}`}>Add Content</Link>
             </Button>
           )}
-          {dropdownAction && (
-            <ActionDropdown>
-              <EllipsisVertical />
-            </ActionDropdown>
-          )}
+          {dropdownAction ? (
+            dropdownType === "student" ? (
+              <StudentActionDropdown record={record}>
+                <EllipsisVertical />
+              </StudentActionDropdown>
+            ) : (
+              <GuardianActionDropdown record={record}>
+                <EllipsisVertical />
+              </GuardianActionDropdown>
+            )
+          ) : null}
         </div>
       ),
     });

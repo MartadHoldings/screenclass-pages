@@ -377,3 +377,54 @@ export const subscriptions = [
     amount: 28000,
   },
 ];
+
+export const notifications = [
+  {
+    key: "1",
+    messageTitle: "Monthly Plan Renewal",
+    dateSent: "2025-02-01",
+    type: "Subscription",
+    recipient: "user1@example.com",
+    status: "Success",
+  },
+  {
+    key: "2",
+    messageTitle: "Yearly Plan Upgrade",
+    dateSent: "2025-01-15",
+    type: "Subscription",
+    recipient: "user2@example.com",
+    status: "Pending",
+  },
+  {
+    key: "3",
+    messageTitle: "Payment Confirmation",
+    dateSent: "2025-01-10",
+    type: "Invoice",
+    recipient: "user3@example.com",
+    status: "Failed",
+  },
+  {
+    key: "4",
+    messageTitle: "Auto-Renewal Notification",
+    dateSent: "2025-02-02",
+    type: "Notification",
+    recipient: "user4@example.com",
+    status: "Success",
+  },
+  {
+    key: "5",
+    messageTitle: "Subscription Canceled",
+    dateSent: "2024-12-30",
+    type: "Cancellation",
+    recipient: "user5@example.com",
+    status: "Success",
+  },
+  {
+    key: "6",
+    messageTitle: "Plan Downgrade Confirmation",
+    dateSent: "2025-01-20",
+    type: "Subscription",
+    recipient: "user6@example.com",
+    status: "Pending",
+  },
+];

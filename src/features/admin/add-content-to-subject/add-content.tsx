@@ -3,10 +3,27 @@ import QuizSection from "@/components/QuizSection";
 import { Label } from "@/components/ui/label";
 import UploadComponent from "@/components/UploadComponent";
 import { Button, Input, Modal } from "antd";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export const AddContent = () => {
   const params = useParams();
+
+  const router = useRouter();
+
+  const showModalConfirm = () => {
+    Modal.confirm({
+      title: "Confirm",
+      content: "Are you sure to want to submit the following content ?",
+      okText: "Yes, Submit",
+      cancelText: "No, Cancel",
+      onOk() {
+        router.push("/");
+      },
+      onCancel() {
+        console.log("cancelled");
+      },
+    });
+  };
 
   return (
     <>
@@ -74,18 +91,7 @@ export const AddContent = () => {
           type="primary"
           size="large"
           className="font-bold"
-          onClick={() => {
-            Modal.confirm({
-              title: "Confirm",
-              content: "Bla bla ...",
-              footer: (_, { OkBtn, CancelBtn }) => (
-                <>
-                  <CancelBtn />
-                  <OkBtn />
-                </>
-              ),
-            });
-          }}
+          onClick={showModalConfirm}
         >
           SUBMIT MATERIAL CONTENT
         </Button>

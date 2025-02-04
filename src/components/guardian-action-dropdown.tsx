@@ -19,11 +19,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAppInteractionContext } from "@/context/modal-state-context";
+import { TableData } from "@/types";
 
 export function GuardianActionDropdown({
   children,
+  record,
 }: {
   children: React.ReactNode;
+  record: TableData;
 }) {
   const { setActiveDropDown } = useAppInteractionContext();
   const handleSelect = (e: Event, label: string) => {
@@ -43,7 +46,10 @@ export function GuardianActionDropdown({
           {labels.map((label) =>
             label.label === "Subscription History" ? (
               <DropdownMenuItem key={label.id} asChild>
-                <Link href="/subscription-history" className="text-[0.9rem]">
+                <Link
+                  href={`/subscription-history/${record.user_id}`}
+                  className="text-[0.9rem]"
+                >
                   {label.label}
                 </Link>
               </DropdownMenuItem>

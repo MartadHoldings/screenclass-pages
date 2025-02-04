@@ -1,5 +1,5 @@
 import React from "react";
-import AdminContent from "@/components/AdminContent";
+import AdminContent from "@/layout/AdminContent";
 import { AppInteractionsContextProvider } from "@/context/modal-state-context";
 import { DataProvider } from "@/context/data-context";
 
