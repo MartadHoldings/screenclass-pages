@@ -5,10 +5,10 @@ import { TableData } from "@/types";
 
 interface EditClassProps {
   type: "class" | "subject";
-  editingRow: TableData | null;
+  editingRow?: TableData | null;
 }
 
-export default function EditClass({ editingRow, type }: EditClassProps) {
+export default function EditClass({ type }: EditClassProps) {
   return (
     <div className="">
       <h2 className="text-[1.3rem] font-medium">Edit {type}</h2>

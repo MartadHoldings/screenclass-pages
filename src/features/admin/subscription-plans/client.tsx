@@ -10,6 +10,7 @@ export default function Client() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onEdit = (record: TableData) => {
     setOpen(true);
     console.log();

@@ -7,7 +7,7 @@ import { DataType, SubjDataType } from "@/types";
 import { useAppInteractionContext } from "@/context/modal-state-context";
 import {
   renderClassActionsModal,
-  renderFooterClassModals,
+  renderClassModalsFooter,
 } from "@/helpers/action-on-tables";
 import Link from "next/link";
 
@@ -21,6 +21,7 @@ const rowSelection: TableProps<DataType>["rowSelection"] = {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AntDataTable: React.FC<{ data: any; type: "class" | "subject" }> = ({
   data,
   type,
@@ -118,7 +119,7 @@ const AntDataTable: React.FC<{ data: any; type: "class" | "subject" }> = ({
         onCancel={handleCancel}
         confirmLoading={loading}
         centered
-        footer={renderFooterClassModals({
+        footer={renderClassModalsFooter({
           tableActionModal,
           handleCancel,
           handleOk,
