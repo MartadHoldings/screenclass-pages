@@ -110,7 +110,11 @@ const AntDataTable: React.FC<{ data: any; type: "class" | "subject" }> = ({
       <Divider />
       <Table
         rowSelection={{ type: "checkbox", ...rowSelection }}
-        columns={type === "class" ? classColumns : subjColumns}
+        columns={
+          type === "class"
+            ? (classColumns as TableColumnsType<DataType>)
+            : (subjColumns as TableColumnsType<DataType>)
+        }
         dataSource={data}
       />
       <Modal
