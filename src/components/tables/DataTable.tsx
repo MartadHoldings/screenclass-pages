@@ -18,6 +18,7 @@ interface TablePropsType {
 }
 
 export default function DataTable({ variant, data }: TablePropsType) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ActionDropdown =
     variant === "guardian" ? GuardianActionDropdown : StudentActionDropdown;
 
@@ -50,9 +51,9 @@ export default function DataTable({ variant, data }: TablePropsType) {
                   <TableCell>{user.class}</TableCell>
                 )}
                 <TableCell className="cursor-pointer">
-                  <ActionDropdown>
-                    <EllipsisVertical />
-                  </ActionDropdown>
+                  <EllipsisVertical />
+                  {/* <ActionDropdown>
+                  </ActionDropdown> */}
                 </TableCell>
               </TableRow>
             ))}
