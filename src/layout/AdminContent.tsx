@@ -36,7 +36,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Dashboard", "/overview", <FileOutlined />),
+  getItem("Overview", "/overview", <FileOutlined />),
   getItem("Guardian", "/guardian", <FileOutlined />),
   getItem("Students", "/students", <FileOutlined />),
   getItem("Classes", "/classes", <FileOutlined />),
