@@ -9,11 +9,19 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export type LoginProps = {
+export interface LoginProps {
   email: string;
   password: string;
-  status?: number | null | undefined;
-};
+}
+
+export interface StatsProps {
+  data: {
+    totalStudents: number;
+    totalGuardians: number;
+    totalSubjects: number;
+    totalClasses: number;
+  };
+}
 
 export type CreateAdminProps = {
   firstName: string;

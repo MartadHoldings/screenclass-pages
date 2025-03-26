@@ -8,9 +8,9 @@ import Image from "next/image";
 import AuthLayout from "@/layout/AuthLayout";
 import Link from "next/link";
 import { adminLogin } from "@/queries/auth";
-import { ApiError } from "@/types/queries";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/auth-context";
 
 export const Login = () => {
   const [form, setForm] = React.useState({
@@ -36,7 +36,7 @@ export const Login = () => {
             description: "Please try again or create an account",
           });
         }
-      } catch (error: ApiError | any) {
+      } catch (error) {
         console.log(error); // ✅ Now correctly logs
         toast.error("something went wrong");
       }

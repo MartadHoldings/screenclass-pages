@@ -1,6 +1,9 @@
+"use server";
+
 import axios, { AxiosError } from "axios";
+import { cookies } from "next/headers";
 import { ApiResponse, ApiError } from "@/types/queries";
-import { CreateAdminProps, LoginProps } from "@/types/queries";
+import { LoginProps } from "@/types/queries";
 
 const adminLogin = async ({
   form,
@@ -11,14 +14,19 @@ const adminLogin = async ({
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/admins/login`,
       form,
-      {
-        headers: { "Content-Type": "application/json" },
-      },
     );
+    const token = res.data.data;
+    const cookieStore = await cookies();
+    cookieStore.set("admin-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 86400, // 1 day
+    });
 
-    return { success: true, data: res.data }; // ✅ Success case
+    return { success: true, data: res.data };
   } catch (error) {
-    // ✅ Ensure error is properly typed
     if (error instanceof AxiosError && error.response) {
       return {
         success: false,
@@ -34,15 +42,4 @@ const adminLogin = async ({
   }
 };
 
-const createAdmin = async ({ data }: { data: CreateAdminProps }) => {
-  await axios
-    .post(`${process.env.NEXT_PUBLIC_BASE_URL}/admins/create`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => res.data);
-};
-
-export { adminLogin, createAdmin };
+export { adminLogin };
