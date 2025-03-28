@@ -1,61 +1,47 @@
 "use client";
 import React from "react";
-import { Modal } from "antd";
 import StatsCard from "@/components/StatsCards";
 import { UsersRound, BookOpenText, GraduationCap } from "lucide-react";
 
-import { studentData } from "@/data";
-import { useAppInteractionContext } from "@/context/modal-state-context";
-
 import Activities from "@/components/Activities";
-import {
-  renderActionsModalStudent,
-  renderFooter,
-} from "@/helpers/action-on-tables";
-import DynamicTable from "@/components/tables/dynamic-data-table";
-import { StatsProps } from "@/types/queries";
 
-export default function Client({ statsData }: { statsData: StatsProps }) {
+import { StatsProps, StudentsData } from "@/types/queries";
+
+import { Client } from "../students/Client";
+
+export default function OverviewClient({
+  statsData,
+  studentsData,
+}: {
+  statsData: StatsProps;
+  studentsData: StudentsData;
+}) {
   const stats = [
     {
       label: "Total Students",
-      count: statsData.data.totalStudents,
+      count: statsData?.data.totalStudents,
       icon: <UsersRound color="#D745FCE5" />,
       bgColor: "#FEE0FF",
     },
     {
       label: "Total Guardian",
-      count: statsData.data.totalGuardians,
+      count: statsData?.data.totalGuardians,
       icon: <UsersRound color="#FC945A" />,
       bgColor: "#FFF1E0",
     },
     {
       label: "Total Classes",
-      count: statsData.data.totalClasses,
+      count: statsData?.data.totalClasses,
       icon: <GraduationCap color="#FC45C9E5" />,
       bgColor: "#FFE0EB",
     },
     {
       label: "Total Subjects",
-      count: statsData.data.totalSubjects,
+      count: statsData?.data.totalSubjects,
       icon: <BookOpenText color="#5AAEFC" />,
       bgColor: "#E0F9FF",
     },
   ];
-  const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
-  const [loading, setLoading] = React.useState(false);
-
-  const handleCancel = () => {
-    setActiveDropDown(null);
-  };
-
-  const handleOk = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setActiveDropDown(null);
-      setLoading(false);
-    }, 2000);
-  };
 
   return (
     <>
@@ -77,31 +63,7 @@ export default function Client({ statsData }: { statsData: StatsProps }) {
         <Activities />
       </div>
 
-      <div className="mt-10">
-        {/* <DataTable variant="student" data={studentData} /> */}
-
-        <DynamicTable
-          data={studentData}
-          dropdownAction
-          dropdownType="student"
-        />
-      </div>
-
-      <Modal
-        open={activeDropDown != null}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        confirmLoading={loading}
-        centered
-        footer={renderFooter({
-          activeDropDown,
-          handleCancel,
-          handleOk,
-          loading,
-        })}
-      >
-        {renderActionsModalStudent(activeDropDown)}
-      </Modal>
+      <Client studentsData={studentsData} />
     </>
   );
 }

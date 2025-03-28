@@ -36,7 +36,9 @@ export function GuardianActionDropdown({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
+        {children}
+      </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="text-[0.9rem] font-bold text-blue-500">
           Manage Guardian

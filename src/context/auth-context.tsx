@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import axios from "axios";
 
 import { Maybe } from "@/types/common";
 import { AdminProps } from "@/types/index";
@@ -29,24 +28,6 @@ export const AuthContextProvider = ({
   const [admin, setAdmin] = React.useState<Maybe<AdminProps>>(null);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-  // const getAdminToken = (): AdminProps => {
-  //   const admin: any = localStorage.getItem("admin"); // Retrieve string from localStorage
-  //   const parsedAdmin = JSON.parse(admin);
-  //   return parsedAdmin.access_token;
-  // };
-
-  // const loginAdmin = (admin: AdminProps) => {
-  //   const token = admin.access_token;
-  //   if (!token) throw new Error("Token not found.");
-  //   Cookies.set("ZUMMIT-ADMIN-TOKEN", token, {
-  //     expires: 7,
-  //     sameSite: "Strict",
-  //   });
-  //   localStorage.setItem("admin", JSON.stringify(admin));
-  //   setAdmin(admin);
-  //   return admin;
-  // };
 
   const setAdminToken = (access_token: string) => {
     if (!access_token) throw new Error("Token not found.");

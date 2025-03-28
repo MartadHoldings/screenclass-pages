@@ -1,9 +1,9 @@
 "use server";
 import axios, { AxiosError } from "axios";
-import { ApiResponse, ApiError } from "@/types/queries";
+import { ApiResponse, ApiError, StatsProps } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
 
-const getStats = async (): Promise<ApiResponse<any> | ApiError> => {
+const getStats = async (): Promise<ApiResponse<StatsProps> | ApiError> => {
   const token = await getAuthToken();
   try {
     const res = await axios.get(
@@ -14,6 +14,7 @@ const getStats = async (): Promise<ApiResponse<any> | ApiError> => {
         },
       },
     );
+    console.log(res.data);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

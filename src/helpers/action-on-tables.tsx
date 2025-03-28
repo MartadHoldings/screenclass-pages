@@ -6,11 +6,12 @@ import {
 import AddNew from "@/components/modals/add-new";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
+import { ActiveDropDown } from "@/context/modal-state-context";
 import { TableData } from "@/types";
 import { Button, Flex } from "antd";
 
 interface RenderFooterType {
-  activeDropDown: string | null;
+  activeDropDown: ActiveDropDown | null;
   loading: boolean;
   handleCancel: () => void;
   handleOk: () => void;
@@ -34,7 +35,7 @@ interface RenderSubjectActionType {
 export const renderActionsModalGuardian = (action: string | null) => {
   switch (action) {
     case "View Guardian Details":
-      return <UserInfo type="guardian" />;
+      return <UserInfo />;
     case "Suspend Guardian":
       return <DangerousActionModal actionType="suspend" user="guardian" />;
     case "Delete Guardian":
@@ -44,10 +45,10 @@ export const renderActionsModalGuardian = (action: string | null) => {
   }
 };
 
-export const renderActionsModalStudent = (action: string | null) => {
-  switch (action) {
+export const renderActionsModalStudent = (action: ActiveDropDown | null) => {
+  switch (action?.label) {
     case "View Student Details":
-      return <UserInfo type="student" />;
+      return <UserInfo />;
     case "Suspend Student":
       return <DangerousActionModal actionType="suspend" user="student" />;
     case "Subscribe for Student":
@@ -65,7 +66,7 @@ export const renderFooter = ({
   loading,
   handleOk,
 }: RenderFooterType) => {
-  switch (activeDropDown) {
+  switch (activeDropDown?.label) {
     case "View Student Details":
     case "View Guardian Details":
       return (
@@ -76,7 +77,7 @@ export const renderFooter = ({
           className="w-full"
           type="primary"
         >
-          Return
+          Close
         </Button>
       );
 
@@ -100,7 +101,7 @@ export const renderFooter = ({
             size="large"
             className="w-full"
           >
-            {activeDropDown === "Suspend Student" ? "Suspend" : "Delete"}
+            {activeDropDown.label === "Suspend Student" ? "Suspend" : "Delete"}
           </Button>
         </Flex>
       );

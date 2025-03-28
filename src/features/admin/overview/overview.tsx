@@ -1,22 +1,27 @@
-import { getStats } from "@/queries/app-function";
-import Client from "./client";
-// import { useEffect } from "react";
+import { getStats } from "@/queries/overview";
+import OverviewClient from "./client";
+import { getStudents } from "@/queries/students";
 
 // This is the Overview component that will be rendered in the admin dashboard
 // It will contain the Client component
 // The Client component will contain the stats cards and the dynamic table
 
 export const Overview = async () => {
-  const response = await getStats();
+  const [statsResponse, studentsResponse] = await Promise.all([
+    getStats(),
+    getStudents(1, 10), //the number passed is a limit ang page to numbers of students fetched, 10 for overview page
+  ]);
 
-  if ("data" in response) {
+  if ("data" in statsResponse && "data" in studentsResponse) {
     return (
       <>
-        <Client statsData={response.data} />
+        <OverviewClient
+          statsData={statsResponse?.data}
+          studentsData={studentsResponse?.data}
+        />
       </>
     );
   } else {
-    // handle the error case
-    return <div>Error loading stats</div>;
+    return <div>Error loading data</div>;
   }
 };

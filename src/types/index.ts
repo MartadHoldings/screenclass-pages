@@ -50,3 +50,22 @@ export type AdminProps = Node & {
   access_token: string;
   __v: number;
 };
+
+export interface Login {
+  email: string;
+  password: string;
+}
+
+export type CreateAdmin = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+};
+
+export type SubscribeUser = {
+  userId: string;
+  planId: string | null;
+};

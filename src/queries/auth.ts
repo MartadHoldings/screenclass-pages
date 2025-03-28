@@ -3,12 +3,12 @@
 import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { ApiResponse, ApiError } from "@/types/queries";
-import { LoginProps } from "@/types/queries";
+import { Login } from "@/types";
 
 const adminLogin = async ({
   form,
 }: {
-  form: LoginProps;
+  form: Login;
 }): Promise<ApiResponse<any> | ApiError> => {
   try {
     const res = await axios.post(

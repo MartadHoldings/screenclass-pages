@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import "@ant-design/v5-patch-for-react-19";
 import { Table, Button, Popconfirm, Divider, Tag } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { EllipsisVertical } from "lucide-react";
@@ -45,21 +46,41 @@ const DynamicTable = <T extends TableData>({
 
   if (data.length) {
     const firstRow = data[0];
+    // Object.keys(firstRow).forEach((key) => {
+    //   if (key !== "key") {
+    //     // Exclude 'key' from being a column header
+    //     columns.push({
+    //       title: key.replace(/_/g, " ").toUpperCase(),
+    //       dataIndex: key,
+    //       key,
+    //       render: (value) =>
+    //         key === "status" ? (
+    //           <Tag color={showTagColor(value)} key={value}>
+    //             {value}
+    //           </Tag>
+    //         ) : (
+    //           value
+    //         ),
+    //     });
+    //   }
+    // });
+
     Object.keys(firstRow).forEach((key) => {
       if (key !== "key") {
-        // Exclude 'key' from being a column header
         columns.push({
           title: key.replace(/_/g, " ").toUpperCase(),
           dataIndex: key,
           key,
-          render: (value) =>
-            key === "status" ? (
-              <Tag color={showTagColor(value)} key={value}>
-                {value}
-              </Tag>
-            ) : (
-              value
-            ),
+          onCell: (record) => ({
+            children:
+              key === "status" ? (
+                <Tag color={showTagColor(record[key])} key={record[key]}>
+                  {record[key]}
+                </Tag>
+              ) : (
+                record[key]
+              ),
+          }),
         });
       }
     });
