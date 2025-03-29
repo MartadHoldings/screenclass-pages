@@ -1,52 +1,53 @@
+"use client";
 import React from "react";
 import { UserRound } from "lucide-react";
 import { useAppContext } from "@/context/app-context";
-import { StudentProps } from "@/types/queries";
-
-const guardianDetails = [
-  { label: "Phone number", value: "+2349157505114" },
-  { label: "Email Address", value: "test@gmail.com" },
-  { label: "User ID", value: "SCS112" },
-  { label: "Plan", value: "Premium" },
-  { label: "Date registered", value: "yesterday" },
-  { label: "Last Login", value: "20/06/2023 at 04:00:22pm" },
-  { label: "Student", value: "Debbie Ann and 3 others" },
-  {
-    label: "Status",
-    value: "Active",
-    valueClass: "text-green-600 font-bold text-[15px]",
-  },
-];
 
 export default function UserInfo() {
   const { userDetails } = useAppContext();
 
-  const { mobile, email, scid, guardian, status, level } =
-    (userDetails?.data as StudentProps) || {};
+  const { mobile, email, scid, guardian, status, level, firstName, lastName } =
+    userDetails || {};
+  console.log("info", userDetails);
 
-  const formattedData = [
-    { label: "Level", value: level?.name },
-    { label: "Phone number", value: mobile },
-    { label: "Email Address", value: email },
-    { label: "User ID", value: scid },
-    {
-      label: "Guardian",
-      value: guardian
-        ? `${guardian.firstName} ${guardian.lastName}`
-        : "No guardian",
-    },
-    {
-      label: "Subjects",
-      value: "English Language, Mathematics, Basic Science",
-    },
-    { label: "Status", value: status },
-  ];
+  // const formattedData = [
+  //   {
+  //     label: "Mobile",
+  //     value: mobile || "N/A",
+  //   },
+  //   {
+  //     label: "Email",
+  //     value: email || "N/A",
+  //   },
+  //   {
+  //     label: "ID",
+  //     value: scid || "N/A",
+  //   },
+  //   {
+  //     label: "Name",
+  //     value:
+  //       firstName && lastName
+  //         ? `${userDetails?.firstName} ${userDetails?.lastName}`
+  //         : "N/A",
+  //   },
+  //   { label: "Level", value: level?.name || "N/A" },
+  //   { label: "Status", value: status || "N/A" },
+  //   {
+  //     label: "Guardian Name",
+  //     value:
+  //       guardian?.firstName && guardian?.lastName
+  //         ? `${guardian.firstName} ${guardian.lastName}`
+  //         : "No guardian",
+  //   },
+  // ];
+
+  // console.log(formattedData);
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between border-b pb-2">
         <h2 className="text-lg font-semibold">
-          {`${userDetails?.data.firstName + "'s"} Details`}
+          {`${userDetails?.firstName + "'s"} Details`}
         </h2>
       </div>
       <div className="mb-4 flex items-center">
@@ -56,16 +57,12 @@ export default function UserInfo() {
           </div>
         </div>
 
-        <div className="w-[70%]">
-          <h3 className="text-xl font-semibold">{`${userDetails?.data.firstName} ${userDetails?.data.lastName}`}</h3>
-          <p className="text-orange-500">{}</p>
-          {/* <p className="text-balance text-xs text-gray-600">
-            Lorem ipsum dolor sit amet consectetur. Curabitur velit euismod
-            gravida fringilla lacus malesuada. Sed eget praesent.
-          </p> */}
+        <div className="w-[70%] space-y-3">
+          <h3 className="text-xl font-semibold">{`${userDetails?.firstName} ${userDetails?.lastName}`}</h3>
+          <p className="text-orange-500">{userDetails?.role}</p>
         </div>
       </div>
-      <div className="space-y-3">
+      {/* <div className="space-y-3">
         {formattedData.map(({ label, value }, index) => (
           <div key={index} className="flex items-center gap-2">
             <div className="flex w-[30%] justify-end">
@@ -80,7 +77,7 @@ export default function UserInfo() {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

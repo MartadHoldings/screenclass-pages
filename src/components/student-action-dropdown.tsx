@@ -51,8 +51,8 @@ export function StudentActionDropdown({
           toast.error(response.message);
           return;
         } else {
+          console.log(response.data);
           setUserDetails(response.data);
-          console.log(response);
           setActiveDropDown({ id: record.key, label });
         }
       } catch (error) {

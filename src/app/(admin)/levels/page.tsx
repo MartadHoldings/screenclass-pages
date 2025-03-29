@@ -1,10 +1,10 @@
-import { Classes } from "@/features/admin/classes";
+import { Levels } from "@/features/admin/levels";
 import React from "react";
 
 export default function page() {
   return (
     <>
-      <Classes />
+      <Levels />
     </>
   );
 }

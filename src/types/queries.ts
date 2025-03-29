@@ -24,6 +24,7 @@ export interface StudentProps extends Node {
   email: string;
   subscriptionStatus: boolean;
   status: string;
+  role: string;
   level: {
     _id: string;
     name: string;
@@ -40,11 +41,13 @@ export interface GuardianProps
     StudentProps,
     "type" | "subscriptionStatus" | "guardian" | "level"
   > {
-  students: string[];
+  students: { scid: string; firstName: string; lastName: string }[];
 }
 
 export interface StudentsData {
-  data: { users: StudentProps[] };
+  data: {
+    users: StudentProps[];
+  };
 }
 
 export interface GuardianData {
@@ -75,4 +78,42 @@ export interface SubscriptionPlan extends Node {
   validity: number;
   price: string;
   status: string;
+}
+
+export interface TransformedUser {
+  mobile: string;
+  email: string;
+  scid: string;
+  guardian?: {
+    _id: string;
+    lastName: string;
+    firstName: string;
+  };
+  status: string;
+  level?: {
+    _id: string;
+    name: string;
+  };
+  firstName: string;
+  lastName: string;
+  role: string;
+  students?: { scid: string; firstName: string; lastName: string }[];
+}
+
+export type UserType = StudentProps | GuardianProps;
+
+export interface LevelsProps extends Node {
+  _id: string;
+  name: string;
+  status: string;
+  code: string;
+  classes: {
+    _id: string;
+    name: string;
+    status: string;
+  }[];
+}
+
+export interface LevelsData {
+  data: LevelsProps[];
 }

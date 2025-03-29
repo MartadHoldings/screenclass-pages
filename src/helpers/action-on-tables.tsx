@@ -32,8 +32,8 @@ interface RenderSubjectActionType {
   editingRow: TableData | null;
 }
 
-export const renderActionsModalGuardian = (action: string | null) => {
-  switch (action) {
+export const renderActionsModalGuardian = (action: ActiveDropDown | null) => {
+  switch (action?.label) {
     case "View Guardian Details":
       return <UserInfo />;
     case "Suspend Guardian":
@@ -82,7 +82,9 @@ export const renderFooter = ({
       );
 
     case "Suspend Student":
-    case "Delete Student": // ✅ Uses the same footer for both cases
+    case "Suspend Guardian":
+    case "Delete Student":
+    case "Delete Guardian": // ✅ Uses the same footer for both cases
       return (
         <Flex gap="small">
           <Button
@@ -101,7 +103,10 @@ export const renderFooter = ({
             size="large"
             className="w-full"
           >
-            {activeDropDown.label === "Suspend Student" ? "Suspend" : "Delete"}
+            {activeDropDown.label === "Suspend Student" ||
+            activeDropDown.label === "Suspend Guardian"
+              ? "Suspend"
+              : "Delete"}
           </Button>
         </Flex>
       );

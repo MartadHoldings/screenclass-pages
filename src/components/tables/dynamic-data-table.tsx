@@ -44,7 +44,7 @@ const DynamicTable = <T extends TableData>({
     }
   };
 
-  if (data.length) {
+  if (data?.length) {
     const firstRow = data[0];
     // Object.keys(firstRow).forEach((key) => {
     //   if (key !== "key") {

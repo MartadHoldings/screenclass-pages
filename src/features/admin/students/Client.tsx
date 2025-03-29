@@ -12,8 +12,6 @@ import { StudentsData } from "@/types/queries";
 import { suspendStudent, deleteStudent } from "@/queries/students";
 import { toast } from "sonner";
 import { subscribeUser } from "@/queries/subscription";
-import { Button } from "@/components/ui/button";
-import { suspendGuardian } from "@/queries/guardian";
 
 export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
   const { activeDropDown, setActiveDropDown, selectedPlan } =
@@ -92,7 +90,7 @@ export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
   };
 
   const extractData = () => {
-    return studentsData.data.users?.map((student) => {
+    return studentsData?.data?.users?.map((student) => {
       return {
         // id: index + 1,
         key: student._id,
@@ -106,19 +104,9 @@ export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
     });
   };
 
-  const handleFetch = async () => {
-    try {
-      const res = await suspendStudent();
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <div className="mt-10">
-        <Button onClick={handleFetch}>Suspend student</Button>
         <DynamicTable
           data={extractData()}
           onAddContent={false}

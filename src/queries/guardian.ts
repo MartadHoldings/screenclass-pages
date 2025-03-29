@@ -1,9 +1,14 @@
 "use server";
 import axios, { AxiosError } from "axios";
-import { ApiResponse, ApiError, GuardianData } from "@/types/queries";
+import {
+  ApiResponse,
+  ApiError,
+  GuardianData,
+  GuardianProps,
+} from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
-import { UserType } from "@/context/app-context";
 import { revalidatePath } from "next/cache";
+import { UserType } from "@/types/queries";
 
 const getGuardians = async (): Promise<
   ApiResponse<GuardianData> | ApiError
@@ -37,7 +42,7 @@ const getGuardians = async (): Promise<
 
 const getGuardianDetails = async (
   id: string,
-): Promise<ApiResponse<UserType> | ApiError> => {
+): Promise<ApiResponse<GuardianProps> | ApiError> => {
   const token = await getAuthToken();
 
   try {
@@ -49,7 +54,7 @@ const getGuardianDetails = async (
         },
       },
     );
-    return { success: true, data: res.data };
+    return { success: true, data: res.data.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       return {
@@ -67,18 +72,23 @@ const getGuardianDetails = async (
   }
 };
 
-const suspendGuardian = async (): Promise<ApiResponse<any> | ApiError> => {
+const suspendGuardian = async (
+  id: string,
+): Promise<ApiResponse<any> | ApiError> => {
   const token = await getAuthToken();
 
   try {
     const res = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/guardians/disable/67b8759495124d8006f9eb97`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/guardian-suspend/${id}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
+
+    revalidatePath("/guardian");
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -111,7 +121,7 @@ const deleteGuardian = async (
       },
     );
 
-    revalidatePath("/guardians");
+    revalidatePath("/guardian");
 
     return { success: true, data: res.data };
   } catch (error) {

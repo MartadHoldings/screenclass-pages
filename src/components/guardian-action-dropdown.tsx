@@ -1,13 +1,6 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-
-const labels = [
-  { id: 1, label: "View Guardian Details" },
-  { id: 2, label: "Suspend Guardian" },
-  { id: 4, label: "Subscription History" },
-  { id: 5, label: "Delete Guardian" },
-];
 
 import {
   DropdownMenu,
@@ -19,7 +12,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAppInteractionContext } from "@/context/modal-state-context";
+import { useAppContext } from "@/context/app-context";
 import { TableData } from "@/types";
+import { getGuardianDetails } from "@/queries/guardian";
+import { toast } from "sonner";
+
+const actions = [
+  {
+    id: 1,
+    label: "View Guardian Details",
+  },
+  { id: 2, label: "Suspend Guardian" },
+  { id: 3, label: "Delete Guardian" },
+];
 
 export function GuardianActionDropdown({
   children,
@@ -29,9 +34,35 @@ export function GuardianActionDropdown({
   record: TableData;
 }) {
   const { setActiveDropDown } = useAppInteractionContext();
-  const handleSelect = (e: Event, label: string) => {
+
+  const { setUserDetails } = useAppContext();
+
+  const [loadingAction, setLoadingAction] = useState<number | null>(null);
+
+  const handleSelect = async (e: Event, label: string, id?: number) => {
     e.preventDefault();
-    setActiveDropDown(label);
+
+    if (label === "View Guardian Details") {
+      if (loadingAction !== null) return; // Prevent multiple clicks
+      setLoadingAction(id as number);
+      try {
+        const response = await getGuardianDetails(record.key as string);
+        if (!response.success) {
+          toast.error(response.message);
+          return;
+        } else {
+          console.log("this is", response.data);
+          setUserDetails(response.data);
+          setActiveDropDown({ id: record.key, label });
+        }
+      } catch (error) {
+        toast.error("An error occurred. Please try again.");
+      } finally {
+        setLoadingAction(null);
+      }
+    } else {
+      setActiveDropDown({ id: record.key as string, label });
+    }
   };
 
   return (
@@ -45,23 +76,25 @@ export function GuardianActionDropdown({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {labels.map((label) =>
-            label.label === "Subscription History" ? (
-              <DropdownMenuItem key={label.id} asChild>
+          {actions.map(({ id, label }) =>
+            label === "Subscription History" ? (
+              <DropdownMenuItem key={id} asChild>
                 <Link
                   href={`/subscription-history/${record.user_id}`}
                   className="text-[0.9rem]"
                 >
-                  {label.label}
+                  {label}
                 </Link>
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
-                key={label.id}
-                asChild
-                onSelect={(e) => handleSelect(e, label.label)}
+                key={id}
+                onSelect={(e) => handleSelect(e, label, id)}
+                disabled={loadingAction === id}
               >
-                <span className="text-[0.9rem]">{label.label}</span>
+                <span className="text-[0.9rem]">
+                  {loadingAction === id ? "Processing..." : label}
+                </span>
               </DropdownMenuItem>
             ),
           )}

@@ -7,7 +7,6 @@ import {
   StudentProps,
 } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
-import { UserType } from "@/context/app-context";
 import { revalidatePath } from "next/cache";
 
 const getStudents = async (
@@ -43,7 +42,7 @@ const getStudents = async (
 
 const getStudentDetails = async (
   id: string,
-): Promise<ApiResponse<UserType> | ApiError> => {
+): Promise<ApiResponse<StudentProps> | ApiError> => {
   const token = await getAuthToken();
 
   try {
@@ -55,7 +54,7 @@ const getStudentDetails = async (
         },
       },
     );
-    return { success: true, data: res.data };
+    return { success: true, data: res.data.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       return {
@@ -73,18 +72,23 @@ const getStudentDetails = async (
   }
 };
 
-const suspendStudent = async (): Promise<ApiResponse<any> | ApiError> => {
+const suspendStudent = async (
+  id: string,
+): Promise<ApiResponse<any> | ApiError> => {
   const token = await getAuthToken();
 
   try {
     const res = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/student/disable/67e64fbd35c59f69b963730f`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/student-suspend/${id}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
+
+    console.log(res);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

@@ -9,8 +9,9 @@ import {
   renderClassActionsModal,
   renderClassModalsFooter,
 } from "@/helpers/action-on-tables";
+import { LevelsData } from "@/types/queries";
 
-export default function Client() {
+export default function Client({ levelsData }: { levelsData: LevelsData }) {
   const { setTableActionModal, tableActionModal } = useAppInteractionContext();
   const { data, editingRow, setEditingRow } = useDataContext();
   const [loading, setLoading] = React.useState(false);
