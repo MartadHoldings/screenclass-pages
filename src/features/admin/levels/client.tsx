@@ -42,26 +42,42 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
   return (
     <>
       <div className="mt-5 flex w-full items-center justify-between">
-        <Button
+        {/* <Button
           color="danger"
           size="large"
           variant="solid"
           onClick={() => setTableActionModal("delete classes")}
         >
           Delete
-        </Button>
+        </Button> */}
         <Button
           size="large"
           variant="solid"
           color="orange"
           onClick={() => setTableActionModal("add new class")}
         >
-          Add new Class
+          Add New Level
         </Button>
       </div>
 
       <div className="mt-10">
-        <DynamicTable data={data} onEdit={onEdit} onDelete={onDelete} />
+        {levelsData?.data.map((level) => (
+          <div key={level.name}>
+            <div className="flex w-full justify-between">
+              <h3 className="text-base font-semibold uppercase text-slate-600">
+                {level.name} ({level.code})
+              </h3>
+              <Button variant="solid">Add class to {level.code}</Button>
+            </div>
+            <div>
+              <DynamicTable
+                data={level.classes}
+                // onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            </div>
+          </div>
+        ))}
       </div>
 
       <Modal

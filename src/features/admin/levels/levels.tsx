@@ -10,7 +10,7 @@ export const Levels = async () => {
   if ("data" in response) {
     return (
       <>
-        <h2 className="text-[1.3rem] font-semibold">All Classes</h2>
+        <h2 className="text-[1.3rem] font-semibold">All Levels</h2>
 
         <Client levelsData={response.data} />
       </>

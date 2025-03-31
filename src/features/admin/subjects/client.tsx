@@ -27,6 +27,11 @@ export default function Client() {
     alert(`you just deleted ${key}`);
   };
 
+  const addTopic = (record: TableData) => {
+    setTableActionModal("add topic to subject");
+    setEditingRow(record);
+  };
+
   const handleCancel = () => {
     setTableActionModal(null);
   };
@@ -71,7 +76,8 @@ export default function Client() {
               <DynamicTable
                 data={data.subjects}
                 onAddContent
-                onEdit={onEdit}
+                addTopic={addTopic}
+                // onEdit={onEdit}
                 onDelete={onDelete}
               />
             </div>

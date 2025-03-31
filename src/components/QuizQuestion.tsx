@@ -2,6 +2,7 @@
 import React from "react";
 import { Question } from "@/types";
 import { Button, Input, Popconfirm } from "antd";
+import { Trash2, CircleX } from "lucide-react";
 
 interface QuizQuestionProps {
   questions: Question[];
@@ -12,7 +13,13 @@ interface QuizQuestionProps {
   setCorrectIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleOptionChange: (index: number, value: string) => void;
   handleSave: () => void;
+  handleDelete: (id: number) => void;
 }
+
+type TextExpand = {
+  id: number;
+  expand: false;
+};
 
 const QuizQuestion: React.FC<QuizQuestionProps> = ({
   questions,
@@ -23,8 +30,18 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   correctIndex,
   handleOptionChange,
   handleSave,
+  handleDelete,
 }) => {
   const [showQuestions, setShowQuestions] = React.useState(true);
+  const [expandedQuestions, setExpandedQuestions] = React.useState<number[]>(
+    [],
+  );
+  const handleToggle = (id: number) => {
+    setExpandedQuestions((prev) =>
+      prev.includes(id) ? prev.filter((qid) => qid !== id) : [...prev, id],
+    );
+  };
+
   return (
     <div className="w-full space-y-4 rounded-lg border p-4 shadow-sm">
       <p className="text-slate-600">
@@ -33,14 +50,44 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
 
       {questions.length > 0 && showQuestions && (
         <div className="mt-6">
-          <h3 className="text-lg font-semibold">Added Questions:</h3>
-          <ol className="list-decimal pl-5 text-slate-500">
+          <h3 className="text-lg font-semibold">Added Questions</h3>
+
+          <div className="flex w-full flex-wrap gap-4">
             {questions.map((q) => (
-              <li key={q.id} className="mt-2">
-                {q.question} (Correct Answer: {q.options[q.correctIndex]})
-              </li>
+              <div
+                key={q.id}
+                className="items relative mt-2 h-fit min-w-[150px] max-w-[500px] flex-col rounded-sm border-[1px] p-1 px-2"
+              >
+                <p
+                  className={`${expandedQuestions.includes(q.id) ? "line-clamp-2" : "line-clamp-none"} line-clamp-3 text-pretty text-sm font-medium`}
+                >
+                  {q.question}
+                </p>
+                <button
+                  className="block cursor-pointer font-medium text-blue-400 hover:underline"
+                  onClick={() => handleToggle(q.id)}
+                >
+                  {expandedQuestions.includes(q.id) ? "Collapse" : "Expand"}
+                </button>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {q.options.map((option, index) => (
+                    <span
+                      key={index}
+                      className={`${q.correctIndex === index ? "border-green-500" : ""} w-fit rounded-sm border-[1px] px-1 py-[2px]`}
+                    >
+                      {option}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className="absolute -right-2 -top-3 z-10"
+                  onClick={() => handleDelete(q.id)}
+                >
+                  <CircleX size={20} color="red" />
+                </button>
+              </div>
             ))}
-          </ol>
+          </div>
         </div>
       )}
 

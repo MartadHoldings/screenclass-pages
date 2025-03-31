@@ -37,10 +37,13 @@ const QuizSection = () => {
     };
 
     setQuestions([...questions, newQuestion]);
-    console.log(questions);
     setQuestion("");
     setOptions(["", "", "", ""]);
     setCorrectIndex(null);
+  };
+
+  const handleDelete = (id: number) => {
+    setQuestions(questions.filter((question) => question.id !== id));
   };
 
   return (
@@ -48,12 +51,13 @@ const QuizSection = () => {
       <QuizQuestion
         question={question}
         setQuestion={setQuestion}
+        questions={questions}
         options={options}
         correctIndex={correctIndex}
-        handleOptionChange={handleOptionChange}
-        questions={questions}
         setCorrectIndex={setCorrectIndex}
+        handleOptionChange={handleOptionChange}
         handleSave={handleSave}
+        handleDelete={handleDelete}
       />
     </div>
   );

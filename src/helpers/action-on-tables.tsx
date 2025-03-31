@@ -4,6 +4,7 @@ import {
   SubscribeStudent,
 } from "@/components/modals";
 import AddNew from "@/components/modals/add-new";
+import AddTopic from "@/components/modals/add-topic";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
 import { ActiveDropDown } from "@/context/modal-state-context";
@@ -217,6 +218,8 @@ export const renderSubjectActionsModal = ({
       return <AddNew type="subject" />;
     case "edit subject cell":
       return editingRow && <EditClass editingRow={editingRow} type="subject" />;
+    case "add topic to subject":
+      return editingRow && <AddTopic editingRow={editingRow} />;
     case "delete subjects":
       return <DeleteActionModal variant="subjects" />;
     default:

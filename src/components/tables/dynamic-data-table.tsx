@@ -18,6 +18,7 @@ interface TableComponentProps<T extends TableData> {
   dropdownType?: "student" | "guardian";
   onEdit?: (record: T) => void;
   onDelete?: (key: React.Key) => void;
+  addTopic?: (record: T) => void;
 }
 
 const DynamicTable = <T extends TableData>({
@@ -27,13 +28,13 @@ const DynamicTable = <T extends TableData>({
   dropdownType,
   onEdit,
   onDelete,
+  addTopic,
 }: TableComponentProps<T>) => {
   // Define columns explicitly without auto-generating from keys
   const columns: TableColumnsType<T> = [];
 
   const showTagColor = (value: string) => {
     const newVal = value.toLowerCase();
-
     switch (newVal) {
       case "pending":
         return "yellow";
@@ -65,7 +66,7 @@ const DynamicTable = <T extends TableData>({
     //   }
     // });
 
-    Object.keys(firstRow).forEach((key) => {
+    Object.keys(firstRow as object).forEach((key) => {
       if (key !== "key") {
         columns.push({
           title: key.replace(/_/g, " ").toUpperCase(),
@@ -87,7 +88,7 @@ const DynamicTable = <T extends TableData>({
   }
 
   // Add actions column if onEdit or onDelete exists
-  if (onEdit || onDelete || onAddContent || dropdownAction) {
+  if (onEdit || onDelete || onAddContent || dropdownAction || addTopic) {
     columns.push({
       title: "Actions",
       key: "actions",
@@ -98,16 +99,12 @@ const DynamicTable = <T extends TableData>({
               Edit
             </Button>
           )}
-          {onDelete && (
-            <Popconfirm
-              title="Are you sure you want to delete?"
-              onConfirm={() => onDelete(record.key)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button danger>Delete</Button>
-            </Popconfirm>
+          {addTopic && (
+            <Button type="primary" onClick={() => addTopic(record)}>
+              Add Topic
+            </Button>
           )}
+
           {onAddContent && (
             <Button type="primary">
               <Link href={`/subjects-content/${record.key}`}>Add Content</Link>
@@ -124,6 +121,17 @@ const DynamicTable = <T extends TableData>({
               </GuardianActionDropdown>
             )
           ) : null}
+
+          {onDelete && (
+            <Popconfirm
+              title="Are you sure you want to delete?"
+              onConfirm={() => onDelete(record.key)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button danger>Delete</Button>
+            </Popconfirm>
+          )}
         </div>
       ),
     });

@@ -16,12 +16,7 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [data, setData] = useState<TableData[]>([
-    { key: "1", class: "Common Entrance Prep", id: "Exam", no_of_subject: 20 },
-    { key: "2", class: "Common Entrance Prep", id: "Exam", no_of_subject: 10 },
-    { key: "3", class: "Common Entrance Prep", id: "Exam", no_of_subject: 70 },
-    { key: "4", class: "Disabled User", id: 99, no_of_subject: 2 },
-  ]);
+  const [data, setData] = useState<TableData[]>([]);
 
   const [editingRow, setEditingRow] = useState<TableData | null>(null);
   const [deleteSelectedRows, setDeleteSelectedRows] = useState<DataType[] | []>(
