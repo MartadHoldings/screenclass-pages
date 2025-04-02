@@ -1,13 +1,14 @@
 "use server";
-import { LevelsData, ApiError, ApiResponse } from "@/types/queries";
+
+import { ApiError, ApiResponse, VideoData } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
 import axios, { AxiosError } from "axios";
 
-const getLevels = async (): Promise<ApiResponse<LevelsData> | ApiError> => {
+const getVideos = async (): Promise<ApiResponse<VideoData> | ApiError> => {
   const token = await getAuthToken();
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/get-levels`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/get-videos`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -31,4 +32,4 @@ const getLevels = async (): Promise<ApiResponse<LevelsData> | ApiError> => {
   }
 };
 
-export { getLevels };
+export { getVideos };

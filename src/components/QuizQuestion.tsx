@@ -67,7 +67,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
                   className="block cursor-pointer font-medium text-blue-400 hover:underline"
                   onClick={() => handleToggle(q.id)}
                 >
-                  {expandedQuestions.includes(q.id) ? "Collapse" : "Expand"}
+                  {expandedQuestions.includes(q.id) ? "Expand" : "Collapse"}
                 </button>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {q.options.map((option, index) => (

@@ -234,8 +234,57 @@ export const renderSubjectModalsFooter = ({
   loading,
 }: RenderFooterClassType) => {
   switch (tableActionModal) {
-    case "add new subject":
-    case "delete subjects":
+    // case "add new subject":
+    // case "delete subjects":
+    //   return (
+    //     <Flex gap="small">
+    //       <Button
+    //         key="back"
+    //         onClick={handleCancel}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Cancel
+    //       </Button>
+    //       <Button
+    //         key="submit"
+    //         type="primary"
+    //         loading={loading}
+    //         onClick={handleOk}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         {tableActionModal === "delete subjects"
+    //           ? "Delete Selections"
+    //           : "Add Subject"}
+    //       </Button>
+    //     </Flex>
+    //   );
+    // case "edit subject cell":
+    //   return (
+    //     <Flex gap="small">
+    //       <Button
+    //         key="back"
+    //         onClick={handleCancel}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Cancel
+    //       </Button>
+    //       <Button
+    //         key="submit"
+    //         type="primary"
+    //         loading={loading}
+    //         onClick={handleOk}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Save
+    //       </Button>
+    //     </Flex>
+    //   );
+
+    case "add topic to subject":
       return (
         <Flex gap="small">
           <Button
@@ -254,32 +303,7 @@ export const renderSubjectModalsFooter = ({
             size="large"
             className="w-full"
           >
-            {tableActionModal === "delete subjects"
-              ? "Delete Selections"
-              : "Add Subject"}
-          </Button>
-        </Flex>
-      );
-    case "edit subject cell":
-      return (
-        <Flex gap="small">
-          <Button
-            key="back"
-            onClick={handleCancel}
-            size="large"
-            className="w-full"
-          >
-            Cancel
-          </Button>
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-            size="large"
-            className="w-full"
-          >
-            Save
+            Add Topic
           </Button>
         </Flex>
       );

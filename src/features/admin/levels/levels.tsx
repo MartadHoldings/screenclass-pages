@@ -5,8 +5,6 @@ import { getLevels } from "@/queries/levels";
 export const Levels = async () => {
   const response = await getLevels();
 
-  console.log(response);
-
   if ("data" in response) {
     return (
       <>

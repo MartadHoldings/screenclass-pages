@@ -117,3 +117,45 @@ export interface LevelsProps extends Node {
 export interface LevelsData {
   data: LevelsProps[];
 }
+
+export interface SubjectsProps extends Node {
+  _id: string;
+  name: string;
+  status: string;
+  level: string;
+  subjects: {
+    _id: string;
+    name: string;
+    status: string;
+    class: string;
+    topics: string[];
+  }[];
+}
+
+export interface SubjectsData {
+  data: SubjectsProps[];
+}
+
+export interface TopicProps extends Node {
+  _id: string;
+  status: string;
+  name: string;
+  subject: string;
+  subTopics: string[];
+}
+
+export interface TopicsData {
+  data: TopicProps[];
+}
+
+export interface VideoProps extends Node {
+  _id: string;
+  name: string;
+  description: string;
+  isLinked: boolean;
+  duration: string;
+}
+
+export interface VideoData {
+  data: VideoProps[];
+}

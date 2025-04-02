@@ -88,7 +88,6 @@ const suspendStudent = async (
       },
     );
 
-    console.log(res);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
