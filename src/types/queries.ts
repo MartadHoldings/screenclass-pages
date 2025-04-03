@@ -1,3 +1,4 @@
+import { SubtopicProps } from "@/features/admin/add-content-to-subject/add-subtopic";
 import { Node } from "./common";
 
 export interface ApiError {

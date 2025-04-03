@@ -3,7 +3,7 @@ import { Question } from "@/types";
 import React, { useState } from "react";
 import QuizQuestion from "./QuizQuestion";
 
-const QuizSection = () => {
+const QuizContainer = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -63,4 +63,4 @@ const QuizSection = () => {
   );
 };
 
-export default QuizSection;
+export default QuizContainer;

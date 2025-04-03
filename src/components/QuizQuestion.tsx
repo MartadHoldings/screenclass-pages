@@ -4,6 +4,8 @@ import { Question } from "@/types";
 import { Button, Input, Popconfirm } from "antd";
 import { Trash2, CircleX } from "lucide-react";
 
+const { TextArea } = Input;
+
 interface QuizQuestionProps {
   questions: Question[];
   question: string;
@@ -90,9 +92,9 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
           </div>
         </div>
       )}
-
-      <Input
-        type="text"
+      <TextArea
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        typeof="text"
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         placeholder="Enter your question"
