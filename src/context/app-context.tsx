@@ -223,6 +223,25 @@ export const AppContext = React.createContext<AppContextProps>(defaultContext);
 export const AppContextProvider = ({ children }: React.PropsWithChildren) => {
   const [userDetails, dispatch] = useReducer(userReducer, null);
 
+  // const [quizForm, setQuizForm] = useReducer<QuizProps>({
+  //   title: "",
+  //   duration: 0,
+  //   isPublished: true,
+  //   subTopicId: "",
+  //   questions: [
+  //     {
+  //       text: "",
+  //       questionType: "MCQ",
+  //       options: [
+  //         {
+  //           text: "",
+  //           isCorrect: false,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
+
   const setUserDetails = (user: UserType) => {
     dispatch({ type: "SET_USER_DETAILS", payload: user });
   };

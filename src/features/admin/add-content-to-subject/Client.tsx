@@ -1,14 +1,18 @@
 "use client";
 import "@ant-design/v5-patch-for-react-19";
 import QuizSection from "@/components/QuizContainer";
-import { Modal } from "antd";
 import { useParams } from "next/navigation";
 import { getTopicsUnderSubject } from "@/queries/subjects";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { VideoData } from "@/types/queries";
 import AddSubTopic from "./add-subtopic";
-import { Card, Button } from "antd";
+import { Card } from "antd";
+
+export type OptionData = {
+  label: string;
+  value: string;
+};
 
 const tabList = [
   {
@@ -22,17 +26,41 @@ const tabList = [
 ];
 
 export const Client = ({ videosData }: { videosData: VideoData | null }) => {
+  const [topics, setTopics] = useState<OptionData[] | null>(null);
   const [activeTabKey1, setActiveTabKey1] = useState<string>("tab1");
   const params = useParams();
 
   const contentList: Record<string, React.ReactNode> = {
-    tab1: <AddSubTopic videosData={videosData} />,
-    tab2: <QuizSection />,
+    tab1: <AddSubTopic topics={topics} videosData={videosData} />,
+    tab2: <QuizSection topics={topics} />,
   };
 
   const onTab1Change = (key: string) => {
     setActiveTabKey1(key);
   };
+
+  const fetchTopicsViaParams = async () => {
+    try {
+      const response = await getTopicsUnderSubject(params.slug as string);
+
+      if (response.success) {
+        setTopics(
+          response.data.data.map((topic) => ({
+            label: topic.name,
+            value: topic._id,
+          })),
+        );
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopicsViaParams();
+  }, []);
 
   return (
     <>

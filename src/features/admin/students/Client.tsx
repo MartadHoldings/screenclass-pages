@@ -100,6 +100,7 @@ export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
         reg_date: new Date(student.createdAt).toISOString().split("T")[0],
         email: student.email,
         level: student.level?.name,
+        status: student.status,
       };
     });
   };

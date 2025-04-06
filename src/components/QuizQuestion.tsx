@@ -1,134 +1,185 @@
 "use client";
-import React from "react";
-import { Question } from "@/types";
-import { Button, Input, Popconfirm } from "antd";
-import { Trash2, CircleX } from "lucide-react";
+import React, { useState } from "react";
+import { QuizQuestion } from "@/types";
+import { Button, Popconfirm, RadioChangeEvent, message } from "antd";
+import { Label } from "./ui/label";
+import { useQuizForm } from "@/context/quiz-context";
+import { Radio } from "antd";
+import QuestionPreview from "./QuestionPreview";
+import AddQuestion from "./AddQuestion";
+import { generateUniqueId } from "@/helpers/generate-id";
 
-const { TextArea } = Input;
+const createNewDraftQuestion = (
+  type: QuizQuestion["questionType"] = "MCQ",
+): QuizQuestion => ({
+  id: "",
+  text: "",
+  questionType: type,
+  options: Array(type === "True/False" ? 2 : 4)
+    .fill(null)
+    .map(() => ({ text: "", isCorrect: false })),
+});
 
-interface QuizQuestionProps {
-  questions: Question[];
-  question: string;
-  setQuestion: React.Dispatch<React.SetStateAction<string>>;
-  options: string[];
-  correctIndex: number | null;
-  setCorrectIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  handleOptionChange: (index: number, value: string) => void;
-  handleSave: () => void;
-  handleDelete: (id: number) => void;
-}
+const Quiz = () => {
+  const [showPopup, setShowPopup] = useState(false);
 
-type TextExpand = {
-  id: number;
-  expand: false;
-};
+  const { state, dispatch } = useQuizForm();
 
-const QuizQuestion: React.FC<QuizQuestionProps> = ({
-  questions,
-  setCorrectIndex,
-  question,
-  setQuestion,
-  options,
-  correctIndex,
-  handleOptionChange,
-  handleSave,
-  handleDelete,
-}) => {
-  const [showQuestions, setShowQuestions] = React.useState(true);
-  const [expandedQuestions, setExpandedQuestions] = React.useState<number[]>(
-    [],
+  const [localDraft, setLocalDraft] = useState<QuizQuestion>(
+    createNewDraftQuestion(),
   );
-  const handleToggle = (id: number) => {
-    setExpandedQuestions((prev) =>
-      prev.includes(id) ? prev.filter((qid) => qid !== id) : [...prev, id],
+
+  const [showQuestions, setShowQuestions] = React.useState(true);
+
+  const changeQuestionType = (e: RadioChangeEvent) => {
+    const selectedType = e.target.value as QuizQuestion["questionType"];
+    const optionCount = selectedType === "True/False" ? 2 : 4;
+
+    setLocalDraft((prev) => {
+      let updatedOptions = prev.options.slice(0, optionCount);
+
+      // If options are fewer than needed, add new empty ones
+      while (updatedOptions.length < optionCount) {
+        updatedOptions.push({ text: "", isCorrect: false });
+      }
+
+      return {
+        ...prev,
+        questionType: selectedType,
+        options: updatedOptions,
+      };
+    });
+  };
+
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLocalDraft({ ...localDraft, text: e.target.value });
+  };
+
+  const handleSelectCorrect = (index: number) => {
+    const updatedOptions = localDraft.options.map((option, i) => ({
+      ...option,
+      isCorrect: i === index,
+    }));
+
+    setLocalDraft((prev) => ({
+      ...prev,
+      options: updatedOptions,
+    }));
+  };
+
+  const optionsTextChange = (index: number, value: string) => {
+    const updatedOptions = localDraft.options.map((option, i) =>
+      i === index ? { ...option, text: value } : option,
     );
+
+    setLocalDraft((prev) => ({
+      ...prev,
+      options: updatedOptions,
+    }));
+  };
+
+  const validateForm = (): string | false => {
+    // Check if the question text is empty or just whitespace
+    if (!localDraft.text.trim()) {
+      return "Please enter a question.";
+    }
+
+    // Check if any of the options are empty or just whitespace
+    if (localDraft.options.some((opt) => !opt.text.trim())) {
+      return "Please fill in all options.";
+    }
+
+    // Check if at least one option is marked as correct
+    if (!localDraft.options.some((opt) => opt.isCorrect)) {
+      return "Please select the correct answer.";
+    }
+
+    // If all conditions are met, return false (no errors)
+    return false;
+  };
+
+  const handleSave = () => {
+    const newQuestion: QuizQuestion = {
+      ...localDraft,
+      id: generateUniqueId(),
+    };
+
+    dispatch({ type: "ADD_QUESTION", payload: newQuestion });
+    message.success("Question Added to list");
+    setLocalDraft(createNewDraftQuestion("MCQ"));
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    const validationResult = validateForm();
+
+    if (validationResult) {
+      // If validation fails, show the error message
+      message.warning(validationResult);
+      return;
+    } else {
+      setShowPopup(newOpen);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    dispatch({ type: "REMOVE_QUESTION", index: id });
   };
 
   return (
     <div className="w-full space-y-4 rounded-lg border p-4 shadow-sm">
       <p className="text-slate-600">
-        Total Questions Added: {questions.length}
+        Total Questions Added: {state.questions.length}
       </p>
 
-      {questions.length > 0 && showQuestions && (
+      {state.questions.length > 0 && showQuestions && (
         <div className="mt-6">
           <h3 className="text-lg font-semibold">Added Questions</h3>
 
           <div className="flex w-full flex-wrap gap-4">
-            {questions.map((q) => (
-              <div
-                key={q.id}
-                className="items relative mt-2 h-fit min-w-[150px] max-w-[500px] flex-col rounded-sm border-[1px] p-1 px-2"
-              >
-                <p
-                  className={`${expandedQuestions.includes(q.id) ? "line-clamp-2" : "line-clamp-none"} line-clamp-3 text-pretty text-sm font-medium`}
-                >
-                  {q.question}
-                </p>
-                <button
-                  className="block cursor-pointer font-medium text-blue-400 hover:underline"
-                  onClick={() => handleToggle(q.id)}
-                >
-                  {expandedQuestions.includes(q.id) ? "Expand" : "Collapse"}
-                </button>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {q.options.map((option, index) => (
-                    <span
-                      key={index}
-                      className={`${q.correctIndex === index ? "border-green-500" : ""} w-fit rounded-sm border-[1px] px-1 py-[2px]`}
-                    >
-                      {option}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  className="absolute -right-2 -top-3 z-10"
-                  onClick={() => handleDelete(q.id)}
-                >
-                  <CircleX size={20} color="red" />
-                </button>
-              </div>
+            {state.questions.map((question) => (
+              <QuestionPreview
+                question={question}
+                key={question.id}
+                handleDelete={handleDelete}
+              />
             ))}
           </div>
         </div>
       )}
-      <TextArea
-        autoSize={{ minRows: 2, maxRows: 6 }}
-        typeof="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        placeholder="Enter your question"
-      />
-      <div className="space-y-2">
-        {options.map((option, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="correctOption"
-              checked={correctIndex === index}
-              onChange={() => setCorrectIndex(index)}
-            />
-            <Input
-              type="text"
-              placeholder={`Option ${index + 1}`}
-              value={option}
-              onChange={(e) => handleOptionChange(index, e.target.value)}
-            />
-          </div>
-        ))}
+
+      <div className="flex flex-col space-y-2 pb-2">
+        <Label htmlFor="type">Question Type</Label>
+
+        <Radio.Group
+          value={localDraft.questionType}
+          options={[
+            { value: "MCQ", label: "Multi-choice" },
+            { value: "True/False", label: "True or False" },
+          ]}
+          onChange={(e) => changeQuestionType(e)}
+        />
       </div>
+
+      <AddQuestion
+        localDraft={localDraft}
+        handleQuestionChange={handleQuestionChange}
+        handleSelectCorrect={handleSelectCorrect}
+        optionsTextChange={optionsTextChange}
+      />
 
       <div className="flex items-center gap-3">
         <Popconfirm
           title="Are you sure you want to save this question?"
           onConfirm={handleSave}
+          open={showPopup}
+          onOpenChange={handleOpenChange}
           okText="Yes"
           cancelText="No"
         >
           <Button>Save Question</Button>
         </Popconfirm>
         <Button
-          disabled={questions.length <= 0}
+          disabled={state.questions.length <= 0}
           onClick={() => setShowQuestions(!showQuestions)}
         >
           {!showQuestions ? "Show Questions" : "Hide Questions"}
@@ -138,4 +189,4 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   );
 };
 
-export default QuizQuestion;
+export default Quiz;

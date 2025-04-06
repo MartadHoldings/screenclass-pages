@@ -1,12 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useTransition } from "react";
 import { Label } from "@/components/ui/label";
 import { Input, Select, Button, Modal } from "antd";
 import { VideoData } from "@/types/queries";
 import { addSubtopic } from "@/queries/subtopics";
-import { getTopicsUnderSubject } from "@/queries/subjects";
-import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { OptionData } from "./Client";
 
 const { TextArea } = Input;
 
@@ -17,14 +16,11 @@ export interface SubtopicProps {
   topicId: string;
 }
 
-export type OptionData = {
-  label: string;
-  value: string;
-};
-
 export default function AddSubTopic({
+  topics,
   videosData,
 }: {
+  topics: OptionData[] | null;
   videosData: VideoData | null;
 }) {
   const [form, setForm] = useState<SubtopicProps>({
@@ -33,32 +29,9 @@ export default function AddSubTopic({
     videoLink: "",
     topicId: "",
   });
-  const [topics, setTopics] = useState<OptionData[] | null>(null);
 
-  const params = useParams();
-
-  const fetchTopicsViaParams = async () => {
-    try {
-      const response = await getTopicsUnderSubject(params.slug as string);
-
-      if (response.success) {
-        setTopics(
-          response.data.data.map((topic) => ({
-            label: topic.name,
-            value: topic._id,
-          })),
-        );
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTopicsViaParams();
-  }, []);
+  const [isPending, startTransition] = useTransition();
+  const [isModalVisible, setModalVisible] = useState(false); // Modal visibility state
 
   const onSearch = (value: string) => {
     console.log("search:", value);
@@ -79,22 +52,47 @@ export default function AddSubTopic({
       [field]: value, // Dynamically update the selected field
     }));
   };
-  const handleSubmit = async () => {
-    try {
-      const response = await addSubtopic({ form });
 
-      if (response.success) {
-        toast.success(response.message);
-        setForm({ name: "", description: "", videoLink: "", topicId: "" });
-      } else {
-        toast.error(response.message);
+  const handleSubmit = async () => {
+    startTransition(async () => {
+      try {
+        const response = await addSubtopic({ form });
+
+        if (response.success) {
+          toast.success(response.data.message);
+          setForm({ name: "", description: "", videoLink: "", topicId: "" });
+        } else {
+          toast.error(response.message);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setModalVisible(false); // Close the modal when the request is complete
       }
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   const showModalConfirm = () => {
+    if (!form.topicId.trim()) {
+      alert("Select a topic");
+      return;
+    }
+    if (!form.name.trim()) {
+      alert("Please enter sub topic name");
+      return;
+    }
+    if (!form.description.trim()) {
+      alert("Please add description");
+      return;
+    }
+
+    if (!form.videoLink.trim()) {
+      alert("You can't create a sub topic without a video to attach");
+      return;
+    }
+
+    setModalVisible(true);
+
     Modal.confirm({
       title: "Confirm",
       content:
@@ -103,6 +101,10 @@ export default function AddSubTopic({
       cancelText: "No, Cancel",
       onOk() {
         handleSubmit();
+      },
+      okButtonProps: { loading: isPending },
+      onCancel() {
+        setModalVisible(false); // Ensure the modal closes if canceled
       },
     });
   };
@@ -113,75 +115,81 @@ export default function AddSubTopic({
           <h2 className="text-xl font-medium">Sub Topic</h2>
         </div>
 
-        <div className="flex flex-col space-y-2">
-          <Label htmlFor="module_topic">Topic</Label>
-          <Select
-            id="module-topic"
-            showSearch
-            placeholder="Select topic to add sub topic to"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={topics || undefined}
-            onSelect={handleSelect("topicId")}
-          />
-        </div>
+        <form action="">
+          <div className="flex flex-col space-y-2">
+            <Label htmlFor="module_topic">Topic</Label>
+            <Select
+              id="module-topic"
+              showSearch
+              placeholder="Select topic to add sub topic to"
+              options={topics || undefined}
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              onSelect={handleSelect("topicId")}
+              value={form.topicId}
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="module_name">Name</Label>
-          <Input
-            placeholder="Enter the Title eg. Comprehension - The Fairy Tale"
-            id="name"
-            name="name"
-            className="h-10"
-            onChange={handleChange}
-            value={form?.name}
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="module_name">Name</Label>
+            <Input
+              placeholder="Enter the Title eg. Comprehension - The Fairy Tale"
+              id="name"
+              name="name"
+              className="h-10"
+              onChange={handleChange}
+              value={form?.name}
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="module_description">Description</Label>
+          <div className="space-y-2">
+            <Label htmlFor="module_description">Description</Label>
 
-          <TextArea
-            showCount
-            maxLength={200}
-            id="description"
-            name="description"
-            onChange={handleChange}
-            placeholder="Enter a description"
-            style={{ height: 100, resize: "none" }}
-          />
-        </div>
+            <TextArea
+              showCount
+              maxLength={200}
+              id="description"
+              name="description"
+              onChange={handleChange}
+              placeholder="Enter a description"
+              value={form.description}
+              style={{ height: 100, resize: "none" }}
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="module_video">
-            Video - Selected the correct video associated with the sub topic
-          </Label>
-          <Select
-            style={{ width: "100%" }}
-            placeholder="Select video"
-            showSearch
-            optionFilterProp="label"
-            onSearch={onSearch}
-            options={videosData?.data.map((topic) => ({
-              label: topic.name,
-              value: topic._id,
-            }))}
-            onSelect={handleSelect("videoLink")}
-            // value={form?.videoLink}
-          />{" "}
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="module_video">
+              Video - Selected the correct video associated with the sub topic
+            </Label>
+            <Select
+              style={{ width: "100%" }}
+              placeholder="Select video"
+              showSearch
+              optionFilterProp="label"
+              onSearch={onSearch}
+              options={videosData?.data.map((topic) => ({
+                label: topic.name,
+                value: topic._id,
+              }))}
+              onSelect={handleSelect("videoLink")}
+              value={form.videoLink}
+            />{" "}
+          </div>
 
-        <div className="mt-10 flex items-center justify-center py-3">
-          <Button
-            type="primary"
-            size="large"
-            className="font-bold"
-            onClick={showModalConfirm}
-          >
-            SUBMIT MATERIAL CONTENT
-          </Button>
-        </div>
+          <div className="mt-10 flex items-center justify-center py-3">
+            <Button
+              type="primary"
+              size="large"
+              className="font-bold"
+              onClick={showModalConfirm}
+            >
+              SUBMIT MATERIAL CONTENT
+            </Button>
+          </div>
+        </form>
       </section>
     </>
   );

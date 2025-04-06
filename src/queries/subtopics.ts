@@ -1,6 +1,6 @@
 "use server";
 import { SubtopicProps } from "@/features/admin/add-content-to-subject/add-subtopic";
-import { ApiError, ApiResponse } from "@/types/queries";
+import { ApiError, ApiResponse, SubTopicsData } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
 import axios, { AxiosError } from "axios";
 
@@ -26,7 +26,10 @@ const addSubtopic = async ({
         },
       },
     );
-    return { success: true, data: res.data };
+    return {
+      success: true,
+      data: res.data,
+    };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       return {
@@ -43,4 +46,37 @@ const addSubtopic = async ({
   }
 };
 
-export { addSubtopic };
+const getSubtopics = async (
+  id: string,
+): Promise<ApiResponse<SubTopicsData> | ApiError> => {
+  const token = await getAuthToken();
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/get-subtopics/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return {
+      success: true,
+      data: res.data,
+    };
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Could'nt get sub topics ",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
+export { addSubtopic, getSubtopics };

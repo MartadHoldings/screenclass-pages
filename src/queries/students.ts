@@ -87,7 +87,7 @@ const suspendStudent = async (
         },
       },
     );
-
+    revalidatePath("/students");
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

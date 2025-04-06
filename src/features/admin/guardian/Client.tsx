@@ -74,6 +74,7 @@ export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
         phone_number: guardian.mobile,
         reg_date: new Date(guardian.createdAt).toISOString().split("T")[0],
         email: guardian.email,
+        status: guardian.status,
       };
     });
   };

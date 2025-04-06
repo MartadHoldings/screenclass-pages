@@ -62,7 +62,7 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
 
       <div className="mt-10">
         {levelsData?.data.map((level) => (
-          <div key={level.name}>
+          <div key={level._id}>
             <div className="flex w-full justify-between">
               <h3 className="text-base font-semibold uppercase text-slate-600">
                 {level.name} ({level.code})

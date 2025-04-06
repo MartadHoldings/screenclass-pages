@@ -1,5 +1,5 @@
-import { SubtopicProps } from "@/features/admin/add-content-to-subject/add-subtopic";
 import { Node } from "./common";
+import { QuizType } from ".";
 
 export interface ApiError {
   success: false;
@@ -37,11 +37,23 @@ export interface StudentProps extends Node {
   };
 }
 
-export interface GuardianProps
-  extends Omit<
-    StudentProps,
-    "type" | "subscriptionStatus" | "guardian" | "level"
-  > {
+// export interface GuardianProps
+//   extends Omit<
+//     StudentProps,
+//     "type" | "subscriptionStatus" | "guardian" | "level"
+//   > {
+//   students: { scid: string; firstName: string; lastName: string }[];
+// }
+
+export interface GuardianProps extends Node {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  mobile: string;
+  status: string;
+  scid: string;
+  email: string;
+  role: string;
   students: { scid: string; firstName: string; lastName: string }[];
 }
 
@@ -159,4 +171,18 @@ export interface VideoProps extends Node {
 
 export interface VideoData {
   data: VideoProps[];
+}
+
+export interface SubTopicProps {
+  _id: string;
+  name: string;
+  status: string;
+  topic: string;
+  quizId: string | null;
+  notes: string | null;
+  videoLink: string;
+}
+
+export interface SubTopicsData {
+  data: SubTopicProps[];
 }

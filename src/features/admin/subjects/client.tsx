@@ -87,7 +87,7 @@ export default function Client({
 
       <div className="mt-10">
         {subjectsData?.data.map((data) => (
-          <div key={data.id}>
+          <div key={data._id}>
             <h3 className="text-base font-semibold uppercase text-slate-600">
               {data.name}
             </h3>

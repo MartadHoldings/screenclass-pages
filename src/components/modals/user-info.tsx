@@ -8,38 +8,38 @@ export default function UserInfo() {
 
   const { mobile, email, scid, guardian, status, level, firstName, lastName } =
     userDetails || {};
-  console.log("info", userDetails);
+  // console.log("info", userDetails);
 
-  // const formattedData = [
-  //   {
-  //     label: "Mobile",
-  //     value: mobile || "N/A",
-  //   },
-  //   {
-  //     label: "Email",
-  //     value: email || "N/A",
-  //   },
-  //   {
-  //     label: "ID",
-  //     value: scid || "N/A",
-  //   },
-  //   {
-  //     label: "Name",
-  //     value:
-  //       firstName && lastName
-  //         ? `${userDetails?.firstName} ${userDetails?.lastName}`
-  //         : "N/A",
-  //   },
-  //   { label: "Level", value: level?.name || "N/A" },
-  //   { label: "Status", value: status || "N/A" },
-  //   {
-  //     label: "Guardian Name",
-  //     value:
-  //       guardian?.firstName && guardian?.lastName
-  //         ? `${guardian.firstName} ${guardian.lastName}`
-  //         : "No guardian",
-  //   },
-  // ];
+  const formattedData = [
+    {
+      label: "Mobile",
+      value: mobile || "N/A",
+    },
+    {
+      label: "Email",
+      value: email || "N/A",
+    },
+    {
+      label: "ID",
+      value: scid || "N/A",
+    },
+    {
+      label: "Name",
+      value:
+        firstName && lastName
+          ? `${userDetails?.firstName} ${userDetails?.lastName}`
+          : "N/A",
+    },
+    { label: "Level", value: level?.name || "N/A" },
+    { label: "Status", value: status || "N/A" },
+    {
+      label: "Guardian Name",
+      value:
+        guardian?.firstName && guardian?.lastName
+          ? `${guardian.firstName} ${guardian.lastName}`
+          : "No guardian",
+    },
+  ];
 
   // console.log(formattedData);
 
@@ -62,7 +62,7 @@ export default function UserInfo() {
           <p className="text-orange-500">{userDetails?.role}</p>
         </div>
       </div>
-      {/* <div className="space-y-3">
+      <div className="space-y-3">
         {formattedData.map(({ label, value }, index) => (
           <div key={index} className="flex items-center gap-2">
             <div className="flex w-[30%] justify-end">
@@ -77,7 +77,7 @@ export default function UserInfo() {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 }

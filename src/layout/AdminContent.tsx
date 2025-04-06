@@ -42,7 +42,7 @@ const items: MenuItem[] = [
   getItem("Levels", "/levels", <FileOutlined />),
   getItem("Class & Subjects", "/class-subjects", <FileOutlined />),
   // getItem("Trivia", "/trivia", <FileOutlined />),
-  getItem("Attach Video", "/attach-a-video", <FileOutlined />),
+  // getItem("Attach Video", "/attach-a-video", <FileOutlined />),
   getItem("Payments", "/payment-history", <FileOutlined />),
   getItem("Subscriptions", "/subscription-plans", <FileOutlined />),
   getItem("Notifications", "/notifications", <FileOutlined />),

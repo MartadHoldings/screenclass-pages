@@ -87,7 +87,6 @@ const suspendGuardian = async (
         },
       },
     );
-
     revalidatePath("/guardian");
     return { success: true, data: res.data };
   } catch (error) {
