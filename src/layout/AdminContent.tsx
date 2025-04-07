@@ -46,7 +46,7 @@ const items: MenuItem[] = [
   getItem("Payments", "/payment-history", <FileOutlined />),
   getItem("Subscriptions", "/subscription-plans", <FileOutlined />),
   getItem("Notifications", "/notifications", <FileOutlined />),
-  getItem("Settings", "/settings", <FileOutlined />),
+  getItem("Create an Account", "/create-account", <FileOutlined />),
   getItem("Logout", "/logout", <FileOutlined />),
 ];
 

@@ -59,7 +59,6 @@ export interface Login {
 export type CreateAdmin = {
   firstName: string;
   lastName: string;
-  username: string;
   email: string;
   password: string;
   role: string;

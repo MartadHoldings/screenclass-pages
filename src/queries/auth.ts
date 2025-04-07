@@ -3,7 +3,8 @@
 import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { ApiResponse, ApiError } from "@/types/queries";
-import { Login } from "@/types";
+import { CreateAdmin, Login } from "@/types";
+import { getAuthToken } from "@/utils/getServerCookies";
 
 const adminLogin = async ({
   form,
@@ -42,4 +43,32 @@ const adminLogin = async ({
   }
 };
 
-export { adminLogin };
+const createAdmin = async (
+  form: CreateAdmin,
+): Promise<ApiResponse<any> | ApiError> => {
+  const token = await getAuthToken();
+
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/create`,
+      form,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    return { success: true, data: res.data };
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Something went wrong",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
+export { adminLogin, createAdmin };
