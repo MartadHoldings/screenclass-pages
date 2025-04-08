@@ -107,7 +107,9 @@ const DynamicTable = <T extends TableData>({
 
           {onAddContent && (
             <Button type="primary">
-              <Link href={`/class-subjects/${record.key}`}>Add Content</Link>
+              <Link href={`dashboard/class-subjects/${record.key}`}>
+                Add Content
+              </Link>
             </Button>
           )}
           {dropdownAction ? (

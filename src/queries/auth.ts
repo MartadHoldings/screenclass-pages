@@ -14,7 +14,7 @@ const adminLogin = async ({
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/admins/login`,
-      form,
+      { email: form.email, password: form.password },
     );
     const token = res.data.data;
     const cookieStore = await cookies();
@@ -31,7 +31,7 @@ const adminLogin = async ({
     if (error instanceof AxiosError && error.response) {
       return {
         success: false,
-        message: error.response.data?.message || "Something went wrong",
+        message: error.response.statusText || "Something went wrong",
         statusCode: error.response.status,
       };
     }

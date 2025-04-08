@@ -52,6 +52,7 @@ export function GuardianActionDropdown({
           return;
         } else {
           setUserDetails(response.data);
+          console.log(response.data);
           setActiveDropDown({ id: record.key, label });
         }
       } catch (error) {

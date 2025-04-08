@@ -36,17 +36,17 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Overview", "/overview", <FileOutlined />),
-  getItem("Guardian", "/guardian", <FileOutlined />),
-  getItem("Students", "/students", <FileOutlined />),
-  getItem("Levels", "/levels", <FileOutlined />),
-  getItem("Class & Subjects", "/class-subjects", <FileOutlined />),
+  getItem("Overview", "/dashboard", <FileOutlined />),
+  getItem("Guardian", "/dashboard/guardian", <FileOutlined />),
+  getItem("Students", "/dashboard/students", <FileOutlined />),
+  getItem("Levels", "/dashboard/levels", <FileOutlined />),
+  getItem("Class & Subjects", "/dashboard/class-subjects", <FileOutlined />),
   // getItem("Trivia", "/trivia", <FileOutlined />),
   // getItem("Attach Video", "/attach-a-video", <FileOutlined />),
-  getItem("Payments", "/payment-history", <FileOutlined />),
-  getItem("Subscriptions", "/subscription-plans", <FileOutlined />),
-  getItem("Notifications", "/notifications", <FileOutlined />),
-  getItem("Create an Account", "/create-account", <FileOutlined />),
+  getItem("Payments", "/dashboard/payment-history", <FileOutlined />),
+  getItem("Subscriptions", "/dashboard/subscription-plans", <FileOutlined />),
+  getItem("Notifications", "/dashboard/notifications", <FileOutlined />),
+  getItem("Create an Account", "/dashboard/create-account", <FileOutlined />),
   getItem("Logout", "/logout", <FileOutlined />),
 ];
 

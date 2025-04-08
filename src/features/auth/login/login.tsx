@@ -29,7 +29,7 @@ export const Login = () => {
       try {
         const result = await adminLogin({ form });
         if (result.success) {
-          router.push("/overview");
+          router.push("/dashboard");
           toast.success(result.data.message);
         } else {
           toast.error(result.message, {
