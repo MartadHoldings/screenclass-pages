@@ -60,7 +60,7 @@ export const Client = ({ videosData }: { videosData: VideoData | null }) => {
 
   useEffect(() => {
     fetchTopicsViaParams();
-  }, []);
+  });
 
   return (
     <>

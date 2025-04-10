@@ -9,6 +9,8 @@ import {
 import { getAuthToken } from "@/utils/getServerCookies";
 import { revalidatePath } from "next/cache";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const getStudents = async (
   page: number,
   limit: number,

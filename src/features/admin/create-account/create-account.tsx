@@ -2,7 +2,7 @@
 import "@ant-design/v5-patch-for-react-19";
 import { Label } from "@/components/ui/label";
 import { Select, Input, Button } from "antd";
-import React, { useState, useTransition, useActionState } from "react";
+import React, { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createAdmin } from "@/queries/auth";
 import { CreateAdmin } from "@/types";

@@ -36,7 +36,7 @@ const Quiz = () => {
     const optionCount = selectedType === "True/False" ? 2 : 4;
 
     setLocalDraft((prev) => {
-      let updatedOptions = prev.options.slice(0, optionCount);
+      const updatedOptions = prev.options.slice(0, optionCount);
 
       // If options are fewer than needed, add new empty ones
       while (updatedOptions.length < optionCount) {

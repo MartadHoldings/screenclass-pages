@@ -8,7 +8,8 @@ import {
 } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
 import { revalidatePath } from "next/cache";
-import { UserType } from "@/types/queries";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const getGuardians = async (): Promise<
   ApiResponse<GuardianData> | ApiError

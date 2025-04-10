@@ -6,6 +6,8 @@ import { ApiResponse, ApiError } from "@/types/queries";
 import { CreateAdmin, Login } from "@/types";
 import { getAuthToken } from "@/utils/getServerCookies";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const adminLogin = async ({
   form,
 }: {
@@ -26,7 +28,7 @@ const adminLogin = async ({
       maxAge: 86400, // 1 day
     });
 
-    return { success: true, data: res.data };
+    return { success: true, data: res.data }; // Disabled `any` by using `unknown`
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       return {

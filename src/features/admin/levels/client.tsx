@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
 import DynamicTable from "@/components/tables/dynamic-data-table";
 import { TableData } from "@/types";
@@ -13,14 +13,14 @@ import { LevelsData } from "@/types/queries";
 
 export default function Client({ levelsData }: { levelsData: LevelsData }) {
   const { setTableActionModal, tableActionModal } = useAppInteractionContext();
-  const { data, editingRow, setEditingRow } = useDataContext();
+  const { editingRow, setEditingRow } = useDataContext();
   const [loading, setLoading] = React.useState(false);
 
-  const onEdit = (record: TableData) => {
-    setEditingRow(record);
-    setTableActionModal("edit class cell");
-    console.log("Edit clicked for: ", record);
-  };
+  // const onEdit = (record: TableData) => {
+  //   setEditingRow(record);
+  //   setTableActionModal("edit class cell");
+  //   console.log("Edit clicked for: ", record);
+  // };
 
   const onDelete = (key: React.Key) => {
     // setData((prevData) => prevData.filter((item) => item.key !== key));

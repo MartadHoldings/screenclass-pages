@@ -37,6 +37,7 @@ export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
         }
       } catch (error) {
         toast.error("An error occurred. Please try again.");
+        console.log(error);
       } finally {
         setActiveDropDown(null);
         setLoading(false);
@@ -57,6 +58,7 @@ export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
         }
       } catch (error) {
         toast.error("An error occurred. Please try again.");
+        console.log(error);
       } finally {
         setActiveDropDown(null);
         setLoading(false);

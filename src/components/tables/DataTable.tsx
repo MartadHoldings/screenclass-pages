@@ -7,8 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { GuardianActionDropdown } from "../guardian-action-dropdown";
-import { StudentActionDropdown } from "../student-action-dropdown";
 import { EllipsisVertical } from "lucide-react";
 import { Guardian, Student } from "@/types";
 
@@ -18,9 +16,8 @@ interface TablePropsType {
 }
 
 export default function DataTable({ variant, data }: TablePropsType) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const ActionDropdown =
-    variant === "guardian" ? GuardianActionDropdown : StudentActionDropdown;
+  // const ActionDropdown =
+  //   variant === "guardian" ? GuardianActionDropdown : StudentActionDropdown;
 
   return (
     <>
@@ -52,8 +49,6 @@ export default function DataTable({ variant, data }: TablePropsType) {
                 )}
                 <TableCell className="cursor-pointer">
                   <EllipsisVertical />
-                  {/* <ActionDropdown>
-                  </ActionDropdown> */}
                 </TableCell>
               </TableRow>
             ))}

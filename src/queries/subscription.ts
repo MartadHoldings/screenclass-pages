@@ -2,13 +2,10 @@
 
 import axios, { AxiosError } from "axios";
 import { getAuthToken } from "@/utils/getServerCookies";
-import {
-  ApiResponse,
-  ApiError,
-  SubscribeUserProps,
-  SubscriptionPlan,
-} from "@/types/queries";
+import { ApiResponse, ApiError, SubscriptionPlan } from "@/types/queries";
 import { SubscribeUser } from "@/types";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const subscribeUser = async ({
   params,

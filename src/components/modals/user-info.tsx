@@ -6,8 +6,7 @@ import { useAppContext } from "@/context/app-context";
 export default function UserInfo() {
   const { userDetails } = useAppContext();
 
-  const { mobile, email, scid, guardian, status, level, firstName, lastName } =
-    userDetails || {};
+  const { mobile, email, scid, guardian, status, level } = userDetails || {};
   // console.log("info", userDetails);
 
   const formattedData = [

@@ -4,6 +4,8 @@ import { ApiError, ApiResponse, SubTopicsData } from "@/types/queries";
 import { getAuthToken } from "@/utils/getServerCookies";
 import axios, { AxiosError } from "axios";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const addSubtopic = async ({
   form,
 }: {

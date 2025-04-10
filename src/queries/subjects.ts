@@ -11,6 +11,8 @@ import { getAuthToken } from "@/utils/getServerCookies";
 import axios, { AxiosError } from "axios";
 import { revalidatePath } from "next/cache";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const getClassSubjects = async (): Promise<
   ApiResponse<SubjectsData> | ApiError
 > => {
