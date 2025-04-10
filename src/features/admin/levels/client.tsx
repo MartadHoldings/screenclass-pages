@@ -10,6 +10,8 @@ import {
   renderClassModalsFooter,
 } from "@/helpers/action-on-tables";
 import { LevelsData } from "@/types/queries";
+import { toast } from "sonner";
+import { deleteClass } from "@/queries/class";
 
 export default function Client({ levelsData }: { levelsData: LevelsData }) {
   const { setTableActionModal, tableActionModal } = useAppInteractionContext();
@@ -22,9 +24,23 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
   //   console.log("Edit clicked for: ", record);
   // };
 
-  const onDelete = (key: React.Key) => {
-    // setData((prevData) => prevData.filter((item) => item.key !== key));
-    alert(`you just deleted ${key}`);
+  const onDelete = async (key: React.Key) => {
+    // alert(key);
+    try {
+      const res = await deleteClass(key as string);
+
+      console.log(key);
+
+      if (res.success) {
+        console.log(res);
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   const handleCancel = () => {
