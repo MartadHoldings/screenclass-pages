@@ -1,9 +1,9 @@
 "use client";
-import { Question } from "@/types";
-import React, { useState, useTransition } from "react";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import React, { useState } from "react";
 import Quiz from "./QuizQuestion";
 import { Label } from "@/components/ui/label";
-import { Select, Button, Modal, Input } from "antd";
+import { Select, Button, Modal, Input, message } from "antd";
 import { OptionData } from "@/features/admin/add-content-to-subject/Client";
 import { getSubtopics } from "@/queries/subtopics";
 import { toast } from "sonner";
@@ -12,8 +12,6 @@ import { createQuizToSubtopic } from "@/queries/quizez";
 
 const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
   const [subtopics, setSubtopics] = useState<OptionData[] | null>(null);
-
-  const [isPending, startTransition] = useTransition();
 
   const { state, dispatch } = useQuizForm();
 
@@ -33,6 +31,10 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
     fetchSubtopics(value);
   };
 
+  const resetForm = () => {
+    dispatch({ type: "RESET_FORM" });
+  };
+
   const fetchSubtopics = async (id: string) => {
     try {
       const response = await getSubtopics(id);
@@ -46,7 +48,7 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
         );
       } else {
         console.log(response.message);
-        // toast.error(response.message);
+        toast.error(response.message);
       }
     } catch (error) {
       console.log(error);
@@ -54,40 +56,58 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
   };
 
   const handleSubmit = async () => {
-    startTransition(async () => {
-      try {
-        const modifiedState = {
-          ...state,
-          questions: state.questions.map(({ id, ...rest }) => rest), // Remove 'id' from each question
-        };
+    try {
+      const modifiedState = {
+        ...state,
+        questions: state.questions.map(({ id, ...rest }) => rest), // Remove 'id' from each question
+      };
 
-        const response = await createQuizToSubtopic(modifiedState);
+      const response = await createQuizToSubtopic(modifiedState);
 
-        if (response.success) {
-          toast.success(response.data?.message);
-          dispatch({ type: "RESET_FORM" });
-          console.log(response.data);
-        } else {
-          toast.error(response.message);
-          console.log(response);
-        }
-      } catch (error) {
-        console.log(error);
+      if (response.success) {
+        toast.success(response.data?.message);
+        resetForm();
+      } else {
+        toast.error(response.message);
+        console.log(response);
       }
-    });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   const showModalConfirm = () => {
+    if (!state.subTopicId.trim()) {
+      message.warning("Please enter a sub topic");
+      return;
+    }
+    if (!state.title.trim()) {
+      message.warning("Please enter a title");
+      return;
+    }
+
+    if (!state.duration) {
+      message.warning("Add the quiz duration");
+      return;
+    }
+
+    if (!state.questions || state.questions.length === 0) {
+      message.warning("Please add at least one question to the quiz");
+      return;
+    }
+
     Modal.confirm({
       title: "Confirm",
+      icon: <ExclamationCircleFilled />,
       content:
-        "Ensure content is error free as fixes might not be possible, Are you sure to want to submit the following content ?",
+        "Ensure content is error free as fixes might not be possible. Are you sure you want to submit?",
       okText: "Yes, Submit",
       cancelText: "No, Cancel",
-      onOk() {
-        handleSubmit();
+      onOk: async () => {
+        // Returning a Promise that resolves/rejects controls modal behavior
+        return handleSubmit();
       },
-      okButtonProps: { loading: isPending },
     });
   };
 
@@ -108,7 +128,6 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
           onSelect={selectTopic}
-          // value={form.topicId}
         />
       </div>
 
@@ -123,7 +142,7 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
           onSelect={handleSubTopicId}
-          // value={form.topicId}
+          value={state.subTopicId || undefined}
         />
       </div>
 
@@ -134,6 +153,7 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
           name="title"
           placeholder="Enter this quiz title "
           onChange={handleTitleChange}
+          value={state.title || undefined}
         />
       </div>
 
@@ -145,8 +165,9 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
           type="number"
           id="module-duration"
           name="duration"
-          placeholder="10 "
+          placeholder="10"
           onChange={handleDurationChange}
+          value={state.duration || undefined}
         />
       </div>
 

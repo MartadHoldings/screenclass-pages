@@ -71,4 +71,34 @@ const createAdmin = async (
   }
 };
 
-export { adminLogin, createAdmin };
+const logout = async (): Promise<ApiResponse<any> | ApiError> => {
+  const cookieStore = await cookies();
+  const token = await getAuthToken();
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/logoutAdmin`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+
+    if (res.status === 200) {
+      cookieStore.delete("admin-token");
+    }
+    return { success: true, data: res.data };
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Couldn't log out ",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
+export { adminLogin, createAdmin, logout };

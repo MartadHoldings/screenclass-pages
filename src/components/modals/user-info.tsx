@@ -23,13 +23,7 @@ export default function UserInfo() {
       label: "ID",
       value: scid || "N/A",
     },
-    {
-      label: "Name",
-      value:
-        firstName && lastName
-          ? `${userDetails?.firstName} ${userDetails?.lastName}`
-          : "N/A",
-    },
+
     { label: "Level", value: level?.name || "N/A" },
     { label: "Status", value: status || "N/A" },
     {

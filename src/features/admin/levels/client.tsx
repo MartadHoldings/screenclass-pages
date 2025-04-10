@@ -50,14 +50,14 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
         >
           Delete
         </Button> */}
-        <Button
+        {/* <Button
           size="large"
           variant="solid"
           color="orange"
           onClick={() => setTableActionModal("add new class")}
         >
           Add New Level
-        </Button>
+        </Button> */}
       </div>
 
       <div className="mt-10">
@@ -67,7 +67,7 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
               <h3 className="text-base font-semibold uppercase text-slate-600">
                 {level.name} ({level.code})
               </h3>
-              <Button variant="solid">Add class to {level.code}</Button>
+              {/* <Button variant="solid">Add class to {level.code}</Button> */}
             </div>
             <div>
               <DynamicTable

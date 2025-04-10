@@ -1,22 +1,23 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import Image from "next/image";
 import AuthLayout from "@/layout/AuthLayout";
 import Link from "next/link";
 import { adminLogin } from "@/queries/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/auth-context";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 export const Login = () => {
   const [form, setForm] = React.useState({
     email: "",
     password: "",
   });
+
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const [isPending, startTransition] = React.useTransition();
 
@@ -76,13 +77,12 @@ export const Login = () => {
             </div>
             <div className="mt-5 w-full space-y-3">
               <Label htmlFor="email">PASSWORD</Label>
-              <Input
-                type="password"
-                id="password"
+              <Input.Password
                 className="h-[50px]"
-                placeholder=""
-                required
-                value={form.password}
+                placeholder="input password"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
               />
             </div>{" "}

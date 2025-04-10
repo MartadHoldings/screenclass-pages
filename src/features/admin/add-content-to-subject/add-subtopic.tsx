@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
-import { Input, Select, Button, Modal } from "antd";
+import { Input, Select, Button, Modal, message } from "antd";
 import { VideoData } from "@/types/queries";
 import { addSubtopic } from "@/queries/subtopics";
 import { toast } from "sonner";
 import { OptionData } from "./Client";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
@@ -30,9 +31,6 @@ export default function AddSubTopic({
     topicId: "",
   });
 
-  const [isPending, startTransition] = useTransition();
-  const [isModalVisible, setModalVisible] = useState(false); // Modal visibility state
-
   const onSearch = (value: string) => {
     console.log("search:", value);
   };
@@ -54,60 +52,53 @@ export default function AddSubTopic({
   };
 
   const handleSubmit = async () => {
-    startTransition(async () => {
-      try {
-        const response = await addSubtopic({ form });
+    try {
+      const response = await addSubtopic({ form });
 
-        if (response.success) {
-          toast.success(response.data.message);
-          setForm({ name: "", description: "", videoLink: "", topicId: "" });
-        } else {
-          toast.error(response.message);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setModalVisible(false); // Close the modal when the request is complete
+      if (response.success) {
+        toast.success(response.data.message);
+        setForm({ name: "", description: "", videoLink: "", topicId: "" });
+      } else {
+        toast.error(response.message);
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const showModalConfirm = () => {
     if (!form.topicId.trim()) {
-      alert("Select a topic");
+      message.warning("Select a topic");
       return;
     }
     if (!form.name.trim()) {
-      alert("Please enter sub topic name");
+      message.warning("Please enter sub topic name");
       return;
     }
     if (!form.description.trim()) {
-      alert("Please add description");
+      message.warning("Please add description");
       return;
     }
 
     if (!form.videoLink.trim()) {
-      alert("You can't create a sub topic without a video to attach");
+      message.warning("You can't create a sub topic without a video to attach");
       return;
     }
 
-    setModalVisible(true);
-
     Modal.confirm({
       title: "Confirm",
+      icon: <ExclamationCircleFilled />,
       content:
-        "Ensure content is error free as fixes might not be possible, Are you sure to want to submit the following content ?",
+        "Ensure content is error free as fixes might not be possible. Are you sure you want to submit?",
       okText: "Yes, Submit",
       cancelText: "No, Cancel",
-      onOk() {
-        handleSubmit();
-      },
-      okButtonProps: { loading: isPending },
-      onCancel() {
-        setModalVisible(false); // Ensure the modal closes if canceled
+      onOk: async () => {
+        // Returning a Promise that resolves/rejects controls modal behavior
+        return handleSubmit();
       },
     });
   };
+
   return (
     <>
       <section className="space-y-6 bg-white px-4 py-3">
@@ -129,7 +120,7 @@ export default function AddSubTopic({
                   .includes(input.toLowerCase())
               }
               onSelect={handleSelect("topicId")}
-              value={form.topicId}
+              value={form.topicId || undefined}
             />
           </div>
 
@@ -175,7 +166,7 @@ export default function AddSubTopic({
                 value: topic._id,
               }))}
               onSelect={handleSelect("videoLink")}
-              value={form.videoLink}
+              value={form.videoLink || undefined}
             />{" "}
           </div>
 

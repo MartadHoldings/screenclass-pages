@@ -2,7 +2,7 @@
 import "@ant-design/v5-patch-for-react-19";
 import { Label } from "@/components/ui/label";
 import { Select, Input, Button } from "antd";
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useActionState } from "react";
 import { toast } from "sonner";
 import { createAdmin } from "@/queries/auth";
 import { CreateAdmin } from "@/types";
@@ -14,6 +14,7 @@ export const CreateAccount = () => {
     role: "",
     email: "",
     password: "",
+    username: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +40,7 @@ export const CreateAccount = () => {
       try {
         const result = await createAdmin(form);
         if (result.success) {
-          toast.success(result.data.message);
+          toast.success(result.data?.message);
         } else {
           toast.error(result.message, {});
         }
@@ -113,16 +114,29 @@ export const CreateAccount = () => {
             </div>
           </div>
 
-          <div className="mt-5 w-full space-y-3">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="text"
-              id="password"
-              className="h-[50px]"
-              placeholder="you@email.com"
-              name="password"
-              onChange={handleChange}
-            />
+          <div className="flex items-center gap-4">
+            <div className="mt-5 w-full space-y-3">
+              <Label htmlFor="password">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                className="h-[50px]"
+                placeholder="Enter a username"
+                name="username"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mt-5 w-full space-y-3">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="text"
+                id="password"
+                className="h-[50px]"
+                placeholder="you@email.com"
+                name="password"
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div className="mt-10 flex items-center justify-center">
