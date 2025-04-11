@@ -1,4 +1,3 @@
-import QuizContainer from "@/components/QuizContainer";
 import React from "react";
 
 export default function AddQuiz() {
@@ -25,7 +24,7 @@ export default function AddQuiz() {
             <li>Once saved, the form resets for adding a new question.</li>
           </ol>
 
-          <QuizContainer />
+          {/* <QuizContainer /> */}
         </div>
       </section>
     </>
