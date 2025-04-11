@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import "@ant-design/v5-patch-for-react-19";
+import React from "react";
 import HeaderContent from "@/components/shared/HeaderContent";
 import { Layout, Menu, Modal, theme } from "antd";
 import type { MenuProps } from "antd";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,

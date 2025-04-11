@@ -1,18 +1,30 @@
 "use client";
-import EditSubscription from "@/components/modals/edit-subscription";
 import DynamicTable from "@/components/tables/dynamic-data-table";
-import { subscriptions } from "@/data";
+import { useDataContext } from "@/context/data-context";
+import { useAppInteractionContext } from "@/context/modal-state-context";
+import {
+  renderSubscriptionsFooter,
+  renderSubscriptionsModal,
+} from "@/helpers/action-on-tables";
 import { TableData } from "@/types";
+import { SubscriptionPlan } from "@/types/queries";
 import { Modal, Button, Flex } from "antd";
 import React, { useState } from "react";
 
-export default function Client() {
+export default function Client({
+  subscriptionData,
+}: {
+  subscriptionData: SubscriptionPlan[];
+}) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const { editingRow, setEditingRow } = useDataContext();
+  const { tableActionModal, setTableActionModal } = useAppInteractionContext();
+
   const onEdit = (record: TableData) => {
-    setOpen(true);
-    console.log();
+    setTableActionModal("edit subscription");
+    setEditingRow(record);
   };
 
   const handleOk = () => {
@@ -24,45 +36,37 @@ export default function Client() {
   };
 
   const handleCancel = () => {
-    setOpen(false);
+    setEditingRow(null);
+    setTableActionModal(null);
   };
 
   return (
     <>
-      <DynamicTable data={subscriptions} onEdit={onEdit} />
+      <DynamicTable
+        data={subscriptionData.map((planItem) => ({
+          key: planItem._id,
+          name: planItem.name,
+          price: planItem.price,
+          validity: planItem.validity,
+          status: planItem.status,
+        }))}
+        onEdit={onEdit}
+      />
 
       <Modal
-        open={open}
+        open={tableActionModal !== null}
         onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={loading}
-        title="Edit Plan"
         centered
-        footer={
-          <Flex gap="small">
-            <Button
-              key="back"
-              onClick={handleCancel}
-              className="w-full"
-              size="large"
-            >
-              Cancel
-            </Button>
-
-            <Button
-              key="submit"
-              type="primary"
-              loading={loading}
-              onClick={handleOk}
-              className="w-full"
-              size="large"
-            >
-              Edit Plan
-            </Button>
-          </Flex>
-        }
+        footer={renderSubscriptionsFooter({
+          tableActionModal,
+          handleCancel,
+          loading,
+          handleOk,
+        })}
       >
-        <EditSubscription />
+        {renderSubscriptionsModal({ tableActionModal, editingRow })}
       </Modal>
     </>
   );

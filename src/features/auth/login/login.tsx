@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import "@ant-design/v5-patch-for-react-19";
 import { Label } from "@/components/ui/label";
 import { Button, Input } from "antd";
@@ -16,8 +16,6 @@ export const Login = () => {
     email: "",
     password: "",
   });
-
-  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const [isPending, startTransition] = React.useTransition();
 

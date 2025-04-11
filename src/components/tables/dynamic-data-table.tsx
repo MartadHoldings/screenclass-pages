@@ -127,7 +127,7 @@ const DynamicTable = <T extends TableData>({
           {onDelete && (
             <Popconfirm
               title="Are you sure you want to delete?"
-              onConfirm={() => onDelete(record._id)}
+              onConfirm={() => onDelete(record.key)}
               okText="Yes"
               cancelText="No"
             >

@@ -7,6 +7,7 @@ import AddNew from "@/components/modals/add-new";
 import AddTopic from "@/components/modals/add-topic";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
+import EditSubscription from "@/components/modals/edit-subscription";
 import { ActiveDropDown } from "@/context/modal-state-context";
 import { TableData } from "@/types";
 import { Button, Flex } from "antd";
@@ -310,5 +311,58 @@ export const renderSubjectModalsFooter = ({
 
     default:
       return null;
+  }
+};
+
+export const renderSubscriptionsModal = ({
+  tableActionModal,
+  editingRow,
+}: RenderSubjectActionType) => {
+  switch (tableActionModal) {
+    case "edit subscription":
+      return editingRow && <EditSubscription editingRow={editingRow} />;
+    // case "add topic to subject":
+    //   return editingRow && <AddTopic editingRow={editingRow} />;
+    // case "delete subjects":
+    //   return <DeleteActionModal variant="subjects" />;
+    default:
+      return null;
+  }
+};
+
+export const renderSubscriptionsFooter = ({
+  tableActionModal,
+  handleCancel,
+  loading,
+  handleOk,
+}: RenderFooterClassType) => {
+  switch (tableActionModal) {
+    case "edit subscription":
+      return (
+        <Flex gap="small">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            className="w-full"
+            size="large"
+          >
+            Cancel
+          </Button>
+
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            className="w-full"
+            size="large"
+          >
+            Edit Plan
+          </Button>
+        </Flex>
+      );
+
+    default:
+      break;
   }
 };

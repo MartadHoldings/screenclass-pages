@@ -12,6 +12,7 @@ import {
 import { LevelsData } from "@/types/queries";
 import { toast } from "sonner";
 import { deleteClass } from "@/queries/class";
+import { Levels } from "./levels";
 
 export default function Client({ levelsData }: { levelsData: LevelsData }) {
   const { setTableActionModal, tableActionModal } = useAppInteractionContext();
@@ -55,6 +56,18 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
     }, 2000);
   };
 
+  const extractData = () => {
+    levelsData?.data?.map((Level) => {
+      return Level.classes.map((classItem) => {
+        return {
+          Key: classItem._id,
+          name: classItem.name,
+          status: classItem.status,
+        };
+      });
+    });
+  };
+
   return (
     <>
       <div className="mt-5 flex w-full items-center justify-between">
@@ -87,7 +100,11 @@ export default function Client({ levelsData }: { levelsData: LevelsData }) {
             </div>
             <div>
               <DynamicTable
-                data={level.classes}
+                data={level.classes.map((classItem) => ({
+                  key: classItem._id,
+                  name: classItem.name,
+                  status: classItem.status,
+                }))}
                 // onEdit={onEdit}
                 onDelete={onDelete}
               />
