@@ -1,10 +1,10 @@
-import { Classes } from "@/features/admin/classes";
+import { Overview } from "@/features/admin/overview";
 import React from "react";
 
 export default function page() {
   return (
     <>
-      <Classes />
+      <Overview />
     </>
   );
 }

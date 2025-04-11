@@ -4,7 +4,7 @@ type StatsCardProps = {
   label: string; // Label for the card, e.g., "Students"
   count: number | string; // Count or value to display
   icon: React.ReactNode; // Icon to display (e.g., from Ant Design or other libraries)
-  iconBgColor?: string; // Optional: Background color
+  iconBgColor: string; // Optional: Background color
 };
 
 const StatsCard: React.FC<StatsCardProps> = ({

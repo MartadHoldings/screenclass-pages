@@ -4,13 +4,16 @@ import {
   SubscribeStudent,
 } from "@/components/modals";
 import AddNew from "@/components/modals/add-new";
+import AddTopic from "@/components/modals/add-topic";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
+import EditSubscription from "@/components/modals/edit-subscription";
+import { ActiveDropDown } from "@/context/modal-state-context";
 import { TableData } from "@/types";
 import { Button, Flex } from "antd";
 
 interface RenderFooterType {
-  activeDropDown: string | null;
+  activeDropDown: ActiveDropDown | null;
   loading: boolean;
   handleCancel: () => void;
   handleOk: () => void;
@@ -31,10 +34,10 @@ interface RenderSubjectActionType {
   editingRow: TableData | null;
 }
 
-export const renderActionsModalGuardian = (action: string | null) => {
-  switch (action) {
+export const renderActionsModalGuardian = (action: ActiveDropDown | null) => {
+  switch (action?.label) {
     case "View Guardian Details":
-      return <UserInfo type="guardian" />;
+      return <UserInfo />;
     case "Suspend Guardian":
       return <DangerousActionModal actionType="suspend" user="guardian" />;
     case "Delete Guardian":
@@ -44,10 +47,10 @@ export const renderActionsModalGuardian = (action: string | null) => {
   }
 };
 
-export const renderActionsModalStudent = (action: string | null) => {
-  switch (action) {
+export const renderActionsModalStudent = (action: ActiveDropDown | null) => {
+  switch (action?.label) {
     case "View Student Details":
-      return <UserInfo type="student" />;
+      return <UserInfo />;
     case "Suspend Student":
       return <DangerousActionModal actionType="suspend" user="student" />;
     case "Subscribe for Student":
@@ -65,7 +68,7 @@ export const renderFooter = ({
   loading,
   handleOk,
 }: RenderFooterType) => {
-  switch (activeDropDown) {
+  switch (activeDropDown?.label) {
     case "View Student Details":
     case "View Guardian Details":
       return (
@@ -76,12 +79,14 @@ export const renderFooter = ({
           className="w-full"
           type="primary"
         >
-          Return
+          Close
         </Button>
       );
 
     case "Suspend Student":
-    case "Delete Student": // ✅ Uses the same footer for both cases
+    case "Suspend Guardian":
+    case "Delete Student":
+    case "Delete Guardian": // ✅ Uses the same footer for both cases
       return (
         <Flex gap="small">
           <Button
@@ -100,7 +105,10 @@ export const renderFooter = ({
             size="large"
             className="w-full"
           >
-            {activeDropDown === "Suspend Student" ? "Suspend" : "Delete"}
+            {activeDropDown.label === "Suspend Student" ||
+            activeDropDown.label === "Suspend Guardian"
+              ? "Suspend"
+              : "Delete"}
           </Button>
         </Flex>
       );
@@ -211,6 +219,8 @@ export const renderSubjectActionsModal = ({
       return <AddNew type="subject" />;
     case "edit subject cell":
       return editingRow && <EditClass editingRow={editingRow} type="subject" />;
+    case "add topic to subject":
+      return editingRow && <AddTopic editingRow={editingRow} />;
     case "delete subjects":
       return <DeleteActionModal variant="subjects" />;
     default:
@@ -225,8 +235,57 @@ export const renderSubjectModalsFooter = ({
   loading,
 }: RenderFooterClassType) => {
   switch (tableActionModal) {
-    case "add new subject":
-    case "delete subjects":
+    // case "add new subject":
+    // case "delete subjects":
+    //   return (
+    //     <Flex gap="small">
+    //       <Button
+    //         key="back"
+    //         onClick={handleCancel}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Cancel
+    //       </Button>
+    //       <Button
+    //         key="submit"
+    //         type="primary"
+    //         loading={loading}
+    //         onClick={handleOk}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         {tableActionModal === "delete subjects"
+    //           ? "Delete Selections"
+    //           : "Add Subject"}
+    //       </Button>
+    //     </Flex>
+    //   );
+    // case "edit subject cell":
+    //   return (
+    //     <Flex gap="small">
+    //       <Button
+    //         key="back"
+    //         onClick={handleCancel}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Cancel
+    //       </Button>
+    //       <Button
+    //         key="submit"
+    //         type="primary"
+    //         loading={loading}
+    //         onClick={handleOk}
+    //         size="large"
+    //         className="w-full"
+    //       >
+    //         Save
+    //       </Button>
+    //     </Flex>
+    //   );
+
+    case "add topic to subject":
       return (
         <Flex gap="small">
           <Button
@@ -245,37 +304,65 @@ export const renderSubjectModalsFooter = ({
             size="large"
             className="w-full"
           >
-            {tableActionModal === "delete subjects"
-              ? "Delete Selections"
-              : "Add Subject"}
-          </Button>
-        </Flex>
-      );
-    case "edit subject cell":
-      return (
-        <Flex gap="small">
-          <Button
-            key="back"
-            onClick={handleCancel}
-            size="large"
-            className="w-full"
-          >
-            Cancel
-          </Button>
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-            size="large"
-            className="w-full"
-          >
-            Save
+            Add Topic
           </Button>
         </Flex>
       );
 
     default:
       return null;
+  }
+};
+
+export const renderSubscriptionsModal = ({
+  tableActionModal,
+  editingRow,
+}: RenderSubjectActionType) => {
+  switch (tableActionModal) {
+    case "edit subscription":
+      return editingRow && <EditSubscription editingRow={editingRow} />;
+    // case "add topic to subject":
+    //   return editingRow && <AddTopic editingRow={editingRow} />;
+    // case "delete subjects":
+    //   return <DeleteActionModal variant="subjects" />;
+    default:
+      return null;
+  }
+};
+
+export const renderSubscriptionsFooter = ({
+  tableActionModal,
+  handleCancel,
+  loading,
+  handleOk,
+}: RenderFooterClassType) => {
+  switch (tableActionModal) {
+    case "edit subscription":
+      return (
+        <Flex gap="small">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            className="w-full"
+            size="large"
+          >
+            Cancel
+          </Button>
+
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            className="w-full"
+            size="large"
+          >
+            Edit Plan
+          </Button>
+        </Flex>
+      );
+
+    default:
+      break;
   }
 };

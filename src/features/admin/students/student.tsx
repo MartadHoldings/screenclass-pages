@@ -1,131 +1,25 @@
-"use client";
-import React from "react";
-// import DataTable from "@/components/tables/DataTable";
-import { studentData } from "@/data";
-import { Modal } from "antd";
-import { useAppInteractionContext } from "@/context/modal-state-context";
-// import UserInfo from "@/components/modals/user-info";
-// import DangerousActionModal from "@/components/modals/dangerous-action";
-import {
-  renderActionsModalStudent,
-  renderFooter,
-} from "@/helpers/action-on-tables";
-import DynamicTable from "@/components/tables/dynamic-data-table";
+// This is the Overview component that will be rendered in the admin dashboard
+// It will contain the Client component
+// The Client component will contain the stats cards and the dynamic table
 
-export const Student = () => {
-  const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
-  const [loading, setLoading] = React.useState(false);
+import { getStudents } from "@/queries/students";
+import { Client } from "./Client";
 
-  const handleCancel = () => {
-    setActiveDropDown(null);
-  };
+export const Student = async () => {
+  const response = await getStudents(1, 0);
 
-  const handleOk = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setActiveDropDown(null);
-      setLoading(false);
-    }, 2000);
-  };
+  console.log(response);
 
-  // const renderActionsModal = (action: string | null) => {
-  //   switch (action) {
-  //     case "View Guardian Details":
-  //       return <UserInfo type="guardian" />;
-  //     case "Suspend Guardian":
-  //       return <DangerousActionModal actionType="suspend" user="guardian" />;
-  //     case "Delete Guardian":
-  //       return <DangerousActionModal actionType="delete" user="guardian" />;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  if ("data" in response) {
+    return (
+      <>
+        <h2 className="text-[1.3rem] font-semibold">All Students</h2>
 
-  // const renderFooter = (action: string | null) => {
-  //   switch (action) {
-  //     case "View Student Details":
-  //       return (
-  //         <Button
-  //           key="back"
-  //           onClick={handleCancel}
-  //           size="large"
-  //           className="w-full"
-  //           type="primary"
-  //         >
-  //           Return
-  //         </Button>
-  //       );
-
-  //     case "Suspend Student":
-  //     case "Delete Student": // ✅ Uses the same footer for both cases
-  //       return (
-  //         <Flex gap="small">
-  //           <Button
-  //             key="back"
-  //             onClick={handleCancel}
-  //             size="large"
-  //             className="w-full"
-  //           >
-  //             Cancel
-  //           </Button>
-  //           <Button
-  //             key="submit"
-  //             type="primary"
-  //             loading={loading}
-  //             onClick={handleOk}
-  //             size="large"
-  //             className="w-full"
-  //           >
-  //             {action === "Suspend Student" ? "Suspend" : "Delete"}
-  //           </Button>
-  //         </Flex>
-  //       );
-
-  //     case "Subscribe for Student":
-  //       return (
-  //         <Button
-  //           key="submit"
-  //           type="primary"
-  //           loading={loading}
-  //           onClick={handleOk}
-  //           size="large"
-  //           className="w-full"
-  //         >
-  //           Subscribe
-  //         </Button>
-  //       );
-
-  //     default:
-  //       return null;
-  //   }
-  // };
-  return (
-    <>
-      <h2 className="text-[1.3rem] font-semibold">All Students</h2>
-
-      <div className="mt-10">
-        <DynamicTable
-          data={studentData}
-          dropdownAction
-          dropdownType="student"
-        />{" "}
-      </div>
-
-      <Modal
-        open={activeDropDown != null}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        confirmLoading={loading}
-        centered
-        footer={renderFooter({
-          activeDropDown,
-          handleCancel,
-          handleOk,
-          loading,
-        })}
-      >
-        {renderActionsModalStudent(activeDropDown)}
-      </Modal>
-    </>
-  );
+        <Client studentsData={response.data} />
+      </>
+    );
+  } else {
+    // handle the error case
+    return <div>Error loading students table</div>;
+  }
 };

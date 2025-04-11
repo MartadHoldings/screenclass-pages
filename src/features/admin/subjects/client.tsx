@@ -2,7 +2,6 @@
 import React from "react";
 import { Button, Modal } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
-import { subjectData } from "@/data";
 import DynamicTable from "@/components/tables/dynamic-data-table";
 import { TableData } from "@/types";
 import { useDataContext } from "@/context/data-context";
@@ -10,10 +9,17 @@ import {
   renderSubjectActionsModal,
   renderSubjectModalsFooter,
 } from "@/helpers/action-on-tables";
+import { SubjectsData } from "@/types/queries";
+import { addTopicToSubject } from "@/queries/subjects";
+import { toast } from "sonner";
 
-export default function Client() {
+export default function Client({
+  subjectsData,
+}: {
+  subjectsData: SubjectsData;
+}) {
   const { setTableActionModal, tableActionModal } = useAppInteractionContext();
-  const { editingRow, setEditingRow } = useDataContext();
+  const { editingRow, setEditingRow, addNew, setAddNew } = useDataContext();
   const [loading, setLoading] = React.useState(false);
 
   const onEdit = (record: TableData) => {
@@ -27,16 +33,35 @@ export default function Client() {
     alert(`you just deleted ${key}`);
   };
 
+  const addTopic = (record: TableData) => {
+    setTableActionModal("add topic to subject");
+    setEditingRow(record);
+  };
+
   const handleCancel = () => {
     setTableActionModal(null);
   };
 
-  const handleOk = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setTableActionModal(null);
-      setLoading(false);
-    }, 2000);
+  const handleOk = async () => {
+    if (tableActionModal === "add topic to subject") {
+      setLoading(true);
+      try {
+        const response = await addTopicToSubject({ form: addNew });
+        if (!response.success) {
+          toast.error(response.message);
+          return;
+        } else {
+          toast.success(response.data?.message);
+          console.log(response.data);
+        }
+      } catch (error) {
+        toast.error("An error occurred. Please try again.");
+      } finally {
+        setLoading(false);
+        setTableActionModal(null);
+        setAddNew({ name: "", subjectId: "" });
+      }
+    }
   };
 
   return (
@@ -61,17 +86,22 @@ export default function Client() {
       </div>
 
       <div className="mt-10">
-        {subjectData.map((data) => (
-          <div key={data.id}>
+        {subjectsData?.data.map((data) => (
+          <div key={data._id}>
             <h3 className="text-base font-semibold uppercase text-slate-600">
-              {data.class}
+              {data.name}
             </h3>
             <div>
-              {/* <AntDataTable data={data.subjects} type="subject" /> */}
               <DynamicTable
-                data={data.subjects}
+                data={data.subjects.map((subject) => ({
+                  key: subject._id,
+                  subject: subject.name,
+                  status: subject.status,
+                  topics: subject.topics.length,
+                }))}
                 onAddContent
-                onEdit={onEdit}
+                addTopic={addTopic}
+                // onEdit={onEdit}
                 onDelete={onDelete}
               />
             </div>

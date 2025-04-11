@@ -1,41 +1,47 @@
+"use client";
 import React from "react";
 import { UserRound } from "lucide-react";
+import { useAppContext } from "@/context/app-context";
 
-const studentDetails = [
-  { label: "Class", value: "Common Ent Prep" },
-  { label: "Phone number", value: "+2349157505114" },
-  { label: "Email Address", value: "test@gmail.com" },
-  { label: "User ID", value: "SCS112" },
-  { label: "Plan", value: "Premium" },
-  { label: "Plan Deal", value: "7 days" },
-  { label: "Expiry Date", value: "soon" },
-  { label: "Last Login", value: "20/06/2023 at 04:00:22pm" },
-  { label: "Guardian", value: "Debbie Ann" },
-  { label: "Subjects", value: "English Language, Mathematics, Basic Science" },
-  { label: "Status", value: "Active", valueClass: "text-green-600" },
-];
+export default function UserInfo() {
+  const { userDetails } = useAppContext();
 
-const guardianDetails = [
-  { label: "Phone number", value: "+2349157505114" },
-  { label: "Email Address", value: "test@gmail.com" },
-  { label: "User ID", value: "SCS112" },
-  { label: "Plan", value: "Premium" },
-  { label: "Date registered", value: "yesterday" },
-  { label: "Last Login", value: "20/06/2023 at 04:00:22pm" },
-  { label: "Student", value: "Debbie Ann and 3 others" },
-  {
-    label: "Status",
-    value: "Active",
-    valueClass: "text-green-600 font-bold text-[15px]",
-  },
-];
+  const { mobile, email, scid, guardian, status, level } = userDetails || {};
+  // console.log("info", userDetails);
 
-export default function UserInfo({ type }: { type: "student" | "guardian" }) {
-  const data = type === "student" ? studentDetails : guardianDetails;
+  const formattedData = [
+    {
+      label: "Mobile",
+      value: mobile || "N/A",
+    },
+    {
+      label: "Email",
+      value: email || "N/A",
+    },
+    {
+      label: "ID",
+      value: scid || "N/A",
+    },
+
+    { label: "Level", value: level?.name || "N/A" },
+    { label: "Status", value: status || "N/A" },
+    {
+      label: "Guardian Name",
+      value:
+        guardian?.firstName && guardian?.lastName
+          ? `${guardian.firstName} ${guardian.lastName}`
+          : "No guardian",
+    },
+  ];
+
+  // console.log(formattedData);
+
   return (
     <div>
       <div className="mb-4 flex items-center justify-between border-b pb-2">
-        <h2 className="text-lg font-semibold">Temilolas Details</h2>
+        <h2 className="text-lg font-semibold">
+          {`${userDetails?.firstName + "'s"} Details`}
+        </h2>
       </div>
       <div className="mb-4 flex items-center">
         <div className="w-[30%]">
@@ -44,23 +50,23 @@ export default function UserInfo({ type }: { type: "student" | "guardian" }) {
           </div>
         </div>
 
-        <div className="w-[70%]">
-          <h3 className="text-xl font-semibold">Temilola Ann</h3>
-          <p className="text-orange-500">{type}</p>
-          <p className="text-balance text-xs text-gray-600">
-            Lorem ipsum dolor sit amet consectetur. Curabitur velit euismod
-            gravida fringilla lacus malesuada. Sed eget praesent.
-          </p>
+        <div className="w-[70%] space-y-3">
+          <h3 className="text-xl font-semibold">{`${userDetails?.firstName} ${userDetails?.lastName}`}</h3>
+          <p className="text-orange-500">{userDetails?.role}</p>
         </div>
       </div>
       <div className="space-y-3">
-        {data.map(({ label, value, valueClass = "" }, index) => (
+        {formattedData.map(({ label, value }, index) => (
           <div key={index} className="flex items-center gap-2">
             <div className="flex w-[30%] justify-end">
               <span className="text-right text-sm font-semibold">{label}:</span>
             </div>
             <div className="flex w-[70%] justify-start">
-              <span className={`text-left text-xs ${valueClass}`}>{value}</span>
+              <span
+                className={`text-left text-xs ${value === "enabled" && "text-green-500"}`}
+              >
+                {value}
+              </span>
             </div>
           </div>
         ))}
