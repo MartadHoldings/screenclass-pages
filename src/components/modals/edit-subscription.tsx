@@ -1,22 +1,29 @@
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { TableData } from "@/types";
+import { CreateSubscription, TableData } from "@/types";
 
-export default function EditSubscription({
-  editingRow,
-}: {
-  editingRow: TableData;
-}) {
+type ComponentType = {
+  form: CreateSubscription;
+  setForm: React.Dispatch<React.SetStateAction<CreateSubscription>>;
+};
+
+export default function EditSubscription({ form, setForm }: ComponentType) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
   return (
     <div className="space-y-3">
       <div className="my-5 grid w-full gap-2">
         <Label htmlFor="validity">Enter Valid Period</Label>
         <Input
-          type="text"
+          type="number"
           id="validity"
           placeholder="30 days"
-          defaultValue={editingRow.validity}
+          name="validity"
+          // defaultValue={editingRow?.validity || ""}
+          value={form.validity || ""}
+          onChange={handleChange}
         />
       </div>{" "}
       <div className="my-5 grid w-full gap-2">
@@ -25,7 +32,10 @@ export default function EditSubscription({
           type="text"
           id="plan_name"
           placeholder="Pro"
-          defaultValue={editingRow.name}
+          name="name"
+          // defaultValue={editingRow?.name || ""}
+          value={form.name || ""}
+          onChange={handleChange}
         />
       </div>{" "}
       <div className="my-5 grid w-full gap-2">
@@ -33,8 +43,11 @@ export default function EditSubscription({
         <Input
           type="text"
           id="price"
+          name="price"
           placeholder="NGN 200"
-          defaultValue={editingRow.price}
+          // defaultValue={editingRow?.price || ""}
+          value={form.price || ""}
+          onChange={handleChange}
         />
       </div>
     </div>

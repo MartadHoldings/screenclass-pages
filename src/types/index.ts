@@ -110,3 +110,9 @@ export type QuizAction =
   | { type: "REMOVE_QUESTION"; index: string }
   | { type: "REMOVE_OPTION"; qIndex: number; oIndex: number }
   | { type: "RESET_FORM" };
+
+export type CreateSubscription = {
+  name: string;
+  validity: number;
+  price: string;
+};

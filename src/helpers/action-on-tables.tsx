@@ -314,22 +314,6 @@ export const renderSubjectModalsFooter = ({
   }
 };
 
-export const renderSubscriptionsModal = ({
-  tableActionModal,
-  editingRow,
-}: RenderSubjectActionType) => {
-  switch (tableActionModal) {
-    case "edit subscription":
-      return editingRow && <EditSubscription editingRow={editingRow} />;
-    // case "add topic to subject":
-    //   return editingRow && <AddTopic editingRow={editingRow} />;
-    // case "delete subjects":
-    //   return <DeleteActionModal variant="subjects" />;
-    default:
-      return null;
-  }
-};
-
 export const renderSubscriptionsFooter = ({
   tableActionModal,
   handleCancel,
