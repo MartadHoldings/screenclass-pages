@@ -112,7 +112,13 @@ export type QuizAction =
   | { type: "RESET_FORM" };
 
 export type CreateSubscription = {
+  id?: number;
   name: string;
   validity: number;
   price: string;
+};
+
+export type Createsubject = {
+  name: string;
+  classId: string;
 };

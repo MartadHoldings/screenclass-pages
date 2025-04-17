@@ -21,7 +21,6 @@ export default function EditSubscription({ form, setForm }: ComponentType) {
           id="validity"
           placeholder="30 days"
           name="validity"
-          // defaultValue={editingRow?.validity || ""}
           value={form.validity || ""}
           onChange={handleChange}
         />
@@ -33,7 +32,6 @@ export default function EditSubscription({ form, setForm }: ComponentType) {
           id="plan_name"
           placeholder="Pro"
           name="name"
-          // defaultValue={editingRow?.name || ""}
           value={form.name || ""}
           onChange={handleChange}
         />
@@ -45,7 +43,6 @@ export default function EditSubscription({ form, setForm }: ComponentType) {
           id="price"
           name="price"
           placeholder="NGN 200"
-          // defaultValue={editingRow?.price || ""}
           value={form.price || ""}
           onChange={handleChange}
         />

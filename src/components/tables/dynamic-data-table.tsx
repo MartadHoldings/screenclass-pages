@@ -16,7 +16,7 @@ interface TableComponentProps<T extends TableData> {
   onAddContent?: boolean;
   dropdownAction?: boolean;
   dropdownType?: "student" | "guardian";
-  onEdit?: (key: React.Key) => void;
+  onEdit?: (record: T) => void;
   onDelete?: (key: React.Key) => void;
   addTopic?: (record: T) => void;
 }
@@ -95,7 +95,7 @@ const DynamicTable = <T extends TableData>({
       render: (_text, record) => (
         <div className="flex gap-2">
           {onEdit && (
-            <Button type="primary" onClick={() => onEdit(record.key)}>
+            <Button type="primary" onClick={() => onEdit(record)}>
               Edit
             </Button>
           )}

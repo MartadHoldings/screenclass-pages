@@ -3,11 +3,11 @@ import {
   DangerousActionModal,
   SubscribeStudent,
 } from "@/components/modals";
-import AddNew from "@/components/modals/add-new";
+import AddNewSubject from "@/components/modals/add-new-subject";
+import AddNew from "@/components/modals/add-new-subject";
 import AddTopic from "@/components/modals/add-topic";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
 import EditClass from "@/components/modals/edit-class";
-import EditSubscription from "@/components/modals/edit-subscription";
 import { ActiveDropDown } from "@/context/modal-state-context";
 import { TableData } from "@/types";
 import { Button, Flex } from "antd";
@@ -138,7 +138,7 @@ export const renderClassActionsModal = ({
 }: RenderClassActionType) => {
   switch (tableActionModal) {
     case "add new class":
-      return <AddNew type="class" />;
+    // return <AddNewSubject />;
     case "edit class cell":
       return editingRow && <EditClass editingRow={editingRow} type="class" />;
     case "delete classes":
@@ -216,7 +216,7 @@ export const renderSubjectActionsModal = ({
 }: RenderSubjectActionType) => {
   switch (tableActionModal) {
     case "add new subject":
-      return <AddNew type="subject" />;
+      return <AddNewSubject />;
     case "edit subject cell":
       return editingRow && <EditClass editingRow={editingRow} type="subject" />;
     case "add topic to subject":
@@ -235,32 +235,32 @@ export const renderSubjectModalsFooter = ({
   loading,
 }: RenderFooterClassType) => {
   switch (tableActionModal) {
-    // case "add new subject":
-    // case "delete subjects":
-    //   return (
-    //     <Flex gap="small">
-    //       <Button
-    //         key="back"
-    //         onClick={handleCancel}
-    //         size="large"
-    //         className="w-full"
-    //       >
-    //         Cancel
-    //       </Button>
-    //       <Button
-    //         key="submit"
-    //         type="primary"
-    //         loading={loading}
-    //         onClick={handleOk}
-    //         size="large"
-    //         className="w-full"
-    //       >
-    //         {tableActionModal === "delete subjects"
-    //           ? "Delete Selections"
-    //           : "Add Subject"}
-    //       </Button>
-    //     </Flex>
-    //   );
+    case "add new subject":
+    case "delete subjects":
+      return (
+        <Flex gap="small">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            size="large"
+            className="w-full"
+          >
+            Cancel
+          </Button>
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+            size="large"
+            className="w-full"
+          >
+            {tableActionModal === "delete subjects"
+              ? "Delete Selections"
+              : "Add Subject"}
+          </Button>
+        </Flex>
+      );
     // case "edit subject cell":
     //   return (
     //     <Flex gap="small">

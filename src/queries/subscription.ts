@@ -142,4 +142,44 @@ const createSubscription = async (
   }
 };
 
-export { subscribeUser, getSubscriptionPlans, deletePlan, createSubscription };
+const editSubscription = async (
+  form: CreateSubscription,
+): Promise<ApiResponse<any> | ApiError> => {
+  const token = await getAuthToken();
+
+  try {
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/plans/${form.id}`,
+      { name: form.name, validity: Number(form.validity), price: form.price },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    revalidatePath("/dashboard/subscription-plans");
+    return { success: true, data: res.data.data }; // ✅ Fix: Access `.data.data`
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data?.message || "Could't edit this subscription",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+export {
+  subscribeUser,
+  getSubscriptionPlans,
+  deletePlan,
+  createSubscription,
+  editSubscription,
+};

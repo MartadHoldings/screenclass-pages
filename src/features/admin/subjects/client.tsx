@@ -22,11 +22,11 @@ export default function Client({
   const { editingRow, setEditingRow, addNew, setAddNew } = useDataContext();
   const [loading, setLoading] = React.useState(false);
 
-  const onEdit = (record: TableData) => {
-    setEditingRow(record);
-    setTableActionModal("edit subject cell");
-    console.log("Edit clicked for: ", record);
-  };
+  // const onEdit = (record: TableData) => {
+  //   setEditingRow(record);
+  //   setTableActionModal("edit subject cell");
+  //   console.log("Edit clicked for: ", record);
+  // };
 
   const onDelete = (key: React.Key) => {
     // setData((prevData) => prevData.filter((item) => item.key !== key));
@@ -67,14 +67,14 @@ export default function Client({
   return (
     <>
       <div className="mt-5 flex w-full items-center justify-between">
-        <Button
+        {/* <Button
           color="danger"
           size="large"
           variant="solid"
           onClick={() => setTableActionModal("delete subjects")}
         >
           Delete
-        </Button>
+        </Button> */}
         <Button
           size="large"
           variant="solid"

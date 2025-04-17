@@ -1,8 +1,10 @@
 "use client";
 import DynamicTable from "@/components/tables/dynamic-data-table";
-import { useDataContext } from "@/context/data-context";
-import { useAppInteractionContext } from "@/context/modal-state-context";
-import { createSubscription, deletePlan } from "@/queries/subscription";
+import {
+  createSubscription,
+  deletePlan,
+  editSubscription,
+} from "@/queries/subscription";
 import { SubscriptionPlan } from "@/types/queries";
 import { Modal, Button, Flex } from "antd";
 import React, { useState } from "react";
@@ -11,28 +13,28 @@ import { CreateSubscription, TableData } from "@/types";
 import EditSubscription from "@/components/modals/edit-subscription";
 
 const initialState: CreateSubscription = {
+  id: 0,
   name: "",
   validity: 0,
   price: "",
 };
+
+const initialType = "create";
 
 export default function Client({
   subscriptionData,
 }: {
   subscriptionData: SubscriptionPlan[];
 }) {
+  const [open, setOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  const [actionType, setActionType] = useState("create");
-
-  const { editingRow, setEditingRow } = useDataContext();
-
-  const { tableActionModal, setTableActionModal } = useAppInteractionContext();
+  const [actionType, setActionType] = useState<"edit" | "create">(initialType);
 
   const [form, setForm] = useState(initialState);
 
   const onDelete = async (key: React.Key) => {
-    // alert(key);
     try {
       const res = await deletePlan(key as string);
       if (res.success) {
@@ -45,6 +47,17 @@ export default function Client({
       console.log(error);
       throw error;
     }
+  };
+
+  const onEdit = (record: TableData | null) => {
+    setForm({
+      id: record?.key,
+      name: record?.name,
+      validity: record?.validity,
+      price: record?.price,
+    });
+    setOpen(true);
+    setActionType("edit");
   };
 
   const handleCreateSubscription = async () => {
@@ -63,21 +76,44 @@ export default function Client({
       throw error;
     } finally {
       setLoading(false);
-      setTableActionModal(null);
+      setOpen(false);
       setForm(initialState);
+    }
+  };
+
+  const handleEditSubscription = async () => {
+    setLoading(true);
+    try {
+      const res = await editSubscription(form);
+      if (res.success) {
+        console.log(res);
+        toast.success(res.data?.message || "Subscription Edited");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setLoading(false);
+      setOpen(false);
+      setForm(initialState);
+      setActionType(initialType);
     }
   };
 
   const handleOk = () => {
     if (actionType === "create") {
       handleCreateSubscription();
+    } else {
+      handleEditSubscription();
     }
   };
 
   const handleCancel = () => {
-    setEditingRow(null);
-    setTableActionModal(null);
+    setOpen(false);
     setForm(initialState);
+    setActionType(initialType);
   };
 
   const renderSubscriptionsFooter = () => {
@@ -113,9 +149,9 @@ export default function Client({
           size="large"
           variant="solid"
           color="orange"
-          onClick={() => setTableActionModal("add new class")}
+          onClick={() => setOpen(true)}
         >
-          Add New Level
+          Add New Subscription
         </Button>
       </div>
       <DynamicTable
@@ -127,11 +163,12 @@ export default function Client({
           status: planItem.status,
         }))}
         onDelete={onDelete}
+        onEdit={onEdit}
       />
 
       <Modal
-        open={Boolean(tableActionModal !== null)}
-        // onOk={handleOk}
+        open={open}
+        onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={loading}
         centered
