@@ -147,9 +147,79 @@ const addSubjectToClass = async ({
   }
 };
 
+const deleteTopicFrmSubj = async (
+  id: string,
+): Promise<ApiResponse<any> | ApiError> => {
+  const token = await getAuthToken();
+
+  try {
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/topic/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    revalidatePath("/dashboard/class-subjects");
+
+    return { success: true, data: res.data }; // ✅ Fix: Access `.data.data`
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Unable to delete Topic",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
+const deleteSubject = async (
+  id: string,
+): Promise<ApiResponse<any> | ApiError> => {
+  const token = await getAuthToken();
+
+  try {
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/subject/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    revalidatePath("/dashboard/class-subjects");
+
+    return { success: true, data: res.data }; // ✅ Fix: Access `.data.data`
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Unable to delete Subject",
+        statusCode: error.response.status,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
 export {
   getClassSubjects,
   addTopicToSubject,
   getTopicsUnderSubject,
   addSubjectToClass,
+  deleteTopicFrmSubj,
+  deleteSubject,
 };

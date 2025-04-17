@@ -33,6 +33,8 @@ export default function SubscribeStudent() {
       }
     } catch (error) {
       console.error("Unexpected error:", error);
+    } finally {
+      setSelectedPlan("");
     }
   };
 
@@ -54,7 +56,7 @@ export default function SubscribeStudent() {
         <Select
           style={{ width: "100%" }}
           onChange={handleChange}
-          value={selectedPlan}
+          value={selectedPlan || undefined}
           options={plans.map((plan) => ({
             value: plan._id,
             label: `${plan.name} valid for ${plan.validity} days @ ${plan.price} NGN`,

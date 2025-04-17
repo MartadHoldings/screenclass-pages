@@ -10,7 +10,11 @@ import {
   renderSubjectModalsFooter,
 } from "@/helpers/action-on-tables";
 import { SubjectsData } from "@/types/queries";
-import { addTopicToSubject } from "@/queries/subjects";
+import {
+  addTopicToSubject,
+  deleteTopicFrmSubj,
+  deleteSubject,
+} from "@/queries/subjects";
 import { toast } from "sonner";
 
 export default function Client({
@@ -18,19 +22,30 @@ export default function Client({
 }: {
   subjectsData: SubjectsData;
 }) {
-  const { setTableActionModal, tableActionModal } = useAppInteractionContext();
+  const {
+    setTableActionModal,
+    tableActionModal,
+    setSelectedPlan,
+    selectedPlan,
+  } = useAppInteractionContext();
   const { editingRow, setEditingRow, addNew, setAddNew } = useDataContext();
   const [loading, setLoading] = React.useState(false);
 
-  // const onEdit = (record: TableData) => {
-  //   setEditingRow(record);
-  //   setTableActionModal("edit subject cell");
-  //   console.log("Edit clicked for: ", record);
-  // };
-
-  const onDelete = (key: React.Key) => {
-    // setData((prevData) => prevData.filter((item) => item.key !== key));
-    alert(`you just deleted ${key}`);
+  const onDelete = async (key: React.Key) => {
+    try {
+      const response = await deleteSubject(key as string);
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      } else {
+        toast.success(response.data?.message);
+        console.log(response.data);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addTopic = (record: TableData) => {
@@ -38,29 +53,78 @@ export default function Client({
     setEditingRow(record);
   };
 
+  const deleteTopic = (Key: React.Key) => {
+    setTableActionModal("delete topic");
+    setEditingRow({ key: Key });
+  };
+
+  const handleAddTopic = async () => {
+    setLoading(true);
+    try {
+      const response = await addTopicToSubject({ form: addNew });
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      } else {
+        toast.success(response.data?.message);
+        console.log(response.data);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+      setTableActionModal(null);
+      setAddNew({ name: "", subjectId: "" });
+      setEditingRow(null);
+    }
+  };
+
+  const handleDeleteTopic = async () => {
+    setLoading(true);
+    try {
+      if (!selectedPlan) {
+        toast.error("No plan selected. Please select a plan.");
+        setLoading(false);
+        return;
+      }
+      const response = await deleteTopicFrmSubj(selectedPlan);
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      } else {
+        toast.success(response.data?.message);
+        console.log(response.data);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+      // setTableActionModal(null);
+      // setEditingRow(null);
+      // setSelectedPlan(null);
+      handleCancel();
+    }
+  };
+
   const handleCancel = () => {
     setTableActionModal(null);
+    setEditingRow(null);
+    setSelectedPlan(null);
+    setAddNew({ name: "", subjectId: "" });
   };
 
   const handleOk = async () => {
-    if (tableActionModal === "add topic to subject") {
-      setLoading(true);
-      try {
-        const response = await addTopicToSubject({ form: addNew });
-        if (!response.success) {
-          toast.error(response.message);
-          return;
-        } else {
-          toast.success(response.data?.message);
-          console.log(response.data);
-        }
-      } catch (error) {
-        toast.error("An error occurred. Please try again.");
-      } finally {
-        setLoading(false);
-        setTableActionModal(null);
-        setAddNew({ name: "", subjectId: "" });
-      }
+    switch (tableActionModal) {
+      case "add topic to subject":
+        await handleAddTopic();
+        break;
+
+      case "delete topic":
+        await handleDeleteTopic();
+        break;
+
+      default:
+        return null;
     }
   };
 
@@ -100,8 +164,8 @@ export default function Client({
                   topics: subject.topics.length,
                 }))}
                 onAddContent
+                onDeleteTopic={deleteTopic}
                 addTopic={addTopic}
-                // onEdit={onEdit}
                 onDelete={onDelete}
               />
             </div>

@@ -7,6 +7,7 @@ import AddNewSubject from "@/components/modals/add-new-subject";
 import AddNew from "@/components/modals/add-new-subject";
 import AddTopic from "@/components/modals/add-topic";
 import DeleteActionModal from "@/components/modals/delete-action-modal";
+import DeleteTopic from "@/components/modals/delete-topic";
 import EditClass from "@/components/modals/edit-class";
 import { ActiveDropDown } from "@/context/modal-state-context";
 import { TableData } from "@/types";
@@ -217,12 +218,14 @@ export const renderSubjectActionsModal = ({
   switch (tableActionModal) {
     case "add new subject":
       return <AddNewSubject />;
-    case "edit subject cell":
-      return editingRow && <EditClass editingRow={editingRow} type="subject" />;
+    // case "edit subject cell":
+    //   return editingRow && <EditClass editingRow={editingRow} type="subject" />;
     case "add topic to subject":
       return editingRow && <AddTopic editingRow={editingRow} />;
-    case "delete subjects":
-      return <DeleteActionModal variant="subjects" />;
+    // case "delete subjects":
+    //   return <DeleteActionModal variant="subjects" />;
+    case "delete topic":
+      return <DeleteTopic editingRow={editingRow} />;
     default:
       return null;
   }
@@ -286,6 +289,7 @@ export const renderSubjectModalsFooter = ({
     //   );
 
     case "add topic to subject":
+    case "delete topic":
       return (
         <Flex gap="small">
           <Button
@@ -298,13 +302,18 @@ export const renderSubjectModalsFooter = ({
           </Button>
           <Button
             key="submit"
-            type="primary"
+            color={
+              tableActionModal === "add topic to subject" ? "blue" : "danger"
+            }
+            variant="solid"
             loading={loading}
             onClick={handleOk}
             size="large"
             className="w-full"
           >
-            Add Topic
+            {tableActionModal === "add topic to subject"
+              ? "Add Topic"
+              : "Delete Topic"}
           </Button>
         </Flex>
       );

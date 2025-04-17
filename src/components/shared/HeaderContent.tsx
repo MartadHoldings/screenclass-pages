@@ -8,9 +8,9 @@ export default function HeaderContent() {
     <div className="flex h-full items-center justify-between px-6">
       <h1 className="text-lg font-bold">Dashboard</h1>
       <div className="flex h-fit w-fit items-center space-x-6">
-        <Button size="icon" variant="outline">
+        {/* <Button size="icon" variant="outline">
           <SearchOutlined />
-        </Button>
+        </Button> */}
         <BellFilled
           size={50}
           style={{ fontSize: "24px", color: "#C5C7CD", cursor: "pointer" }}
