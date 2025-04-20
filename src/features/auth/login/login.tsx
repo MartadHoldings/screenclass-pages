@@ -105,7 +105,7 @@ export const Login = () => {
             </Button>
           </form>
 
-          <div className="mt-auto">
+          <div className="mt-10">
             <p className="text-center text-slate-500">
               Don’t have an account? contact a superadmin to create one for you
             </p>
