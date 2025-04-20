@@ -62,7 +62,6 @@ export type CreateAdmin = {
   email: string;
   password: string;
   role: string;
-  username: string;
 };
 
 export type SubscribeUser = {
@@ -111,3 +110,15 @@ export type QuizAction =
   | { type: "REMOVE_QUESTION"; index: string }
   | { type: "REMOVE_OPTION"; qIndex: number; oIndex: number }
   | { type: "RESET_FORM" };
+
+export type CreateSubscription = {
+  id?: number;
+  name: string;
+  validity: number;
+  price: string;
+};
+
+export type Createsubject = {
+  name: string;
+  classId: string;
+};

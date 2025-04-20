@@ -19,6 +19,7 @@ interface TableComponentProps<T extends TableData> {
   onEdit?: (record: T) => void;
   onDelete?: (key: React.Key) => void;
   addTopic?: (record: T) => void;
+  onDeleteTopic?: (key: React.Key) => void;
 }
 
 const DynamicTable = <T extends TableData>({
@@ -29,6 +30,7 @@ const DynamicTable = <T extends TableData>({
   onEdit,
   onDelete,
   addTopic,
+  onDeleteTopic,
 }: TableComponentProps<T>) => {
   // Define columns explicitly without auto-generating from keys
   const columns: TableColumnsType<T> = [];
@@ -88,7 +90,14 @@ const DynamicTable = <T extends TableData>({
   }
 
   // Add actions column if onEdit or onDelete exists
-  if (onEdit || onDelete || onAddContent || dropdownAction || addTopic) {
+  if (
+    onEdit ||
+    onDelete ||
+    onAddContent ||
+    dropdownAction ||
+    addTopic ||
+    onDeleteTopic
+  ) {
     columns.push({
       title: "Actions",
       key: "actions",
@@ -105,6 +114,12 @@ const DynamicTable = <T extends TableData>({
             </Button>
           )}
 
+          {onDeleteTopic && (
+            <Button danger onClick={() => onDeleteTopic(record.key)}>
+              Delete a Topic
+            </Button>
+          )}
+
           {onAddContent && (
             <Button type="primary">
               <Link href={`/dashboard/class-subjects/${record.key}`}>
@@ -112,6 +127,7 @@ const DynamicTable = <T extends TableData>({
               </Link>
             </Button>
           )}
+
           {dropdownAction ? (
             dropdownType === "student" ? (
               <StudentActionDropdown record={record}>
@@ -131,7 +147,7 @@ const DynamicTable = <T extends TableData>({
               okText="Yes"
               cancelText="No"
             >
-              <Button danger>Delete</Button>
+              <Button danger>Delete Row</Button>
             </Popconfirm>
           )}
         </div>

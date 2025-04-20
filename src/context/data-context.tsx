@@ -11,7 +11,7 @@ interface DataContextType {
   data: TableData[];
   setData: React.Dispatch<React.SetStateAction<TableData[]>>;
   editingRow: TableData | null;
-  setEditingRow: (row: TableData | null) => void;
+  setEditingRow: React.Dispatch<React.SetStateAction<TableData | null>>;
   addNew: AddNew | null;
   setAddNew: React.Dispatch<React.SetStateAction<AddNew | null>>;
   deleteSelectedRows: DataType[];

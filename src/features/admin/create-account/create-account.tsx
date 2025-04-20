@@ -7,15 +7,16 @@ import { toast } from "sonner";
 import { createAdmin } from "@/queries/auth";
 import { CreateAdmin } from "@/types";
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  role: "",
+  email: "",
+  password: "",
+};
+
 export const CreateAccount = () => {
-  const [form, setForm] = useState<CreateAdmin>({
-    firstName: "",
-    lastName: "",
-    role: "",
-    email: "",
-    password: "",
-    username: "",
-  });
+  const [form, setForm] = useState<CreateAdmin>(initialState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,6 +48,8 @@ export const CreateAccount = () => {
       } catch (error) {
         console.log(error); // ✅ Now correctly logs
         toast.error("something went wrong");
+      } finally {
+        setForm(initialState);
       }
     });
   };
@@ -96,6 +99,7 @@ export const CreateAccount = () => {
                 placeholder="you@martad.com"
                 name="email"
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -114,29 +118,16 @@ export const CreateAccount = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="mt-5 w-full space-y-3">
-              <Label htmlFor="password">Username</Label>
-              <Input
-                type="text"
-                id="username"
-                className="h-[50px]"
-                placeholder="Enter a username"
-                name="username"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mt-5 w-full space-y-3">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                type="text"
-                id="password"
-                className="h-[50px]"
-                placeholder="you@email.com"
-                name="password"
-                onChange={handleChange}
-              />
-            </div>
+          <div className="mt-5 w-full space-y-3">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="text"
+              id="password"
+              className="h-[50px]"
+              placeholder="you@email.com"
+              name="password"
+              onChange={handleChange}
+            />
           </div>
 
           <div className="mt-10 flex items-center justify-center">

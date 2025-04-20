@@ -1,139 +1,3 @@
-// "use client";
-
-// import React from "react";
-
-// import {
-//   GuardianProps,
-//   StudentProps,
-//   UserType,
-//   UserType2,
-// } from "@/types/queries";
-
-// interface AppContextProps {
-//   userDetails: UserType2 | null; // student object or null to display student details
-//   setUserDetails: React.Dispatch<React.SetStateAction<UserType2 | null>>;
-// }
-
-// const defaultContext: AppContextProps = {
-//   userDetails: null,
-//   setUserDetails: () => {},
-// };
-
-// // Create the AppContext
-// export const AppContext = React.createContext<AppContextProps>(defaultContext);
-
-// // AppContextProvider component
-// export const AppContextProvider = ({
-//   children,
-// }: React.PropsWithChildren & {}) => {
-//   const [userDetails, setUserDetails] = React.useState<UserType2 | null>(null);
-
-//   // Provide the context
-//   return (
-//     <AppContext.Provider value={{ userDetails, setUserDetails }}>
-//       {children}
-//     </AppContext.Provider>
-//   );
-// };
-
-// export const useAppContext = () => {
-//   const ctx = React.useContext(AppContext);
-//   if (!ctx) {
-//     throw new Error("useAppContext must be used within an AppContextProvider");
-//   }
-//   return ctx;
-// };
-
-// "use client";
-
-// import React, { useReducer } from "react";
-// import {
-//   GuardianProps,
-//   StudentProps,
-//   UserType,
-//   TransformedUser,
-// } from "@/types/queries";
-
-// // Define the transformed user type
-
-// // Reducer action types
-// type Action =
-//   | { type: "SET_USER_DETAILS"; payload: UserType }
-//   | { type: "RESET_USER_DETAILS" };
-
-// // Reducer function to handle state transformation
-// const userReducer = (
-//   state: TransformedUser | null,
-//   action: Action,
-// ): TransformedUser | null => {
-//   switch (action.type) {
-//     case "SET_USER_DETAILS":
-//       return {
-//         mobile: action.payload?.mobile,
-//         email: action.payload?.email,
-//         scid: action.payload?.scid,
-//         guardian: action.payload?.guardian,
-//         status: action.payload?.status,
-//         level: action.payload?.level,
-//         firstName: action.payload?.firstName,
-//         lastName: action.payload?.lastName,
-//         role: action.payload.role,
-//       };
-//     case "RESET_USER_DETAILS":
-//       return null;
-//     default:
-//       return state;
-//   }
-// };
-
-// // Context type definition
-// interface AppContextProps {
-//   userDetails: TransformedUser | null;
-//   setUserDetails: (user: UserType) => void;
-//   resetUserDetails: () => void;
-// }
-
-// // Default context values
-// const defaultContext: AppContextProps = {
-//   userDetails: null,
-//   setUserDetails: () => {},
-//   resetUserDetails: () => {},
-// };
-
-// // Create the AppContext
-// export const AppContext = React.createContext<AppContextProps>(defaultContext);
-
-// // AppContextProvider component
-// export const AppContextProvider = ({ children }: React.PropsWithChildren) => {
-//   const [userDetails, dispatch] = useReducer(userReducer, null);
-
-//   // Functions to dispatch actions
-//   const setUserDetails = (user: UserType) => {
-//     dispatch({ type: "SET_USER_DETAILS", payload: user });
-//   };
-
-//   const resetUserDetails = () => {
-//     dispatch({ type: "RESET_USER_DETAILS" });
-//   };
-
-//   return (
-//     <AppContext.Provider
-//       value={{ userDetails, setUserDetails, resetUserDetails }}
-//     >
-//       {children}
-//     </AppContext.Provider>
-//   );
-// };
-
-// // Custom hook for consuming context
-// export const useAppContext = () => {
-//   const ctx = React.useContext(AppContext);
-//   if (!ctx) {
-//     throw new Error("useAppContext must be used within an AppContextProvider");
-//   }
-//   return ctx;
-// };
-
 "use client";
 import React, { useReducer } from "react";
 import { GuardianProps, StudentProps, UserType } from "@/types/queries";
@@ -148,6 +12,7 @@ interface TransformedUser {
     firstName: string;
   };
   status: string;
+  subscriptionStatus?: boolean;
   level?: {
     _id: string;
     name: string;
@@ -172,6 +37,7 @@ const transformStudent = (user: StudentProps): TransformedUser => ({
   firstName: user.firstName,
   lastName: user.lastName,
   role: user.role,
+  subscriptionStatus: user.subscriptionStatus,
 });
 
 const transformGuardian = (user: GuardianProps): TransformedUser => ({
@@ -222,25 +88,6 @@ export const AppContext = React.createContext<AppContextProps>(defaultContext);
 
 export const AppContextProvider = ({ children }: React.PropsWithChildren) => {
   const [userDetails, dispatch] = useReducer(userReducer, null);
-
-  // const [quizForm, setQuizForm] = useReducer<QuizProps>({
-  //   title: "",
-  //   duration: 0,
-  //   isPublished: true,
-  //   subTopicId: "",
-  //   questions: [
-  //     {
-  //       text: "",
-  //       questionType: "MCQ",
-  //       options: [
-  //         {
-  //           text: "",
-  //           isCorrect: false,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // });
 
   const setUserDetails = (user: UserType) => {
     dispatch({ type: "SET_USER_DETAILS", payload: user });

@@ -6,8 +6,9 @@ import { useAppContext } from "@/context/app-context";
 export default function UserInfo() {
   const { userDetails } = useAppContext();
 
-  const { mobile, email, scid, guardian, status, level } = userDetails || {};
-  // console.log("info", userDetails);
+  const { mobile, email, scid, guardian, status, level, subscriptionStatus } =
+    userDetails || {};
+  console.log("info", userDetails);
 
   const formattedData = [
     {
@@ -24,7 +25,15 @@ export default function UserInfo() {
     },
 
     { label: "Level", value: level?.name || "N/A" },
-    { label: "Status", value: status || "N/A" },
+    { label: "Acc Status", value: status || "N/A" },
+    {
+      label: "Sub Status",
+      value: subscriptionStatus
+        ? "Subscribed"
+        : subscriptionStatus === false
+          ? "No subscription"
+          : "N/A",
+    },
     {
       label: "Guardian Name",
       value:
@@ -33,8 +42,6 @@ export default function UserInfo() {
           : "No guardian",
     },
   ];
-
-  // console.log(formattedData);
 
   return (
     <div>

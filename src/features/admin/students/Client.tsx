@@ -14,12 +14,13 @@ import { toast } from "sonner";
 import { subscribeUser } from "@/queries/subscription";
 
 export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
-  const { activeDropDown, setActiveDropDown, selectedPlan } =
+  const { activeDropDown, setActiveDropDown, selectedPlan, setSelectedPlan } =
     useAppInteractionContext();
   const [loading, setLoading] = React.useState(false);
 
   const handleCancel = () => {
     setActiveDropDown(null);
+    setSelectedPlan("");
   };
 
   const handleOk = async () => {
@@ -86,6 +87,7 @@ export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
       } finally {
         setActiveDropDown(null);
         setLoading(false);
+        setSelectedPlan("");
       }
     }
   };
