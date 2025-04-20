@@ -59,6 +59,10 @@ export default function Client({
   };
 
   const handleAddTopic = async () => {
+    if (!addNew?.name) {
+      toast.warning("Enter a topic name");
+      return;
+    }
     setLoading(true);
     try {
       const response = await addTopicToSubject({ form: addNew });
@@ -80,13 +84,12 @@ export default function Client({
   };
 
   const handleDeleteTopic = async () => {
+    if (!selectedPlan) {
+      toast.warning("No plan selected. Please select a plan.");
+      return;
+    }
     setLoading(true);
     try {
-      if (!selectedPlan) {
-        toast.error("No plan selected. Please select a plan.");
-        setLoading(false);
-        return;
-      }
       const response = await deleteTopicFrmSubj(selectedPlan);
       if (!response.success) {
         toast.error(response.message);
@@ -99,18 +102,14 @@ export default function Client({
       toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
-      // setTableActionModal(null);
-      // setEditingRow(null);
-      // setSelectedPlan(null);
       handleCancel();
     }
   };
 
   const handleCancel = () => {
-    setTableActionModal(null);
     setEditingRow(null);
-    setSelectedPlan(null);
-    setAddNew({ name: "", subjectId: "" });
+    setTableActionModal(null);
+    // setAddNew({ name: "", subjectId: "" });
   };
 
   const handleOk = async () => {
@@ -186,7 +185,10 @@ export default function Client({
           loading,
         })}
       >
-        {renderSubjectActionsModal({ tableActionModal, editingRow })}
+        {renderSubjectActionsModal({
+          tableActionModal,
+          editingRow,
+        })}
       </Modal>
     </>
   );

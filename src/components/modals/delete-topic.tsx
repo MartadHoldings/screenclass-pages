@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Select } from "antd";
+import { Select, Spin } from "antd";
 import { useAppInteractionContext } from "@/context/modal-state-context";
 import { getTopicsUnderSubject } from "@/queries/subjects";
 import { TableData } from "@/types";
@@ -12,30 +12,37 @@ export default function DeleteTopic({
   editingRow: TableData | null;
 }) {
   const [topics, setTopics] = useState<OptionData[]>([]); // ✅ type just contains label and data
+  const [loading, setLoading] = useState(false); // 🌀 loading state
 
   const { selectedPlan, setSelectedPlan } = useAppInteractionContext();
 
-  const fetchTopics = async () => {
-    try {
-      const res = await getTopicsUnderSubject(editingRow?.key);
-      if (res.success) {
-        setTopics(
-          res.data.data.map((topic) => ({
-            label: topic.name,
-            value: topic._id,
-          })),
-        );
-      } else {
-        console.error("Error fetching plans:", res.message);
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-    }
-  };
-
   useEffect(() => {
+    if (!editingRow?.key) return;
+
+    const fetchTopics = async () => {
+      try {
+        setLoading(true);
+        const res = await getTopicsUnderSubject(editingRow.key);
+        if (res.success) {
+          setTopics(
+            res.data.data.map((topic) => ({
+              label: topic.name,
+              value: topic._id,
+            })),
+          );
+        } else {
+          console.error("Error fetching topics:", res.message);
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTopics();
-  }, [editingRow]);
+    setSelectedPlan(""); // reset selection whenever the modal is opened or row changes
+  }, [editingRow, setSelectedPlan]);
 
   const handleSelect = (value: string) => {
     setSelectedPlan(value);
@@ -47,18 +54,22 @@ export default function DeleteTopic({
 
       <div className="my-5 space-y-1">
         <span>Select topic</span>
-        <Select
-          id="topic"
-          showSearch
-          style={{ width: "100%" }}
-          placeholder="Select topic to delete"
-          options={topics}
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-          value={selectedPlan || undefined}
-          onSelect={handleSelect}
-        />
+        {loading ? (
+          <Spin className="mt-2 block" />
+        ) : (
+          <Select
+            id="topic"
+            showSearch
+            style={{ width: "100%" }}
+            placeholder="Select topic to delete"
+            options={topics}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            value={selectedPlan || undefined}
+            onSelect={handleSelect}
+          />
+        )}
       </div>
     </div>
   );

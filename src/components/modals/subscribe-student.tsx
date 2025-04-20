@@ -33,8 +33,6 @@ export default function SubscribeStudent() {
       }
     } catch (error) {
       console.error("Unexpected error:", error);
-    } finally {
-      setSelectedPlan("");
     }
   };
 
@@ -43,7 +41,6 @@ export default function SubscribeStudent() {
   }, []);
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
     setSelectedPlan(value);
   };
 

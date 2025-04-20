@@ -161,9 +161,7 @@ const deleteTopicFrmSubj = async (
         },
       },
     );
-
     revalidatePath("/dashboard/class-subjects");
-
     return { success: true, data: res.data }; // ✅ Fix: Access `.data.data`
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
