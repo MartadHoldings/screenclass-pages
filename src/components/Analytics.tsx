@@ -4,8 +4,12 @@ import { Col, Row, Statistic } from "antd";
 import CountUp from "react-countup";
 import type { StatisticProps } from "antd";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const formatter: StatisticProps["formatter"] = (value) => (
-  <CountUp end={value as number} separator="," />
+  // <CountUp end={value as number} separator="," />
+
+  <CountUp end={value as number} separator="," {...({} as any)} />
 );
 
 export default function Analyitics() {
