@@ -10,7 +10,6 @@ const formatter: StatisticProps["formatter"] = (value) => (
   // <CountUp end={value as number} separator="," />
 
   <CountUp end={value as number} separator="," {...({} as any)} />
-);
 
 export default function Analyitics() {
   return (
