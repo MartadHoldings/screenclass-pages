@@ -1,17 +1,20 @@
 "use client";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import React, { useState } from "react";
+import React from "react";
 import Quiz from "./QuizQuestion";
 import { Label } from "@/components/ui/label";
-import { Select, Button, Modal, Input, message } from "antd";
+import { Select, Button, Modal, Input, message, Spin } from "antd";
 import { OptionData } from "@/features/admin/add-content-to-subject/Client";
-import { getSubtopics } from "@/queries/subtopics";
+// import { getSubtopics } from "@/queries/subtopics";
 import { toast } from "sonner";
 import { useQuizForm } from "@/context/quiz-context";
 import { createQuizToSubtopic } from "@/queries/quizez";
+import { useSubtopics } from "@/hooks/useSubtopics";
 
 const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
-  const [subtopics, setSubtopics] = useState<OptionData[] | null>(null);
+  // const [subtopics, setSubtopics] = useState<OptionData[] | null>(null);
+
+  const { subtopics, fetchSubtopics, loading } = useSubtopics();
 
   const { state, dispatch } = useQuizForm();
 
@@ -35,25 +38,31 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
     dispatch({ type: "RESET_FORM" });
   };
 
-  const fetchSubtopics = async (id: string) => {
-    try {
-      const response = await getSubtopics(id);
+  // const fetchSubtopics = async (id: string) => {
+  //   try {
+  //     const response = await getSubtopics(id);
 
-      if (response.success) {
-        setSubtopics(
-          response.data.data.map((subtopic) => ({
-            label: subtopic.name,
-            value: subtopic._id,
-          })),
-        );
-      } else {
-        console.log(response.message);
-        toast.error(response.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     if (response.success) {
+  //       setSubtopics(
+  //         response.data.data.map((subtopic) => ({
+  //           label: subtopic.name,
+  //           value: subtopic._id,
+  //         })),
+  //       );
+  //     } else {
+  //       console.log(response.message);
+  //       toast.error(response.message);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (topicId) {
+  //     fetchSubtopics(topicId);
+  //   }
+  // }, [topicId]);
 
   const handleSubmit = async () => {
     try {
@@ -133,17 +142,21 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
 
       <div className="flex flex-col space-y-2">
         <Label htmlFor="module_subtopic">Select Sub Topic</Label>
-        <Select
-          id="module-topic"
-          showSearch
-          placeholder="Select topic to add sub topic to"
-          options={subtopics || undefined}
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-          onSelect={handleSubTopicId}
-          value={state.subTopicId || undefined}
-        />
+
+        <Spin spinning={loading}>
+          <Select
+            id="module-topic"
+            showSearch
+            placeholder="Select topic to add sub topic to"
+            options={!loading ? subtopics : []}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            onSelect={handleSubTopicId}
+            value={state.subTopicId || undefined}
+            style={{ width: "100%" }}
+          />
+        </Spin>
       </div>
 
       <div className="flex flex-col space-y-2">
@@ -180,7 +193,7 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
           className="font-bold"
           onClick={showModalConfirm}
         >
-          SUBMIT MATERIAL CONTENT
+          SUBMIT CONTENT MATERIAL
         </Button>
       </div>
     </form>

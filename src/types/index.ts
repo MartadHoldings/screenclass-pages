@@ -90,6 +90,11 @@ export interface QuizProps {
   questions: QuizQuestion[];
 }
 
+export interface AddMoreQuizProps {
+  subTopicId: string;
+  questions: QuizQuestion[];
+}
+
 export type QuizAction =
   | { type: "SET_TITLE"; payload: string }
   | { type: "SET_DURATION"; payload: number }

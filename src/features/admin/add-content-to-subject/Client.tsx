@@ -1,6 +1,6 @@
 "use client";
 import "@ant-design/v5-patch-for-react-19";
-import QuizSection from "@/components/QuizContainer";
+// import QuizSection from "@/components/QuizContainer";
 import { useParams } from "next/navigation";
 import { getTopicsUnderSubject } from "@/queries/subjects";
 import { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { VideoData } from "@/types/queries";
 import AddSubTopic from "./add-subtopic";
 import { Card } from "antd";
+import QuizContainer from "@/components/QuizContainer";
+import AddMoreQuiz from "@/components/AddMoreQuiz";
 
 export type OptionData = {
   label: string;
@@ -21,7 +23,11 @@ const tabList = [
   },
   {
     key: "tab2",
-    tab: "Upload Quizes to sub topic",
+    tab: "Create Quizes for sub topic",
+  },
+  {
+    key: "tab3",
+    tab: "Upload more Quiz to sub topic",
   },
 ];
 
@@ -32,7 +38,8 @@ export const Client = ({ videosData }: { videosData: VideoData | null }) => {
 
   const contentList: Record<string, React.ReactNode> = {
     tab1: <AddSubTopic topics={topics} videosData={videosData} />,
-    tab2: <QuizSection topics={topics} />,
+    tab2: <QuizContainer topics={topics} />,
+    tab3: <AddMoreQuiz topics={topics} />,
   };
 
   const onTab1Change = (key: string) => {
@@ -60,7 +67,8 @@ export const Client = ({ videosData }: { videosData: VideoData | null }) => {
 
   useEffect(() => {
     fetchTopicsViaParams();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

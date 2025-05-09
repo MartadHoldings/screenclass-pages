@@ -224,3 +224,7 @@ export interface SubTopicProps {
 export interface SubTopicsData {
   data: SubTopicProps[];
 }
+
+export interface HasQuizResponse {
+  hasQuiz: boolean;
+}
