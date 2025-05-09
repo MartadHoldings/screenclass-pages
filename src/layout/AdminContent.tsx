@@ -45,7 +45,7 @@ const items: MenuItem[] = [
   getItem("Students", "/dashboard/students", <Users />),
   getItem("Levels", "/dashboard/levels", <ChartLine />),
   getItem("Class & Subjects", "/dashboard/class-subjects", <GraduationCap />),
-  getItem("Payments", "/dashboard/payment-history", <Receipt />),
+  // getItem("Payments", "/dashboard/payment-history", <Receipt />),
   getItem("Subscriptions", "/dashboard/subscription-plans", <Youtube />),
   getItem("Notifications", "/dashboard/notifications", <BellRing />),
   getItem("Create an Account", "/dashboard/create-account", <UserPlus />),
@@ -98,6 +98,7 @@ export default function AdminContent({
       console.log(res);
 
       if (res.success) {
+        localStorage.removeItem("admin"); // or whatever key you stored admin data under
         setLogoutModalOpen(false);
         toast.success(res.data.message);
         router.push("/");

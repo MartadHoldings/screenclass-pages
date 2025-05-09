@@ -39,16 +39,15 @@ export interface Question {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TableData = Record<string, any>;
 
-export type AdminProps = Node & {
-  _id: string;
+export type AdminProps = {
+  _id?: string;
   firstName: string;
   lastName: string;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   role: string;
   ascid: string;
-  access_token: string;
-  __v: number;
+  access_token?: string;
 };
 
 export interface Login {
@@ -87,6 +86,11 @@ export interface QuizProps {
   title: string;
   duration: number;
   isPublished: boolean;
+  subTopicId: string;
+  questions: QuizQuestion[];
+}
+
+export interface AddMoreQuizProps {
   subTopicId: string;
   questions: QuizQuestion[];
 }
