@@ -13,6 +13,22 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface LoginAdmin {
+  message: string;
+  data: {
+    token: string;
+    admin: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      ascid: string;
+      username: string;
+      role: string;
+    };
+  };
+}
+
 export interface StudentProps extends Node {
   _id: string;
   key: number;
@@ -74,6 +90,28 @@ export interface StatsProps {
     totalSubjects: number;
     totalClasses: number;
   };
+}
+
+export interface Chart {
+  date: string;
+  sub: number;
+  unsub: number;
+}
+
+export type Activity = {
+  id: string;
+  message: string;
+  createdAt: string;
+};
+
+export interface ChartsProps {
+  data: {
+    charts: Chart[];
+  };
+}
+
+export interface ActivityProps {
+  data: Activity[];
 }
 
 export interface SubscribeUserProps extends Node {

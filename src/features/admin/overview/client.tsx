@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
-// import StatsCard from "@/components/StatsCards";
-// import { UsersRound, BookOpenText, GraduationCap } from "lucide-react";
 import Activities from "@/components/Activities";
-import { StatsProps, StudentsData } from "@/types/queries";
+import {
+  ActivityProps,
+  ChartsProps,
+  StatsProps,
+  StudentsData,
+} from "@/types/queries";
 import { Client } from "../students/Client";
 import {
   UserSwitchOutlined,
@@ -17,9 +20,13 @@ import { Component } from "@/components/Charts";
 export default function OverviewClient({
   statsData,
   studentsData,
+  chartsData,
+  activitesData,
 }: {
   statsData: StatsProps;
   studentsData: StudentsData;
+  chartsData: ChartsProps;
+  activitesData: ActivityProps;
 }) {
   const stats = [
     {
@@ -85,29 +92,6 @@ export default function OverviewClient({
 
   return (
     <>
-      {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"> */}
-      {/* 
-        {stats.map((stat, index) => (
-          // <StatsCard
-          //   key={index}
-          //   label={stat.label}
-          //   count={stat.count}
-          //   icon={stat.icon}
-          //   iconBgColor={stat.bgColor}
-          // />
-          <Card>
-            <Col className="gutter-row" span={6}>
-              <Statistic
-                title={stat.label}
-                value={stat.count}
-                prefix={stat.icon}
-              />
-            </Col>
-          </Card>
-        ))}
-       */}
-      {/* </div> */}
-
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         {stats.map((stat, index) => (
           <Col className="gutter-row" span={6} key={index}>
@@ -122,19 +106,13 @@ export default function OverviewClient({
         ))}
       </Row>
 
-      {/* <div className="mt-10 grid max-h-[300px] grid-cols-[1fr_1.5fr_1fr] gap-4">
-        <Analyitics />
-        <Chart />
-        <Activities />
-      </div> */}
-
       <div className="mt-10 max-h-[600px]">
         <Row className="mt-10" gutter={20}>
           <Col span={18}>
-            <Component />
+            <Component chartsData={chartsData} />
           </Col>
           <Col span={6}>
-            <Activities />
+            <Activities activitesData={activitesData} />
           </Col>
         </Row>
       </div>

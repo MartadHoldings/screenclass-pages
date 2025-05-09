@@ -7,7 +7,7 @@ import { AdminProps } from "@/types/index";
 
 interface AuthContextProps {
   admin: AdminProps | null; // admin object or null when not logged in
-  loginAdmin?: (admin: AdminProps) => void;
+  loginAdmin: ((admin: AdminProps) => void) | undefined;
 }
 
 const defaultContext: AuthContextProps = {
@@ -25,9 +25,26 @@ export const AuthContextProvider = ({
 }: React.PropsWithChildren & {}) => {
   const [admin, setAdmin] = React.useState<Maybe<AdminProps>>(null);
 
+  const loginAdmin = (admin: AdminProps) => {
+    if (!admin) throw new Error("Admin not found.");
+    localStorage.setItem("admin", JSON.stringify(admin));
+    setAdmin(admin);
+    return admin;
+  };
+
+  React.useEffect(() => {
+    const savedAdmin = localStorage.getItem("admin");
+
+    if (savedAdmin) {
+      setAdmin(JSON.parse(savedAdmin)); // Set admin state
+    }
+  }, []);
+
   // Provide the context
   return (
-    <AuthContext.Provider value={{ admin }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ admin, loginAdmin }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
