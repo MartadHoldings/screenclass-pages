@@ -2,7 +2,7 @@
 
 import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
-import { ApiResponse, ApiError } from "@/types/queries";
+import { ApiResponse, ApiError, LoginAdmin } from "@/types/queries";
 import { CreateAdmin, Login } from "@/types";
 import { getAuthToken } from "@/utils/getServerCookies";
 
@@ -12,13 +12,13 @@ const adminLogin = async ({
   form,
 }: {
   form: Login;
-}): Promise<ApiResponse<any> | ApiError> => {
+}): Promise<ApiResponse<LoginAdmin> | ApiError> => {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/admins/login`,
       { email: form.email, password: form.password },
     );
-    const token = res.data.data;
+    const token = res.data.data.token;
     const cookieStore = await cookies();
     cookieStore.set("admin-token", token, {
       httpOnly: true,

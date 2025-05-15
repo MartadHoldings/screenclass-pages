@@ -10,6 +10,7 @@ import { adminLogin } from "@/queries/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useAuthContext } from "@/context/auth-context";
 
 export const Login = () => {
   const [form, setForm] = React.useState({
@@ -17,17 +18,32 @@ export const Login = () => {
     password: "",
   });
 
+  const { loginAdmin } = useAuthContext();
+
   const [isPending, startTransition] = React.useTransition();
 
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     startTransition(async () => {
       try {
         const result = await adminLogin({ form });
+
         if (result.success) {
+          const { firstName, lastName, role, ascid } = result.data.data.admin;
+          const admin = {
+            firstName: firstName,
+            lastName: lastName,
+            role: role,
+            ascid: ascid,
+          };
+          if (!loginAdmin) {
+            throw new Error(
+              "loginAdmin is undefined. Make sure the AuthProvider is wrapped.",
+            );
+          }
+          loginAdmin(admin);
           router.push("/dashboard");
           toast.success(result.data.message);
         } else {
