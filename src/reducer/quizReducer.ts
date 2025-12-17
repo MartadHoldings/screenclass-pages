@@ -24,7 +24,7 @@ export function quizReducer(state: QuizProps, action: QuizAction): QuizProps {
     case "REMOVE_QUESTION":
       return {
         ...state,
-        questions: state.questions.filter((q, index) => q.id !== action.index),
+        questions: state.questions.filter((q) => q._id !== action.index),
       };
     case "RESET_FORM":
       return quizInitialState;

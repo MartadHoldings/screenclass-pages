@@ -16,7 +16,7 @@ export default function Activities({
 
       <div className="h-[300px] space-y-3 overflow-y-auto px-4">
         {activitesData?.data.map((notif) => (
-          <div className="flex items-end" key={notif.message}>
+          <div className="flex items-end" key={notif._id}>
             <div className="flex flex-col gap-1">
               <span className="text-balance text-sm font-medium text-blue-500">
                 {notif.message}

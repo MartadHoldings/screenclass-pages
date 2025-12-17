@@ -95,7 +95,6 @@ export default function AdminContent({
     setLoading(true);
     try {
       const res = await logout();
-      console.log(res);
 
       if (res.success) {
         localStorage.removeItem("admin"); // or whatever key you stored admin data under

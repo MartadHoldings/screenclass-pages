@@ -73,16 +73,18 @@ export type QuizType = "MCQ" | "True/False";
 export interface QuizOption {
   text: string;
   isCorrect: boolean;
+  _id?: string;
 }
 
 export interface QuizQuestion {
-  id?: string;
+  _id?: string;
   text: string;
-  questionType: QuizType;
+  questionType?: QuizType;
   options: QuizOption[];
 }
 
 export interface QuizProps {
+  _id?: string;
   title: string;
   duration: number;
   isPublished: boolean;

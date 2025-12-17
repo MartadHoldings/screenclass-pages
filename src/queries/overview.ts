@@ -20,7 +20,6 @@ const getStats = async (): Promise<ApiResponse<StatsProps> | ApiError> => {
         },
       },
     );
-    console.log(res.data);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -49,7 +48,6 @@ const getCharts = async (): Promise<ApiResponse<ChartsProps> | ApiError> => {
         },
       },
     );
-    console.log(res.data);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -80,7 +78,6 @@ const getActivities = async (): Promise<
         },
       },
     );
-    console.log(res.data);
     return { success: true, data: res.data };
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

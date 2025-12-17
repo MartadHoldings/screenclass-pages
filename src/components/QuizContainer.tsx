@@ -68,7 +68,7 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
     try {
       const modifiedState = {
         ...state,
-        questions: state.questions.map(({ id, ...rest }) => rest), // Remove 'id' from each question
+        questions: state.questions.map(({ _id, ...rest }) => rest), // Remove 'id' from each question
       };
 
       const response = await createQuizToSubtopic(modifiedState);
@@ -78,7 +78,6 @@ const QuizContainer = ({ topics }: { topics: OptionData[] | null }) => {
         resetForm();
       } else {
         toast.error(response.message);
-        console.log(response);
       }
     } catch (error) {
       console.log(error);
