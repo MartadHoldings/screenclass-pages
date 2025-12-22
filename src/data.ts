@@ -1,4 +1,4 @@
-import { Student, Guardian } from "./types";
+import { Student, Guardian, QuizQuestion } from "./types";
 
 export const studentData: Student[] = [
   {
@@ -426,5 +426,398 @@ export const notifications = [
     type: "Subscription",
     recipient: "user6@example.com",
     status: "Pending",
+  },
+];
+
+export const questionMock: QuizQuestion[] = [
+  {
+    _id: "690347d0c21053c4473bd71d",
+    text: "What is 1/2 + 1/2?",
+    options: [
+      {
+        text: "1",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd71e",
+      },
+      {
+        text: "1/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd71f",
+      },
+      {
+        text: "2/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd720",
+      },
+      {
+        text: "1/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd721",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd722",
+    text: "Which of the following fractions is equivalent to 2/4?",
+    options: [
+      {
+        text: "1/2",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd723",
+      },
+      {
+        text: "3/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd724",
+      },
+      {
+        text: "4/6",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd725",
+      },
+      {
+        text: "2/8",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd726",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd727",
+    text: "What is 3/5 + 2/5?",
+    options: [
+      {
+        text: "5/5",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd728",
+      },
+      {
+        text: "1/5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd729",
+      },
+      {
+        text: "6/5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd72a",
+      },
+      {
+        text: "3/10",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd72b",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd72c",
+    text: "Which fraction is the largest?",
+    options: [
+      {
+        text: "3/4",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd72d",
+      },
+      {
+        text: "2/5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd72e",
+      },
+      {
+        text: "1/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd72f",
+      },
+      {
+        text: "3/8",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd730",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd731",
+    text: "What is 5/6 - 1/3?",
+    options: [
+      {
+        text: "1/2",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd732",
+      },
+      {
+        text: "2/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd733",
+      },
+      {
+        text: "1/6",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd734",
+      },
+      {
+        text: "5/9",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd735",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd736",
+    text: "Convert 3/4 to a decimal.",
+    options: [
+      {
+        text: "0.75",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd737",
+      },
+      {
+        text: "0.25",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd738",
+      },
+      {
+        text: "1.25",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd739",
+      },
+      {
+        text: "0.5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd73a",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd73b",
+    text: "What is 1/2 × 1/2?",
+    options: [
+      {
+        text: "1/4",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd73c",
+      },
+      {
+        text: "1",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd73d",
+      },
+      {
+        text: "1/2",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd73e",
+      },
+      {
+        text: "2/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd73f",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd740",
+    text: "Which fraction is equal to 0.2?",
+    options: [
+      {
+        text: "1/5",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd741",
+      },
+      {
+        text: "1/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd742",
+      },
+      {
+        text: "2/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd743",
+      },
+      {
+        text: "3/8",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd744",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd745",
+    text: "What is 2/3 × 3/4?",
+    options: [
+      {
+        text: "1/2",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd746",
+      },
+      {
+        text: "3/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd747",
+      },
+      {
+        text: "2/4",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd748",
+      },
+      {
+        text: "1/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd749",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd74a",
+    text: "Which of the following is an improper fraction?",
+    options: [
+      {
+        text: "7/4",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd74b",
+      },
+      {
+        text: "3/5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd74c",
+      },
+      {
+        text: "5/9",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd74d",
+      },
+      {
+        text: "2/7",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd74e",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd74f",
+    text: "Which mixed number is equivalent to 7/3?",
+    options: [
+      {
+        text: "2 1/3",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd750",
+      },
+      {
+        text: "3 1/2",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd751",
+      },
+      {
+        text: "1 2/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd752",
+      },
+      {
+        text: "2 2/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd753",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd754",
+    text: "What is the greatest common factor (GCF) of 8 and 12?",
+    options: [
+      {
+        text: "4",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd755",
+      },
+      {
+        text: "2",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd756",
+      },
+      {
+        text: "8",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd757",
+      },
+      {
+        text: "6",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd758",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd759",
+    text: "Convert 5/8 to a decimal.",
+    options: [
+      {
+        text: "0.625",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd75a",
+      },
+      {
+        text: "0.75",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd75b",
+      },
+      {
+        text: "0.8",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd75c",
+      },
+      {
+        text: "0.5",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd75d",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd75e",
+    text: "What is 1/3 + 1/6?",
+    options: [
+      {
+        text: "1/2",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd75f",
+      },
+      {
+        text: "1/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd760",
+      },
+      {
+        text: "2/3",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd761",
+      },
+      {
+        text: "1/6",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd762",
+      },
+    ],
+  },
+  {
+    _id: "690347d0c21053c4473bd763",
+    text: "What is the least common multiple (LCM) of 4 and 6?",
+    options: [
+      {
+        text: "12",
+        isCorrect: true,
+        _id: "690347d0c21053c4473bd764",
+      },
+      {
+        text: "6",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd765",
+      },
+      {
+        text: "24",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd766",
+      },
+      {
+        text: "18",
+        isCorrect: false,
+        _id: "690347d0c21053c4473bd767",
+      },
+    ],
   },
 ];

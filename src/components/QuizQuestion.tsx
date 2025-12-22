@@ -12,7 +12,7 @@ import { generateUniqueId } from "@/helpers/generate-id";
 const createNewDraftQuestion = (
   type: QuizQuestion["questionType"] = "MCQ",
 ): QuizQuestion => ({
-  id: "",
+  _id: "",
   text: "",
   questionType: type,
   options: Array(type === "True/False" ? 2 : 4)
@@ -101,7 +101,7 @@ const Quiz = () => {
   const handleSave = () => {
     const newQuestion: QuizQuestion = {
       ...localDraft,
-      id: generateUniqueId(),
+      _id: generateUniqueId(),
     };
 
     dispatch({ type: "ADD_QUESTION", payload: newQuestion });
@@ -127,7 +127,9 @@ const Quiz = () => {
 
   return (
     <div className="w-full space-y-4 rounded-lg border p-4 shadow-sm">
-      <p className="text-slate-600">
+      <h1 className="text-lg font-bold">Add More Question to Quiz</h1>
+
+      <p className="font-medium text-slate-600">
         Total Questions Added: {state.questions.length}
       </p>
 
@@ -135,12 +137,13 @@ const Quiz = () => {
         <div className="mt-6">
           <h3 className="text-lg font-semibold">Added Questions</h3>
 
-          <div className="flex w-full flex-wrap gap-4">
+          <div className="grid w-full grid-cols-3 flex-wrap gap-4">
             {state.questions.map((question) => (
               <QuestionPreview
                 question={question}
-                key={question.id}
+                key={question._id}
                 handleDelete={handleDelete}
+                variant="soft-delete"
               />
             ))}
           </div>

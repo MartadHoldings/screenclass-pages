@@ -1,5 +1,5 @@
 import { Node } from "./common";
-import { QuizType } from ".";
+import { QuizProps, QuizType } from ".";
 
 export interface ApiError {
   success: false;
@@ -100,6 +100,7 @@ export interface Chart {
 
 export type Activity = {
   id: string;
+  _id?: string;
   message: string;
   createdAt: string;
 };
@@ -227,4 +228,8 @@ export interface SubTopicsData {
 
 export interface HasQuizResponse {
   hasQuiz: boolean;
+}
+
+export interface QuizData {
+  data: QuizProps;
 }

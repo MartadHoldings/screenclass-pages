@@ -10,6 +10,7 @@ import AddSubTopic from "./add-subtopic";
 import { Card } from "antd";
 import QuizContainer from "@/components/QuizContainer";
 import AddMoreQuiz from "@/components/AddMoreQuiz";
+import DeleteQuestion from "@/components/AvailableQuestions";
 
 export type OptionData = {
   label: string;
@@ -19,15 +20,15 @@ export type OptionData = {
 const tabList = [
   {
     key: "tab1",
-    tab: "Create new sub topic",
+    tab: "Create Subtopic",
   },
   {
     key: "tab2",
-    tab: "Create Quizes for sub topic",
+    tab: "Create Quiz",
   },
   {
     key: "tab3",
-    tab: "Upload more Quiz to sub topic",
+    tab: "Manage Quiz",
   },
 ];
 
@@ -73,7 +74,7 @@ export const Client = ({ videosData }: { videosData: VideoData | null }) => {
   return (
     <>
       <div>
-        <h2 className="text-[1.3rem] font-semibold">Add content</h2>{" "}
+        <h2 className="text-[1.3rem] font-semibold">Manage Content</h2>{" "}
         <p className="mt-3 font-medium text-slate-500">
           Here you can create and add content to like sub topics , videos,
           quizes to topic

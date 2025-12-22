@@ -7,8 +7,11 @@ import { Select, Button, Modal, message } from "antd";
 import { useQuizForm } from "@/context/quiz-context";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useSubtopics } from "@/hooks/useSubtopics";
-import { addMoreQuiz, hasQuiz } from "@/queries/quizez";
+import { updateQuiz, hasQuiz } from "@/queries/quizez";
 import { toast } from "sonner";
+import AvailableQuestionsContainer from "./AvailableQuestions";
+import { useQuizData } from "@/hooks/useQuizData";
+import { questionMock } from "@/data";
 
 export default function AddMoreQuiz({
   topics,
@@ -21,12 +24,23 @@ export default function AddMoreQuiz({
 
   const { subtopics, fetchSubtopics, loading } = useSubtopics();
 
+  const {
+    quizObj,
+    fetchQuizData,
+    loading: loadingQuiz,
+    deleteQuizQuestion,
+  } = useQuizData();
+
+  const selectTopic = (value: string) => {
+    fetchSubtopics(value);
+  };
+
   const handleSubTopicId = (value: string) => [
     dispatch({ type: "SET_SUBTOPIC_ID", payload: value }),
   ];
 
-  const selectTopic = (value: string) => {
-    fetchSubtopics(value);
+  const fetchQuizUnderSubTopic = (subtopicId: string) => {
+    fetchQuizData(subtopicId);
   };
 
   const resetForm = () => {
@@ -35,16 +49,16 @@ export default function AddMoreQuiz({
 
   const checkQuiz = useCallback(async () => {
     if (!state.subTopicId) return;
+
     const response = await hasQuiz(state.subTopicId);
-    if (response.success) {
+    if (response.success && response.data.hasQuiz) {
+      message.success("You can add more quiz here");
       setQuizPresent(response.data.hasQuiz);
-      if (response.data.hasQuiz) {
-        message.success("You can add more quiz here");
-      } else {
-        message.error(
-          "You can't add more quiz here yet, Use the create quiz tab",
-        );
-      }
+      fetchQuizUnderSubTopic(state.subTopicId);
+    } else {
+      message.error(
+        "You can't add more quiz here yet, Use the create quiz tab",
+      );
     }
   }, [state.subTopicId]);
 
@@ -56,10 +70,10 @@ export default function AddMoreQuiz({
     try {
       const modifiedState = {
         subTopicId: state.subTopicId,
-        questions: state.questions.map(({ id, ...rest }) => rest), // Remove 'id' from each question
+        questions: state.questions.map(({ _id, ...rest }) => rest), // Remove 'id' from each question
       };
 
-      const response = await addMoreQuiz(modifiedState);
+      const response = await updateQuiz(modifiedState);
 
       if (response.success) {
         toast.success(response.data?.message);
@@ -103,7 +117,9 @@ export default function AddMoreQuiz({
   return (
     <form className="w-full space-y-6 px-4">
       <div className="border-b py-3">
-        <h2 className="text-xl font-medium">Add More Quiz to Sub topic</h2>
+        <h2 className="text-xl font-medium">
+          Manage Quiz by adding and removing questions
+        </h2>
       </div>
 
       <div className="flex flex-col space-y-2">
@@ -134,6 +150,21 @@ export default function AddMoreQuiz({
           value={state.subTopicId || undefined}
         />
       </div>
+
+      {loadingQuiz ? (
+        <p className="text-md text-center font-medium italic text-primary">
+          getting quiz, please wait...
+        </p>
+      ) : quizObj ? (
+        <AvailableQuestionsContainer
+          quizObj={quizObj}
+          deleteQuestion={(quizId: string | undefined, questionId: string) => {
+            if (quizId) {
+              deleteQuizQuestion(quizId, questionId);
+            }
+          }}
+        />
+      ) : null}
 
       <Quiz />
 
