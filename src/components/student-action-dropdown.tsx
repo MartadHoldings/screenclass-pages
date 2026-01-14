@@ -47,13 +47,13 @@ export function StudentActionDropdown({
       setLoadingAction(id as number);
       try {
         const response = await getStudentDetails(record.key as string);
-        if (!response.success) {
-          toast.error(response.message);
-          return;
-        } else {
+        if (response.success && response.data) {
           console.log("student", response.data);
           setUserDetails(response.data);
           setActiveDropDown({ id: record.key, label });
+        } else {
+          toast.error(response.message);
+          return;
         }
       } catch (error) {
         toast.error("An error occurred. Please try again.");

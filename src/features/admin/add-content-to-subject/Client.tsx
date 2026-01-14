@@ -51,7 +51,7 @@ export const Client = ({ videosData }: { videosData: VideoData | null }) => {
     try {
       const response = await getTopicsUnderSubject(params.slug as string);
 
-      if (response.success) {
+      if (response.success && response.data) {
         setTopics(
           response.data.data.map((topic) => ({
             label: topic.name,

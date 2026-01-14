@@ -11,13 +11,14 @@ import { revalidatePath } from "next/cache";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const getGuardians = async (): Promise<
-  ApiResponse<GuardianData> | ApiError
-> => {
+const getGuardians = async (
+  page: number,
+  limit: number,
+): Promise<ApiResponse<GuardianData> | ApiError> => {
   const token = await getAuthToken();
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/guardians`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admins/guardians?page=${page}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

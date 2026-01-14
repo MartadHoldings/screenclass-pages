@@ -2,7 +2,7 @@
 import React from "react";
 import "@ant-design/v5-patch-for-react-19";
 import { Table, Button, Popconfirm, Divider, Tag } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableColumnsType, TableProps, TablePaginationConfig } from "antd";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
 import { TableData } from "@/types";
@@ -20,6 +20,8 @@ interface TableComponentProps<T extends TableData> {
   onDelete?: (key: React.Key) => void;
   addTopic?: (record: T) => void;
   onDeleteTopic?: (key: React.Key) => void;
+  pagination?: false | TablePaginationConfig;
+  loading?: boolean;
 }
 
 const DynamicTable = <T extends TableData>({
@@ -31,6 +33,8 @@ const DynamicTable = <T extends TableData>({
   onDelete,
   addTopic,
   onDeleteTopic,
+  pagination,
+  loading = false,
 }: TableComponentProps<T>) => {
   // Define columns explicitly without auto-generating from keys
   const columns: TableColumnsType<T> = [];
@@ -168,6 +172,8 @@ const DynamicTable = <T extends TableData>({
         dataSource={data}
         columns={columns}
         rowSelection={{ type: "checkbox", ...rowSelection }}
+        pagination={pagination}
+        loading={loading}
       />
     </>
   );

@@ -19,7 +19,7 @@ export default function SubscribeStudent() {
   const fetchPlans = async () => {
     try {
       const res = await getSubscriptionPlans();
-      if (res.success) {
+      if (res.success && res.data) {
         setPlans(
           res.data.map((plan) => ({
             _id: plan._id,

@@ -51,7 +51,7 @@ export default function AddMoreQuiz({
     if (!state.subTopicId) return;
 
     const response = await hasQuiz(state.subTopicId);
-    if (response.success && response.data.hasQuiz) {
+    if (response.success && response.data?.hasQuiz) {
       message.success("You can add more quiz here");
       setQuizPresent(response.data.hasQuiz);
       fetchQuizUnderSubTopic(state.subTopicId);

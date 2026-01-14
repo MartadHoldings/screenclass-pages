@@ -13,6 +13,12 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+}
+
 export interface LoginAdmin {
   message: string;
   data: {
@@ -75,12 +81,16 @@ export interface GuardianProps extends Node {
 
 export interface StudentsData {
   data: {
+    info: PaginationInfo;
     users: StudentProps[];
   };
 }
 
 export interface GuardianData {
-  data: GuardianProps[];
+  data: {
+    info: PaginationInfo;
+    guardians: GuardianProps[];
+  };
 }
 
 export interface StatsProps {

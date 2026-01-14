@@ -8,15 +8,31 @@ import {
   renderFooter,
 } from "@/helpers/action-on-tables";
 import DynamicTable from "@/components/tables/dynamic-data-table";
-import { StudentsData } from "@/types/queries";
+import { StudentsData, PaginationInfo } from "@/types/queries";
 import { suspendStudent, deleteStudent } from "@/queries/students";
 import { toast } from "sonner";
 import { subscribeUser } from "@/queries/subscription";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
   const { activeDropDown, setActiveDropDown, selectedPlan, setSelectedPlan } =
     useAppInteractionContext();
   const [loading, setLoading] = React.useState(false);
+  const [isPaginating, startTransition] = React.useTransition();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("limit")) || 10;
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+    params.set("limit", pageSize.toString());
+    startTransition(() => {
+      router.push(`/dashboard/students?${params.toString()}`);
+    });
+  };
 
   const handleCancel = () => {
     setActiveDropDown(null);
@@ -116,6 +132,16 @@ export const Client = ({ studentsData }: { studentsData: StudentsData }) => {
           onAddContent={false}
           dropdownAction
           dropdownType="student"
+          loading={isPaginating}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: studentsData?.data?.info?.totalPages * pageSize || 0,
+            onChange: handlePageChange,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
+          }}
         />{" "}
       </div>
 

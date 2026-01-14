@@ -6,7 +6,9 @@ export const AddContent = async () => {
 
   return (
     <>
-      <Client videosData={response.success ? response.data : null} />
+      <Client
+        videosData={response.success && response.data ? response.data : null}
+      />
     </>
   );
 };

@@ -11,10 +11,26 @@ import DynamicTable from "@/components/tables/dynamic-data-table";
 import { GuardianData } from "@/types/queries";
 import { deleteGuardian, suspendGuardian } from "@/queries/guardian";
 import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
   const { activeDropDown, setActiveDropDown } = useAppInteractionContext();
   const [loading, setLoading] = React.useState(false);
+  const [isPaginating, startTransition] = React.useTransition();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("limit")) || 10;
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+    params.set("limit", pageSize.toString());
+    startTransition(() => {
+      router.push(`/dashboard/guardian?${params.toString()}`);
+    });
+  };
 
   const handleCancel = () => {
     setActiveDropDown(null);
@@ -67,7 +83,7 @@ export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
   };
 
   const extractData = () => {
-    return guardianData?.data?.map((guardian) => {
+    return guardianData?.data?.guardians?.map((guardian) => {
       return {
         // id: index + 1,
         key: guardian._id,
@@ -90,6 +106,16 @@ export const Client = ({ guardianData }: { guardianData: GuardianData }) => {
           data={extractData()}
           dropdownAction
           dropdownType="guardian"
+          loading={isPaginating}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: guardianData?.data?.info?.totalPages * pageSize || 0,
+            onChange: handlePageChange,
+            showSizeChanger: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
+          }}
         />
       </div>
 

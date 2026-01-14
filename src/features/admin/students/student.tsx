@@ -5,8 +5,18 @@
 import { getStudents } from "@/queries/students";
 import { Client } from "./Client";
 
-export const Student = async () => {
-  const response = await getStudents(1, 0);
+interface StudentPageProps {
+  searchParams: {
+    page?: string;
+    limit?: string;
+  };
+}
+
+export const Student = async ({ searchParams }: StudentPageProps) => {
+  const page = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 10;
+
+  const response = await getStudents(page, limit);
 
   console.log(response);
 

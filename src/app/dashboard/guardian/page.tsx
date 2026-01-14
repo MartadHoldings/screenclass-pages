@@ -1,6 +1,14 @@
 import { Guardian } from "@/features/admin/guardian";
 import React from "react";
 
-export default function page() {
-  return <Guardian />;
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    limit?: string;
+  }>;
+}
+
+export default async function page({ searchParams }: PageProps) {
+  const params = await searchParams;
+  return <Guardian searchParams={params} />;
 }

@@ -51,7 +51,7 @@ export function GuardianActionDropdown({
           toast.error(response.message);
           return;
         } else {
-          setUserDetails(response.data);
+          if (response.data) setUserDetails(response.data);
           console.log(response.data);
           setActiveDropDown({ id: record.key, label });
         }

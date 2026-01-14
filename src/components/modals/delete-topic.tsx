@@ -23,7 +23,7 @@ export default function DeleteTopic({
       try {
         setLoading(true);
         const res = await getTopicsUnderSubject(editingRow.key);
-        if (res.success) {
+        if (res.success && res.data) {
           setTopics(
             res.data.data.map((topic) => ({
               label: topic.name,
